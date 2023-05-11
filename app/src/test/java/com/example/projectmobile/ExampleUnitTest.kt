@@ -1,4 +1,4 @@
-package com.davi.vehicle_rental_system
+package com.example.projectmobile
 
 import org.junit.Test
 
