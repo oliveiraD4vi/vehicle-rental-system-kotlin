@@ -72,6 +72,8 @@
         android:layout_below="@id/loginButton"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
+        android:outlineAmbientShadowColor="@android:color/transparent"
+        android:outlineSpotShadowColor="@android:color/transparent"
         android:backgroundTint="@android:color/transparent"
         android:shadowColor="@android:color/transparent"
         android:text="@string/no_account"
