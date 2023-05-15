@@ -1,8 +1,16 @@
 <resources>
-    <string name="app_name">ProjectMobile</string>
+    <string name="app_name"></string>
     <string name="home">Home</string>
     <string name="cars">Cars</string>
     <string name="reservations">Reservations</string>
     <string name="profile">Profile</string>
-
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="password">Senha</string>
+    <string name="email">Email</string>
+    <string name="login_title">Login</string>
+    <string name="login_in">Entrar</string>
+    <string name="go_back_button_description">Go Back Resource</string>
+    <string name="no_account">Não tem uma conta? Cadastre-se</string>
 </resources>
