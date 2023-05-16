@@ -13,4 +13,6 @@
     <string name="login_in">Entrar</string>
     <string name="go_back_button_description">Go Back Resource</string>
     <string name="no_account">Não tem uma conta? Cadastre-se</string>
+    <string name="register">Cadastro</string>
+    <string name="have_account">Já tem uma conta? Faça login</string>
 </resources>

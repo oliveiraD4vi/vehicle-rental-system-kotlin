@@ -2,10 +2,13 @@ package com.example.projectmobile
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 
@@ -21,13 +24,18 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.hide()
 
         editTextEmail = findViewById(R.id.emailEditText)
         editTextPassword = findViewById(R.id.passwordEditText)
         buttonSubmit = findViewById(R.id.loginButton)
         progressBar = findViewById(R.id.progressBar)
         noAccount = findViewById(R.id.no_account)
+
+        val backButton: ImageButton = findViewById(R.id.returnButton)
+        backButton.setOnClickListener {
+            finish()
+        }
 
         buttonSubmit.setOnClickListener {
             if (validateFields()) {
@@ -90,9 +98,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun sendDataToServer() {
-        android.os.Handler().postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
             progressBar.visibility = View.GONE
             enableFields()
-        }, 2000)
+        }, 3000)
     }
 }
