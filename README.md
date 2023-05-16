@@ -1,1 +1,0 @@
-# vehicle-rental-system-kotlin

@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.projectmobile.LoginActivity
 import com.example.projectmobile.R
 import com.example.projectmobile.databinding.FragmentHomeBinding
+import com.example.projectmobile.ui.formreservation.FormReservationDataActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -41,6 +42,7 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
 
         binding.buttonWithdrawal.setOnClickListener(this)
         binding.buttonDelivery.setOnClickListener(this)
+        binding.buttonContinue.setOnClickListener(this)
 
         val buttonLogin: Button = binding.buttonLogin
         buttonLogin.setOnClickListener {
@@ -63,6 +65,9 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
         } else if (view.id == R.id.button_delivery) {
             id = view.id.toString()
             handleDate()
+        } else if(view.id == R.id.button_continue){
+            val intent = Intent(context, FormReservationDataActivity::class.java)
+            startActivity(intent)
         }
     }
 
