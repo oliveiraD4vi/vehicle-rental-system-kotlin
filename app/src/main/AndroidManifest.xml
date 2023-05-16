@@ -12,6 +12,17 @@
         android:theme="@style/Theme.ProjectMobile"
         tools:targetApi="31">
         <activity
+            android:name=".ui.formreservation.FormReservationPaymentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.formreservation.FormReservationVehicleActivity"
+            android:exported="false"
+            android:label="@string/title_activity_form_reservation_vehicle"
+            android:theme="@style/Theme.ProjectMobile.NoActionBar" />
+        <activity
+            android:name=".ui.formreservation.FormReservationDataActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name">

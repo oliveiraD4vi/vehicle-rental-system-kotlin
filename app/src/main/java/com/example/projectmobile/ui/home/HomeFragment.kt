@@ -2,7 +2,7 @@ package com.example.projectmobile.ui.home
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
-import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.projectmobile.R
 import com.example.projectmobile.databinding.FragmentHomeBinding
+import com.example.projectmobile.ui.formreservation.FormReservationDataActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -38,6 +39,7 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
 
         binding.buttonWithdrawal.setOnClickListener(this)
         binding.buttonDelivery.setOnClickListener(this)
+        binding.buttonContinue.setOnClickListener(this)
 
         return root
     }
@@ -54,6 +56,9 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
         } else if(view.id == R.id.button_delivery) {
             id = view.id.toString()
             handleDate()
+        } else if(view.id == R.id.button_continue){
+            val intent = Intent(context, FormReservationDataActivity::class.java)
+            startActivity(intent)
         }
     }
 
