@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.DatePicker
+import android.widget.Toast
 import com.example.projectmobile.MainActivity
 import com.example.projectmobile.R
 import com.example.projectmobile.databinding.ActivityFormReservationVehicleBinding
@@ -49,7 +50,9 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
             startActivity(Intent(this, FormReservationDataActivity::class.java))
             finish()
         } else if (view.id == R.id.button_next_vehicle_form) {
-            startActivity(Intent(this, FormReservationPaymentActivity::class.java))
+            val dataWithdrawal: String = binding.buttonWithdrawalVehicleForm.text.toString()
+            val dataDelivery: String = binding.buttonDeliveryVehicleForm.text.toString()
+            handleContinue(dataWithdrawal, dataDelivery)
         }
     }
 
@@ -72,6 +75,14 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
         DatePickerDialog(this, this, year, month, day).show()
+    }
+
+    private fun handleContinue(dataWithdrawal: String, dataDelivery: String) {
+        if(dataWithdrawal == "ESCOLHA UMA DATA" || dataDelivery == "ESCOLHA UMA DATA"){
+            Toast.makeText(applicationContext, "As datas devem ser definidas!", Toast.LENGTH_SHORT).show()
+        } else {
+            startActivity(Intent(this, FormReservationPaymentActivity::class.java))
+        }
     }
 }
 
