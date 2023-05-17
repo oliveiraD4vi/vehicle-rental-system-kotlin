@@ -9,16 +9,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.DatePicker
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.projectmobile.LoginActivity
 import com.example.projectmobile.R
 import com.example.projectmobile.databinding.FragmentHomeBinding
+import com.example.projectmobile.models.user.UserViewModel
 import com.example.projectmobile.ui.formreservation.FormReservationDataActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
 class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSetListener {
+    val userViewModel: UserViewModel by viewModels()
+
     private var id: String = ""
     private var _binding: FragmentHomeBinding? = null
 
@@ -34,8 +39,7 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+        val homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -65,7 +69,7 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
         } else if (view.id == R.id.button_delivery) {
             id = view.id.toString()
             handleDate()
-        } else if(view.id == R.id.button_continue){
+        } else if (view.id == R.id.button_continue) {
             val intent = Intent(context, FormReservationDataActivity::class.java)
             startActivity(intent)
         }

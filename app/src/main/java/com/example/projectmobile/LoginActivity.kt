@@ -9,14 +9,19 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.callback.APIResponse
 import com.example.projectmobile.api.service.APIService
+import com.example.projectmobile.models.user.UserViewModel
+import com.example.projectmobile.ui.admin.AdminHomeActivity
 import java.io.IOException
 
 
 class LoginActivity : AppCompatActivity() {
+    val userViewModel: UserViewModel by viewModels()
+
     private val apiService = APIService()
 
     private lateinit var editTextEmail: EditText
@@ -118,7 +123,10 @@ class LoginActivity : AppCompatActivity() {
             override fun onSuccess(response: APIResponse) {
                 if (!response.error) {
                     val data = response.authData
-                    println(data)
+
+                    userViewModel.userId = data?.userId.toString()
+                    userViewModel.token = data?.token
+                    userViewModel.role = data?.role
 
                     runOnUiThread {
                         progressBar.visibility = View.GONE
@@ -126,8 +134,13 @@ class LoginActivity : AppCompatActivity() {
                         clearFields()
                     }
 
-                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                    startActivity(intent)
+                    if (data?.role == "CLIENT") {
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        startActivity(intent)
+                    } else {
+                        val intent = Intent(this@LoginActivity, AdminHomeActivity::class.java)
+                        startActivity(intent)
+                    }
                 } else {
                     // A resposta da API indica um erro
                     val errorCode = response.data?.toString() // Obtém o código de erro da API
