@@ -1,4 +1,4 @@
-package com.example.projectmobile.api.callback
+package com.example.projectmobile.api.types
 
 import com.example.projectmobile.api.types.AuthData
 

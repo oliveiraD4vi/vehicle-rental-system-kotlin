@@ -12,7 +12,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projectmobile.api.callback.APICallback
-import com.example.projectmobile.api.callback.APIResponse
+import com.example.projectmobile.api.types.APIResponse
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.models.user.UserViewModel
 import com.example.projectmobile.ui.admin.AdminHomeActivity

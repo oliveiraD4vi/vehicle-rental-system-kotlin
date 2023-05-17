@@ -1,7 +1,7 @@
 package com.example.projectmobile.api.service
 
 import com.example.projectmobile.api.callback.APICallback
-import com.example.projectmobile.api.callback.APIResponse
+import com.example.projectmobile.api.types.APIResponse
 import com.google.gson.Gson
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
