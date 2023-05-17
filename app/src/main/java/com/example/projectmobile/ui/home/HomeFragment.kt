@@ -9,9 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.DatePicker
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.projectmobile.LoginActivity
+import com.example.projectmobile.MainActivity
 import com.example.projectmobile.R
 import com.example.projectmobile.databinding.FragmentHomeBinding
 import com.example.projectmobile.ui.formreservation.FormReservationDataActivity
@@ -21,6 +24,7 @@ import java.util.*
 class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSetListener {
     private var id: String = ""
     private var _binding: FragmentHomeBinding? = null
+    private lateinit var homeViewModel: HomeViewModel
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -34,7 +38,7 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
+        homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
@@ -49,7 +53,7 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
             val intent = Intent(activity, LoginActivity::class.java)
             startActivity(intent)
         }
-
+        observeViewModel()
         return root
     }
 
@@ -66,8 +70,9 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
             id = view.id.toString()
             handleDate()
         } else if(view.id == R.id.button_continue){
-            val intent = Intent(context, FormReservationDataActivity::class.java)
-            startActivity(intent)
+            val dataWithdrawal: String = binding.buttonWithdrawal.text.toString()
+            val dataDelivery: String = binding.buttonDelivery.text.toString()
+            handleContinue(dataWithdrawal, dataDelivery)
         }
     }
 
@@ -89,5 +94,25 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
         DatePickerDialog(requireContext(), this, year, month, day).show()
+    }
+
+    private fun observeViewModel(){
+        val textViewWithdrawal: TextView = binding.buttonWithdrawal
+        homeViewModel.dataWithdrawal.observe(viewLifecycleOwner) {
+            textViewWithdrawal.text = it
+        }
+
+        val textViewDelivery: TextView = binding.buttonDelivery
+        homeViewModel.dataDelivery.observe(viewLifecycleOwner) {
+            textViewDelivery.text = it
+        }
+    }
+
+    private fun handleContinue(dataWithdrawal: String, dataDelivery: String) {
+        if(dataWithdrawal == "ESCOLHA UMA DATA" || dataDelivery == "ESCOLHA UMA DATA"){
+            Toast.makeText(requireContext(), "As datas devem ser definidas!", Toast.LENGTH_SHORT).show()
+        } else {
+            startActivity(Intent(requireContext(), FormReservationDataActivity::class.java))
+        }
     }
 }

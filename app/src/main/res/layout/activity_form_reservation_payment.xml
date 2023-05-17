@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:padding="32dp"
     tools:context=".ui.formreservation.FormReservationPaymentActivity">
 
@@ -11,23 +12,24 @@
         android:id="@+id/image_back_payment_form"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_marginTop="64dp"
         android:src="@drawable/ic_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/blue_primary" />
 
     <TextView
+        android:id="@+id/text_title_payment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="Efetuar Pagamento"
+        android:layout_marginTop="64dp"
         android:textColor="@color/blue_primary"
         android:textSize="32dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/image_back_payment_form"
-        app:layout_constraintStart_toEndOf="@id/image_back_payment_form"
-        app:layout_constraintTop_toTopOf="@id/image_back_payment_form" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:layout_width="wrap_content"

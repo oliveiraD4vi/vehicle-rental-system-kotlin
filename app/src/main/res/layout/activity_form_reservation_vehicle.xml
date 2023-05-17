@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:padding="32dp"
     tools:context=".ui.formreservation.FormReservationVehicleActivity">
 
@@ -11,23 +12,24 @@
         android:id="@+id/image_back_vehicle_form"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_marginTop="64dp"
         android:src="@drawable/ic_back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/blue_primary" />
 
     <TextView
+        android:id="@+id/text_title_vehicle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="Confirmar Veículo"
+        android:layout_marginTop="64dp"
         android:textColor="@color/blue_primary"
         android:textSize="32dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/image_back_vehicle_form"
-        app:layout_constraintStart_toEndOf="@id/image_back_vehicle_form"
-        app:layout_constraintTop_toTopOf="@id/image_back_vehicle_form" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/text_name_car"
@@ -38,7 +40,7 @@
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/image_back_vehicle_form" />
+        app:layout_constraintTop_toBottomOf="@+id/text_title_vehicle" />
 
     <ImageView
         android:id="@+id/image_car1"
@@ -48,7 +50,7 @@
         android:src="@mipmap/img_car1_foreground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/image_back_vehicle_form" />
+        app:layout_constraintTop_toBottomOf="@id/text_title_vehicle" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -85,7 +87,7 @@
         android:layout_margin="8dp"
         android:backgroundTint="@color/yellow_primary"
         android:padding="8dp"
-        android:text="Escolha uma data"
+        android:text="ESCOLHA UMA DATA"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_withdrawal_vehicle_form" />
@@ -109,7 +111,7 @@
         android:layout_margin="8dp"
         android:backgroundTint="@color/yellow_primary"
         android:padding="8dp"
-        android:text="Escolha uma data"
+        android:text="ESCOLHA UMA DATA"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_delivery_vehicle_form" />

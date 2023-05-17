@@ -6,8 +6,14 @@ import androidx.lifecycle.ViewModel
 
 class HomeViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
+    private val _dataWithdrawal = MutableLiveData<String>().apply {
+        value = "ESCOLHA UMA DATA"
     }
-    val text: LiveData<String> = _text
+
+    private val _dataDelivery = MutableLiveData<String>().apply {
+        value = "ESCOLHA UMA DATA"
+    }
+
+    val dataDelivery: LiveData<String> = _dataDelivery
+    val dataWithdrawal: LiveData<String> = _dataWithdrawal
 }
