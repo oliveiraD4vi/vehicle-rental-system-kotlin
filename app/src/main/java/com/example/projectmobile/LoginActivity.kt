@@ -1,5 +1,6 @@
 package com.example.projectmobile
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
@@ -9,19 +10,16 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.types.APIResponse
 import com.example.projectmobile.api.service.APIService
-import com.example.projectmobile.models.user.UserViewModel
 import com.example.projectmobile.ui.admin.AdminHomeActivity
+import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
 
 
 class LoginActivity : AppCompatActivity() {
-    val userViewModel: UserViewModel by viewModels()
-
     private val apiService = APIService()
 
     private lateinit var editTextEmail: EditText
@@ -124,9 +122,10 @@ class LoginActivity : AppCompatActivity() {
                 if (!response.error) {
                     val data = response.authData
 
-                    userViewModel.userId = data?.userId.toString()
-                    userViewModel.token = data?.token
-                    userViewModel.role = data?.role
+                    val preferencesManager = UserPreferencesManager(this@LoginActivity)
+                    preferencesManager.saveUserId(data?.userId.toString())
+                    preferencesManager.saveToken(data?.token.toString())
+                    preferencesManager.saveRole(data?.role.toString())
 
                     runOnUiThread {
                         progressBar.visibility = View.GONE
@@ -143,7 +142,7 @@ class LoginActivity : AppCompatActivity() {
                     }
                 } else {
                     // A resposta da API indica um erro
-                    val errorCode = response.data?.toString() // Obtém o código de erro da API
+                    val errorCode = response.message?.toString() // Obtém o código de erro da API
 
                     runOnUiThread {
                         progressBar.visibility = View.GONE
