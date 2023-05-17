@@ -22,4 +22,6 @@
     <string name="no_account">Não tem uma conta? Cadastre-se</string>
     <string name="register">Cadastro</string>
     <string name="have_account">Já tem uma conta? Faça login</string>
+    <string name="register_button">Cadastrar</string>
+    <string name="title_activity_admin_home">AdminHomeActivity</string>
 </resources>

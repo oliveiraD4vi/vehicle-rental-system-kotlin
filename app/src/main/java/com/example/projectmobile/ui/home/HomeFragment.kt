@@ -34,8 +34,7 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+        val homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -65,7 +64,7 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
         } else if (view.id == R.id.button_delivery) {
             id = view.id.toString()
             handleDate()
-        } else if(view.id == R.id.button_continue){
+        } else if (view.id == R.id.button_continue) {
             val intent = Intent(context, FormReservationDataActivity::class.java)
             startActivity(intent)
         }

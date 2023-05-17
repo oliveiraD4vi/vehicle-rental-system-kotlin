@@ -125,10 +125,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editBirthday"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
-        android:text="Cadastrar"
-        android:textSize="12sp" />
+        android:backgroundTint="@color/yellow_primary"
+        android:maxWidth="488dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:text="Cadastrar" />
 
     <Button
         android:id="@+id/have_account"
@@ -149,8 +153,7 @@
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/have_account"
-        android:layout_gravity="center"
+        android:layout_centerInParent="true"
         android:visibility="gone" />
 
 </RelativeLayout>
