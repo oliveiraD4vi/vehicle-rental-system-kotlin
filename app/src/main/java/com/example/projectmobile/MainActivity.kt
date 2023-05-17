@@ -60,15 +60,5 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        if (requestCode == PERMISSION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permissão concedida
-                // Faça a chamada da API aqui
-            } else {
-                // Permissão negada
-                // Trate a falta de permissão conforme necessário
-            }
-        }
     }
 }

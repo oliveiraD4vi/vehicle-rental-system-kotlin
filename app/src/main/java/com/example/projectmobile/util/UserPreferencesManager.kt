@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 
 class UserPreferencesManager(context: Context) {
-    private val sharedPreferences: SharedPreferences = context.getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
+    private val sharedPreferences: SharedPreferences = context.getSharedPreferences("USER_CREDENTIALS", Context.MODE_PRIVATE)
 
     companion object {
         const val USER_ID = "userId"
@@ -34,5 +34,9 @@ class UserPreferencesManager(context: Context) {
 
     fun getRole(): String? {
         return sharedPreferences.getString(ROLE, null)
+    }
+
+    fun clear() {
+        sharedPreferences.edit().clear().apply()
     }
 }
