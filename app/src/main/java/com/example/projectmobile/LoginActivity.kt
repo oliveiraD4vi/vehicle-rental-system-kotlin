@@ -2,18 +2,23 @@ package com.example.projectmobile
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.projectmobile.api.callback.APICallback
+import com.example.projectmobile.api.callback.APIResponse
+import com.example.projectmobile.api.service.APIService
+import java.io.IOException
 
 
 class LoginActivity : AppCompatActivity() {
+    private val apiService = APIService()
+
     private lateinit var editTextEmail: EditText
     private lateinit var editTextPassword: EditText
     private lateinit var buttonSubmit: Button
@@ -97,10 +102,61 @@ class LoginActivity : AppCompatActivity() {
         buttonSubmit.isEnabled = true
     }
 
+    private fun clearFields() {
+        editTextEmail.setText("")
+        editTextPassword.setText("")
+    }
+
     private fun sendDataToServer() {
-        Handler(Looper.getMainLooper()).postDelayed({
-            progressBar.visibility = View.GONE
-            enableFields()
-        }, 3000)
+        val url = "/user/login"
+        val email = editTextEmail.text.toString()
+        val password = editTextPassword.text.toString()
+
+        val requestData = "{\"email\": \"$email\", \"password\": \"$password\"}"
+
+        apiService.postData(url, requestData, object : APICallback {
+            override fun onSuccess(response: APIResponse) {
+                if (!response.error) {
+                    val data = response.authData
+                    println(data)
+
+                    runOnUiThread {
+                        progressBar.visibility = View.GONE
+                        enableFields()
+                        clearFields()
+                    }
+
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    // A resposta da API indica um erro
+                    val errorCode = response.data?.toString() // Obtém o código de erro da API
+
+                    runOnUiThread {
+                        progressBar.visibility = View.GONE
+                        enableFields()
+                        clearFields()
+                        Toast.makeText(
+                            this@LoginActivity,
+                            "Erro na chamada da API. Código: $errorCode",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onError(error: IOException) {
+                runOnUiThread {
+                    progressBar.visibility = View.GONE
+                    enableFields()
+                    clearFields()
+                    Toast.makeText(
+                        this@LoginActivity,
+                        "Erro na chamada da API. Código: ${error.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
     }
 }
