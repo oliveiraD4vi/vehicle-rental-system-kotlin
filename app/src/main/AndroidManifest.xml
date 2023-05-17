@@ -25,7 +25,6 @@
         <activity
             android:name=".ui.formreservation.FormReservationVehicleActivity"
             android:exported="false"
-            android:label="@string/title_activity_form_reservation_vehicle"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.ProjectMobile.NoActionBar" />
         <activity

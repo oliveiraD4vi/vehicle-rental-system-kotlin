@@ -54,6 +54,10 @@ class MainActivity : AppCompatActivity() {
                 PERMISSION_REQUEST_CODE
             )
         }
+
+        val bottomNavigationView: BottomNavigationView = findViewById(R.id.nav_view)
+        val iconColorSelector = ContextCompat.getColorStateList(this, R.color.colors_selector)
+        bottomNavigationView.itemIconTintList = iconColorSelector
     }
 
     override fun onRequestPermissionsResult(
