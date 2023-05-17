@@ -38,8 +38,7 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -53,6 +52,7 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
             val intent = Intent(activity, LoginActivity::class.java)
             startActivity(intent)
         }
+
         observeViewModel()
         return root
     }
