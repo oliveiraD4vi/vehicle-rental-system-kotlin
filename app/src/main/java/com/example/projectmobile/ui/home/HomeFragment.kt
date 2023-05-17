@@ -70,8 +70,9 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
             id = view.id.toString()
             handleDate()
         } else if(view.id == R.id.button_continue){
-            val intent = Intent(context, FormReservationDataActivity::class.java)
-            startActivity(intent)
+            val dataWithdrawal = binding.buttonWithdrawal.text.toString()
+            val dataDelivery = binding.buttonDelivery.text.toString()
+            handleContinue(dataWithdrawal, dataDelivery)
         }
     }
 
