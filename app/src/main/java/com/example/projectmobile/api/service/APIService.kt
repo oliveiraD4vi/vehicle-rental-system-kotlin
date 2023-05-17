@@ -26,7 +26,7 @@ class APIService {
 
                     callback.onSuccess(apiResponse)
                 } else {
-                    callback.onError(IOException("Erro na chamada da API: " + response.code))
+                    callback.onError(IOException("Erro na chamada da API: " + response.message))
                 }
             }
 
@@ -52,7 +52,57 @@ class APIService {
 
                     callback.onSuccess(apiResponse)
                 } else {
-                    callback.onError(IOException("Erro na chamada da API: " + response.code))
+                    callback.onError(IOException("Erro na chamada da API: " + response.message))
+                }
+            }
+
+            override fun onFailure(call: Call, e: IOException) {
+                callback.onError(e)
+            }
+        })
+    }
+
+    fun putData(url: String, requestData: String, callback: APICallback) {
+        val requestBody = requestData.toRequestBody(json)
+
+        val request = Request.Builder()
+            .url(baseurl + url)
+            .put(requestBody)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    val responseData = response.body?.string()
+                    val apiResponse = Gson().fromJson(responseData, APIResponse::class.java)
+
+                    callback.onSuccess(apiResponse)
+                } else {
+                    callback.onError(IOException("Erro na chamada da API: " + response.message))
+                }
+            }
+
+            override fun onFailure(call: Call, e: IOException) {
+                callback.onError(e)
+            }
+        })
+    }
+
+    fun deleteData(url: String, callback: APICallback) {
+        val request = Request.Builder()
+            .url(baseurl + url)
+            .delete()
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    val responseData = response.body?.string()
+                    val apiResponse = Gson().fromJson(responseData, APIResponse::class.java)
+
+                    callback.onSuccess(apiResponse)
+                } else {
+                    callback.onError(IOException("Erro na chamada da API: " + response.message))
                 }
             }
 
@@ -62,4 +112,3 @@ class APIService {
         })
     }
 }
-

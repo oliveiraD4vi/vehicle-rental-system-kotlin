@@ -142,7 +142,7 @@ class LoginActivity : AppCompatActivity() {
                     }
                 } else {
                     // A resposta da API indica um erro
-                    val errorCode = response.message?.toString() // Obtém o código de erro da API
+                    val errorCode = response.message.toString() // Obtém o código de erro da API
 
                     runOnUiThread {
                         progressBar.visibility = View.GONE
