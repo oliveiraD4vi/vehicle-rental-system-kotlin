@@ -70,6 +70,7 @@ class RegisterActivity : AppCompatActivity() {
             Handler(Looper.getMainLooper()).postDelayed({
                 progressBar.visibility = View.GONE
                 enableFields()
+                clearFields()
             }, 3000)
         }
     }
@@ -149,5 +150,13 @@ class RegisterActivity : AppCompatActivity() {
         editCPF.isEnabled = true
         editDataNascimento.isEnabled = true
         btnRegister.isEnabled = true
+    }
+
+    private fun clearFields() {
+        editNome.setText("")
+        editEmail.setText("")
+        editSenha.setText("")
+        editCPF.setText("")
+        editDataNascimento.setText("")
     }
 }
