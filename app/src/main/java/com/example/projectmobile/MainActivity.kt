@@ -28,9 +28,6 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        // Verify if User is LoggedIn as Admin and redirects
-        verifyUserRole()
-
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
@@ -53,7 +50,6 @@ class MainActivity : AppCompatActivity() {
                 Manifest.permission.INTERNET
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // Solicitar permissão
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.INTERNET),
@@ -72,15 +68,5 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
-    private fun verifyUserRole() {
-        val preferencesManager = UserPreferencesManager(this)
-
-        if (preferencesManager.isLoggedIn() && preferencesManager.getRole() == "ADMIN") {
-            val intent = Intent(this, AdminHomeActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        }
     }
 }

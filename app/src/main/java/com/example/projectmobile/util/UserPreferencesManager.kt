@@ -50,7 +50,7 @@ class UserPreferencesManager(private val context: Context) {
         return false
     }
 
-    fun clear() {
+    fun logout() {
         sharedPreferences.edit().clear().apply()
     }
 }
