@@ -16,7 +16,9 @@ class AdminHomeActivity : AppCompatActivity() {
         val preferencesManager = UserPreferencesManager(this)
         val role = preferencesManager.getRole()
 
-        val text: TextView = findViewById(R.id.text_content)
-        text.text = role
+        if (preferencesManager.isLoggedIn()) {
+            val text: TextView = findViewById(R.id.text_content)
+            text.text = "Logged in as " + role
+        }
     }
 }

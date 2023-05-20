@@ -12,6 +12,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.projectmobile.databinding.ActivityMainBinding
 import android.Manifest
+import android.content.Intent
+import com.example.projectmobile.ui.admin.AdminHomeActivity
+import com.example.projectmobile.util.UserPreferencesManager
 
 class MainActivity : AppCompatActivity() {
     private val PERMISSION_REQUEST_CODE = 123
@@ -24,6 +27,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.hide()
+
+        // Verify if User is LoggedIn as Admin and redirects
+        verifyUserRole()
 
         val navView: BottomNavigationView = binding.navView
 
@@ -66,5 +72,15 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    private fun verifyUserRole() {
+        val preferencesManager = UserPreferencesManager(this)
+
+        if (preferencesManager.isLoggedIn() && preferencesManager.getRole() == "ADMIN") {
+            val intent = Intent(this, AdminHomeActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
     }
 }
