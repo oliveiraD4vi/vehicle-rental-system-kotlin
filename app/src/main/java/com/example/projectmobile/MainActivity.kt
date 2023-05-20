@@ -12,6 +12,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.projectmobile.databinding.ActivityMainBinding
 import android.Manifest
+import android.content.Intent
+import com.example.projectmobile.ui.admin.AdminHomeActivity
+import com.example.projectmobile.util.UserPreferencesManager
 
 class MainActivity : AppCompatActivity() {
     private val PERMISSION_REQUEST_CODE = 123
@@ -47,13 +50,16 @@ class MainActivity : AppCompatActivity() {
                 Manifest.permission.INTERNET
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // Solicitar permissão
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.INTERNET),
                 PERMISSION_REQUEST_CODE
             )
         }
+
+        val bottomNavigationView: BottomNavigationView = findViewById(R.id.nav_view)
+        val iconColorSelector = ContextCompat.getColorStateList(this, R.color.colors_selector)
+        bottomNavigationView.itemIconTintList = iconColorSelector
     }
 
     override fun onRequestPermissionsResult(
@@ -62,15 +68,5 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        if (requestCode == PERMISSION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permissão concedida
-                // Faça a chamada da API aqui
-            } else {
-                // Permissão negada
-                // Trate a falta de permissão conforme necessário
-            }
-        }
     }
 }

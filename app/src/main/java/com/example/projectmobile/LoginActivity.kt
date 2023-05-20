@@ -123,6 +123,7 @@ class LoginActivity : AppCompatActivity() {
                     val data = response.authData
 
                     val preferencesManager = UserPreferencesManager(this@LoginActivity)
+                    preferencesManager.login()
                     preferencesManager.saveUserId(data?.userId.toString())
                     preferencesManager.saveToken(data?.token.toString())
                     preferencesManager.saveRole(data?.role.toString())
@@ -135,9 +136,11 @@ class LoginActivity : AppCompatActivity() {
 
                     if (data?.role == "CLIENT") {
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                     } else {
                         val intent = Intent(this@LoginActivity, AdminHomeActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                     }
                 } else {

@@ -3,13 +3,15 @@ package com.example.projectmobile.util
 import android.content.Context
 import android.content.SharedPreferences
 
-class UserPreferencesManager(context: Context) {
-    private val sharedPreferences: SharedPreferences = context.getSharedPreferences("MyAppPreferences", Context.MODE_PRIVATE)
+class UserPreferencesManager(private val context: Context) {
+    private val sharedPreferences: SharedPreferences =
+        context.getSharedPreferences("USER_CREDENTIALS", Context.MODE_PRIVATE)
 
     companion object {
         const val USER_ID = "userId"
         const val TOKEN = "token"
         const val ROLE = "role"
+        const val LOGGED_IN = "loggedIn";
     }
 
     fun saveUserId(userId: String) {
@@ -34,5 +36,21 @@ class UserPreferencesManager(context: Context) {
 
     fun getRole(): String? {
         return sharedPreferences.getString(ROLE, null)
+    }
+
+    fun login() {
+        sharedPreferences.edit().putString(LOGGED_IN, "true").apply()
+    }
+
+    fun isLoggedIn(): Boolean {
+        if (sharedPreferences.getString(LOGGED_IN, null) == "true") {
+            return true
+        }
+
+        return false
+    }
+
+    fun logout() {
+        sharedPreferences.edit().clear().apply()
     }
 }
