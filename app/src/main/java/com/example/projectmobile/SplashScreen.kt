@@ -22,7 +22,12 @@ class SplashScreen : AppCompatActivity() {
 
         // Verify if the user token is still valid
         val preferencesManager = UserPreferencesManager(this)
-        verifyUserRole(preferencesManager)
+
+        Looper.myLooper()?.let {
+            Handler(it).postDelayed({
+                verifyUserRole(preferencesManager)
+            }, 1500)
+        }
     }
 
     private fun check(preferencesManager: UserPreferencesManager) {
