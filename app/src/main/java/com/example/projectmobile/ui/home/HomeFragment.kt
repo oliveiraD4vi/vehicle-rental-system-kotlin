@@ -48,12 +48,6 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
         binding.buttonDelivery.setOnClickListener(this)
         binding.buttonContinue.setOnClickListener(this)
 
-        val buttonLogin: Button = binding.buttonLogin
-        buttonLogin.setOnClickListener {
-            val intent = Intent(activity, LoginActivity::class.java)
-            startActivity(intent)
-        }
-
         observeViewModel()
         return root
     }
