@@ -6,5 +6,6 @@ data class APIResponse(
     val error: Boolean,
     val data: Any?,
     val message: String,
-    val authData: AuthData?
+    val authData: AuthData?,
+    val user: UserData?
 )

@@ -19,7 +19,7 @@ class APIService(private val token: String? = null) {
             .url(baseurl + url)
 
         token?.let {
-            requestBuilder.addHeader("Authorization", "BearerToken $it")
+            requestBuilder.addHeader("authorization", "BearerToken $it")
         }
 
         val request = requestBuilder.build()

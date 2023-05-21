@@ -64,7 +64,7 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
         } else if (view.id == R.id.button_delivery) {
             id = view.id.toString()
             handleDate()
-        } else if(view.id == R.id.button_continue){
+        } else if (view.id == R.id.button_continue) {
             val dataWithdrawal = binding.buttonWithdrawal.text.toString()
             val dataDelivery = binding.buttonDelivery.text.toString()
             handleContinue(dataWithdrawal, dataDelivery)
@@ -91,7 +91,7 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
         DatePickerDialog(requireContext(), this, year, month, day).show()
     }
 
-    private fun observeViewModel(){
+    private fun observeViewModel() {
         val textViewWithdrawal: TextView = binding.buttonWithdrawal
         homeViewModel.dataWithdrawal.observe(viewLifecycleOwner) {
             textViewWithdrawal.text = it
@@ -104,8 +104,9 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
     }
 
     private fun handleContinue(dataWithdrawal: String, dataDelivery: String) {
-        if(dataWithdrawal == "ESCOLHA UMA DATA" || dataDelivery == "ESCOLHA UMA DATA"){
-            Toast.makeText(requireContext(), "As datas devem ser definidas!", Toast.LENGTH_SHORT).show()
+        if (dataWithdrawal == "ESCOLHA UMA DATA" || dataDelivery == "ESCOLHA UMA DATA") {
+            Toast.makeText(requireContext(), "As datas devem ser definidas!", Toast.LENGTH_SHORT)
+                .show()
         } else {
             startActivity(Intent(requireContext(), FormReservationDataActivity::class.java))
         }

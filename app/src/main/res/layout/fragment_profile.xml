@@ -8,16 +8,24 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="32dp"
-        android:paddingRight="32dp"
         android:paddingTop="32dp"
+        android:paddingRight="32dp"
         android:paddingBottom="16dp">
 
         <ImageView
             android:id="@+id/userIconImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_avatar"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/ic_avatar" />
+
+        <Button
+            android:id="@+id/editButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="Editar" />
 
         <!-- Informações pessoais -->
         <GridLayout
@@ -32,101 +40,101 @@
             <ImageView
                 android:layout_width="56dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_pencil"
                 android:layout_gravity="center"
-                android:layout_marginBottom="4dp" />
+                android:layout_marginBottom="4dp"
+                android:src="@drawable/ic_pencil" />
 
             <EditText
                 android:id="@+id/nameEditText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:textColor="@color/blue_primary"
+                android:layout_marginBottom="4dp"
                 android:background="@drawable/edittext_drawable"
                 android:maxWidth="488dp"
                 android:minHeight="48dp"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="4dp"
-                android:layout_marginBottom="4dp" />
+                android:textColor="@color/blue_primary" />
 
             <ImageView
                 android:layout_width="56dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_phone"
                 android:layout_gravity="center"
-                android:layout_marginBottom="4dp" />
+                android:layout_marginBottom="4dp"
+                android:src="@drawable/ic_phone" />
 
             <EditText
                 android:id="@+id/phoneEditText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:textColor="@color/blue_primary"
+                android:layout_marginBottom="4dp"
                 android:background="@drawable/edittext_drawable"
                 android:maxWidth="488dp"
                 android:minHeight="48dp"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="4dp"
-                android:layout_marginBottom="4dp" />
+                android:textColor="@color/blue_primary" />
 
             <ImageView
                 android:layout_width="56dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_mail"
                 android:layout_gravity="center"
-                android:layout_marginBottom="4dp" />
+                android:layout_marginBottom="4dp"
+                android:src="@drawable/ic_mail" />
 
             <EditText
                 android:id="@+id/emailEditText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:textColor="@color/blue_primary"
+                android:layout_marginBottom="4dp"
                 android:background="@drawable/edittext_drawable"
                 android:maxWidth="488dp"
                 android:minHeight="48dp"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="4dp"
-                android:layout_marginBottom="4dp" />
+                android:textColor="@color/blue_primary" />
 
             <ImageView
                 android:layout_width="56dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_hash"
                 android:layout_gravity="center"
-                android:layout_marginBottom="4dp" />
+                android:layout_marginBottom="4dp"
+                android:src="@drawable/ic_hash" />
 
             <EditText
                 android:id="@+id/cpfEditText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:textColor="@color/blue_primary"
+                android:layout_marginBottom="4dp"
                 android:background="@drawable/edittext_drawable"
                 android:maxWidth="488dp"
                 android:minHeight="48dp"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="4dp"
-                android:layout_marginBottom="4dp" />
+                android:textColor="@color/blue_primary" />
 
             <ImageView
                 android:layout_width="56dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_calendar"
                 android:layout_gravity="center"
-                android:layout_marginBottom="4dp" />
+                android:layout_marginBottom="4dp"
+                android:src="@drawable/ic_calendar" />
 
             <EditText
                 android:id="@+id/birthdateEditText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:textColor="@color/blue_primary"
                 android:background="@drawable/edittext_drawable"
                 android:maxWidth="488dp"
                 android:minHeight="48dp"
                 android:paddingHorizontal="8dp"
-                android:paddingVertical="4dp" />
+                android:paddingVertical="4dp"
+                android:textColor="@color/blue_primary" />
 
         </GridLayout>
 
@@ -135,13 +143,13 @@
             android:id="@+id/address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Endereço"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/blue_primary"
-            android:paddingTop="16dp"
             android:layout_marginVertical="16dp"
-            android:paddingBottom="8dp" />
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
+            android:text="Endereço"
+            android:textColor="@color/blue_primary"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <GridLayout
             android:id="@+id/address_layout"
@@ -154,9 +162,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Rua: "
                 android:layout_gravity="end"
                 android:layout_marginBottom="4dp"
+                android:text="Rua: "
                 android:textColor="@color/blue_primary" />
 
             <EditText
@@ -164,20 +172,20 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:textColor="@color/blue_primary"
+                android:layout_marginBottom="4dp"
                 android:background="@drawable/edittext_drawable"
                 android:maxWidth="488dp"
                 android:minHeight="48dp"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="4dp"
-                android:layout_marginBottom="4dp" />
+                android:textColor="@color/blue_primary" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Num: "
                 android:layout_gravity="end"
                 android:layout_marginBottom="4dp"
+                android:text="Num: "
                 android:textColor="@color/blue_primary" />
 
             <EditText
@@ -185,20 +193,20 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:textColor="@color/blue_primary"
+                android:layout_marginBottom="4dp"
                 android:background="@drawable/edittext_drawable"
                 android:maxWidth="488dp"
                 android:minHeight="48dp"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="4dp"
-                android:layout_marginBottom="4dp" />
+                android:textColor="@color/blue_primary" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cidade: "
                 android:layout_gravity="end"
                 android:layout_marginBottom="4dp"
+                android:text="Cidade: "
                 android:textColor="@color/blue_primary" />
 
             <EditText
@@ -206,20 +214,20 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:textColor="@color/blue_primary"
+                android:layout_marginBottom="4dp"
                 android:background="@drawable/edittext_drawable"
                 android:maxWidth="488dp"
                 android:minHeight="48dp"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="4dp"
-                android:layout_marginBottom="4dp" />
+                android:textColor="@color/blue_primary" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bairro: "
                 android:layout_gravity="end"
                 android:layout_marginBottom="4dp"
+                android:text="Bairro: "
                 android:textColor="@color/blue_primary" />
 
             <EditText
@@ -227,20 +235,20 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:textColor="@color/blue_primary"
+                android:layout_marginBottom="4dp"
                 android:background="@drawable/edittext_drawable"
                 android:maxWidth="488dp"
                 android:minHeight="48dp"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="4dp"
-                android:layout_marginBottom="4dp" />
+                android:textColor="@color/blue_primary" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Estado: "
                 android:layout_gravity="end"
                 android:layout_marginBottom="4dp"
+                android:text="Estado: "
                 android:textColor="@color/blue_primary" />
 
             <EditText
@@ -248,20 +256,20 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:textColor="@color/blue_primary"
+                android:layout_marginBottom="4dp"
                 android:background="@drawable/edittext_drawable"
                 android:maxWidth="488dp"
                 android:minHeight="48dp"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="4dp"
-                android:layout_marginBottom="4dp" />
+                android:textColor="@color/blue_primary" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="País: "
                 android:layout_gravity="end"
                 android:layout_marginBottom="4dp"
+                android:text="País: "
                 android:textColor="@color/blue_primary" />
 
             <EditText
@@ -269,13 +277,13 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
-                android:textColor="@color/blue_primary"
+                android:layout_marginBottom="4dp"
                 android:background="@drawable/edittext_drawable"
                 android:maxWidth="488dp"
                 android:minHeight="48dp"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="4dp"
-                android:layout_marginBottom="4dp" />
+                android:textColor="@color/blue_primary" />
 
         </GridLayout>
 
@@ -284,37 +292,55 @@
             android:id="@+id/notLoggedInTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
             android:text="Você não está logado"
+            android:textColor="@color/blue_primary"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:visibility="gone"
-            android:gravity="center"
-            android:textColor="@color/blue_primary"
-            android:paddingTop="16dp"
-            android:paddingBottom="8dp" />
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/loginButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Entrar"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
-            android:layout_gravity="center_horizontal" />
+            android:text="Entrar" />
+
+        <Button
+            android:id="@+id/submitButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="Salvar"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/signUpButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cadastre-se"
-            android:visibility="gone"
             android:layout_gravity="center_horizontal"
             android:backgroundTint="@android:color/transparent"
             android:outlineAmbientShadowColor="@android:color/transparent"
             android:outlineSpotShadowColor="@android:color/transparent"
             android:shadowColor="@android:color/transparent"
+            android:text="Cadastre-se"
             android:textColor="@color/blue_primary"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:visibility="gone" />
+
+        <!-- Barra de Progresso -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="64dp"
+            android:indeterminateTint="@color/yellow_primary"
+            android:visibility="gone" />
 
     </LinearLayout>
-
 </ScrollView>
