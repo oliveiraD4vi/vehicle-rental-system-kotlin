@@ -2,6 +2,10 @@ package com.example.projectmobile.util
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
+import androidx.annotation.RequiresApi
+import com.example.projectmobile.api.types.UserData
+import com.google.gson.Gson
 
 class UserPreferencesManager(private val context: Context) {
     private val sharedPreferences: SharedPreferences =
@@ -11,7 +15,8 @@ class UserPreferencesManager(private val context: Context) {
         const val USER_ID = "userId"
         const val TOKEN = "token"
         const val ROLE = "role"
-        const val LOGGED_IN = "loggedIn";
+        const val LOGGED_IN = "loggedIn"
+        const val DATA = "userData"
     }
 
     fun saveUserId(userId: String) {
@@ -52,5 +57,23 @@ class UserPreferencesManager(private val context: Context) {
 
     fun logout() {
         sharedPreferences.edit().clear().apply()
+    }
+
+    fun saveData(data: UserData) {
+        val gson = Gson()
+        val json = gson.toJson(data)
+
+        sharedPreferences.edit().putString(DATA, json).apply()
+    }
+
+    fun getUserData(): UserData? {
+        val gson = Gson()
+        val data = sharedPreferences.getString(DATA, null)
+
+        if (data != null) {
+            return gson.fromJson(data, UserData::class.java)
+        }
+
+        return null
     }
 }

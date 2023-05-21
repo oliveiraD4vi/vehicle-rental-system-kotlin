@@ -5,35 +5,90 @@ import android.os.Bundle
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
+import android.view.View
+import android.widget.Toast
+import com.example.projectmobile.api.callback.APICallback
+import com.example.projectmobile.api.service.APIService
+import com.example.projectmobile.api.types.APIResponse
 import com.example.projectmobile.ui.admin.AdminHomeActivity
 import com.example.projectmobile.util.UserPreferencesManager
+import java.io.IOException
 
 class SplashScreen : AppCompatActivity() {
-    private val SPLASH_TIME_OUT: Long = 2000 // Tempo em milissegundos
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_splash_screen)
 
+        // Verify if the user token is still valid
+        val preferencesManager = UserPreferencesManager(this)
+
         Looper.myLooper()?.let {
             Handler(it).postDelayed({
-                verifyUserRole()
-            }, SPLASH_TIME_OUT)
+                verifyUserRole(preferencesManager)
+            }, 1500)
         }
     }
 
-    private fun verifyUserRole() {
-        val preferencesManager = UserPreferencesManager(this)
+    private fun check(preferencesManager: UserPreferencesManager) {
+        val apiService = APIService(preferencesManager.getToken())
+        val url = "/user/check"
 
-        if (preferencesManager.isLoggedIn() && preferencesManager.getRole() == "ADMIN") {
-            val intent = Intent(this, AdminHomeActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
+        apiService.getData(url, object : APICallback {
+            override fun onSuccess(response: APIResponse) {
+                if (!response.error) {
+                    if (preferencesManager.getRole() == "ADMIN") {
+                        goToAdminHome()
+                    } else {
+                        goToHome()
+                    }
+                } else {
+                    val errorCode = response.message
+                    preferencesManager.logout()
+                    goToHome()
+
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@SplashScreen,
+                            errorCode,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onError(error: IOException) {
+                preferencesManager.logout()
+                goToHome()
+
+                runOnUiThread {
+                    Toast.makeText(
+                        this@SplashScreen,
+                        error.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
+    }
+
+    private fun verifyUserRole(preferencesManager: UserPreferencesManager) {
+        if (preferencesManager.isLoggedIn()) {
+            check(preferencesManager)
         } else {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
+            goToHome()
         }
+    }
+
+    private fun goToHome() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+    }
+
+    private fun goToAdminHome() {
+        val intent = Intent(this, AdminHomeActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
     }
 }
