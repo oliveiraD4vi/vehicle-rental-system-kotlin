@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import com.example.projectmobile.LoginActivity
 import com.example.projectmobile.MainActivity
+import com.example.projectmobile.RegisterActivity
 import com.example.projectmobile.databinding.FragmentProfileBinding
 import com.example.projectmobile.util.UserPreferencesManager
 
@@ -25,7 +26,8 @@ class ProfileFragment : Fragment() {
         val root: View = binding.root
 
         // Verify user and determine button
-        verifyUserLoggedIn()
+        val preferencesManager = UserPreferencesManager(requireContext())
+        verifyUserLoggedIn(preferencesManager)
 
         return root
     }
@@ -35,12 +37,15 @@ class ProfileFragment : Fragment() {
         _binding = null
     }
 
-    private fun verifyUserLoggedIn() {
-        val preferencesManager = UserPreferencesManager(requireContext())
-        val buttonLogin: Button = binding.buttonLogin
+    private fun verifyUserLoggedIn(preferencesManager: UserPreferencesManager) {
+        val buttonLogin: Button = binding.loginButton
+        val buttonRegister: Button = binding.signUpButton
 
         if (preferencesManager.isLoggedIn()) {
             buttonLogin.text = "Sair"
+            showUserInfo()
+        } else {
+            showNotLoggedIn()
         }
 
         buttonLogin.setOnClickListener {
@@ -55,5 +60,43 @@ class ProfileFragment : Fragment() {
 
             startActivity(intent)
         }
+
+        buttonRegister.setOnClickListener {
+            var intent = Intent(activity, RegisterActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun showUserInfo() {
+        binding.nameTextView.text = "Nome: Isadora Oliveira"
+        binding.emailTextView.text = "Email: isadora@email.com"
+        binding.cpfTextView.text = "CPF: 445.444.565-92"
+        binding.birthdateTextView.text = "Data de Nascimento: 05/04/2001"
+        binding.streetTextView.text = "Rua: Laerte Pinheiro"
+        binding.numberTextView.text = "Número: 47"
+        binding.cityTextView.text = "Cidade: Quixadá"
+        binding.neighborhoodTextView.text = "Bairro: Centro"
+        binding.stateTextView.text = "Estado: CE"
+        binding.countryTextView.text = "País: Brasil"
+    }
+
+    private fun showNotLoggedIn() {
+        binding.nameTextView.visibility = View.GONE
+        binding.emailTextView.visibility = View.GONE
+        binding.cpfTextView.visibility = View.GONE
+        binding.birthdateTextView.visibility = View.GONE
+        binding.streetTextView.visibility = View.GONE
+        binding.numberTextView.visibility = View.GONE
+        binding.cityTextView.visibility = View.GONE
+        binding.neighborhoodTextView.visibility = View.GONE
+        binding.stateTextView.visibility = View.GONE
+        binding.countryTextView.visibility = View.GONE
+        binding.personalInfo.visibility = View.GONE
+        binding.address.visibility = View.GONE
+
+        binding.notLoggedInTextView.visibility = View.VISIBLE
+        binding.signUpButton.visibility = View.VISIBLE
+
+        binding.notLoggedInTextView.text = "Você não está logado"
     }
 }

@@ -1,22 +1,147 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<!-- profile_fragment.xml -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:padding="32dp"
-    tools:context=".ui.home.HomeFragment">
+    android:padding="32dp">
 
-    <Button
-        android:id="@+id/button_login"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="Entrar"
-        android:textSize="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/userIconImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_avatar"
+            android:layout_gravity="center_horizontal"/>
+
+        <!-- Informações pessoais -->
+        <TextView
+            android:id="@+id/personal_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Informações Pessoais"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:padding="16dp"
+            android:textColor="@color/blue_primary"/>
+
+        <TextView
+            android:id="@+id/nameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nome: "
+            android:textColor="@color/blue_primary"/>
+
+        <TextView
+            android:id="@+id/emailTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Email: "
+            android:textColor="@color/blue_primary"/>
+
+        <TextView
+            android:id="@+id/cpfTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CPF: "
+            android:textColor="@color/blue_primary"/>
+
+        <TextView
+            android:id="@+id/birthdateTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Data de Nascimento: "
+            android:textColor="@color/blue_primary"/>
+
+        <!-- Endereço -->
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Endereço"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:padding="16dp"
+            android:textColor="@color/blue_primary"/>
+
+        <TextView
+            android:id="@+id/streetTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rua: "
+            android:textColor="@color/blue_primary"/>
+
+        <TextView
+            android:id="@+id/numberTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Número: "
+            android:textColor="@color/blue_primary"/>
+
+        <TextView
+            android:id="@+id/cityTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cidade: "
+            android:textColor="@color/blue_primary"/>
+
+        <TextView
+            android:id="@+id/neighborhoodTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bairro: "
+            android:textColor="@color/blue_primary"/>
+
+        <TextView
+            android:id="@+id/stateTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Estado: "
+            android:textColor="@color/blue_primary"/>
+
+        <TextView
+            android:id="@+id/countryTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="País: "
+            android:textColor="@color/blue_primary"/>
+
+        <!-- Mensagem de não logado -->
+        <TextView
+            android:id="@+id/notLoggedInTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Você não está logado"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:padding="16dp"
+            android:visibility="gone"
+            android:gravity="center"
+            android:textColor="@color/blue_primary"/>
+
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Entrar"
+            android:layout_gravity="center_horizontal"/>
+
+        <Button
+            android:id="@+id/signUpButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cadastre-se"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal"
+            android:backgroundTint="@android:color/transparent"
+            android:outlineAmbientShadowColor="@android:color/transparent"
+            android:outlineSpotShadowColor="@android:color/transparent"
+            android:shadowColor="@android:color/transparent"
+            android:textColor="@color/blue_primary"
+            android:textSize="12sp"/>
+
+    </LinearLayout>
+</ScrollView>
