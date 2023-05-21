@@ -1,4 +1,3 @@
-<!-- profile_fragment.xml -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_avatar"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal" />
 
         <!-- Informações pessoais -->
         <TextView
@@ -26,35 +25,87 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:padding="16dp"
-            android:textColor="@color/blue_primary"/>
+            android:textColor="@color/blue_primary" />
 
-        <TextView
-            android:id="@+id/nameTextView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nome: "
-            android:textColor="@color/blue_primary"/>
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/emailTextView"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nome: "
+                android:textColor="@color/blue_primary" />
+
+            <EditText
+                android:id="@+id/nameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Digite seu nome"
+                android:textColor="@color/blue_primary" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Email: "
-            android:textColor="@color/blue_primary"/>
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/cpfTextView"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Email: "
+                android:textColor="@color/blue_primary" />
+
+            <EditText
+                android:id="@+id/emailEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Digite seu email"
+                android:textColor="@color/blue_primary" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="CPF: "
-            android:textColor="@color/blue_primary"/>
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/birthdateTextView"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CPF: "
+                android:textColor="@color/blue_primary" />
+
+            <EditText
+                android:id="@+id/cpfEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Digite seu CPF"
+                android:textColor="@color/blue_primary" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Data de Nascimento: "
-            android:textColor="@color/blue_primary"/>
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Data de Nascimento: "
+                android:textColor="@color/blue_primary" />
+
+            <EditText
+                android:id="@+id/birthdateEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Digite sua data de nascimento"
+                android:textColor="@color/blue_primary" />
+
+        </LinearLayout>
 
         <!-- Endereço -->
         <TextView
@@ -65,49 +116,127 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:padding="16dp"
-            android:textColor="@color/blue_primary"/>
+            android:textColor="@color/blue_primary" />
 
-        <TextView
-            android:id="@+id/streetTextView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Rua: "
-            android:textColor="@color/blue_primary"/>
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/numberTextView"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rua: "
+                android:textColor="@color/blue_primary" />
+
+            <EditText
+                android:id="@+id/streetEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Digite o nome da rua"
+                android:textColor="@color/blue_primary" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Número: "
-            android:textColor="@color/blue_primary"/>
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/cityTextView"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Número: "
+                android:textColor="@color/blue_primary" />
+
+            <EditText
+                android:id="@+id/numberEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Digite o número"
+                android:textColor="@color/blue_primary" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Cidade: "
-            android:textColor="@color/blue_primary"/>
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/neighborhoodTextView"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cidade: "
+                android:textColor="@color/blue_primary" />
+
+            <EditText
+                android:id="@+id/cityEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Digite o nome da cidade"
+                android:textColor="@color/blue_primary" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Bairro: "
-            android:textColor="@color/blue_primary"/>
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/stateTextView"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bairro: "
+                android:textColor="@color/blue_primary" />
+
+            <EditText
+                android:id="@+id/neighborhoodEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Digite o nome do bairro"
+                android:textColor="@color/blue_primary" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Estado: "
-            android:textColor="@color/blue_primary"/>
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/countryTextView"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Estado: "
+                android:textColor="@color/blue_primary" />
+
+            <EditText
+                android:id="@+id/stateEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Digite o nome do estado"
+                android:textColor="@color/blue_primary" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="País: "
-            android:textColor="@color/blue_primary"/>
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="País: "
+                android:textColor="@color/blue_primary" />
+
+            <EditText
+                android:id="@+id/countryEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Digite o nome do país"
+                android:textColor="@color/blue_primary" />
+
+        </LinearLayout>
 
         <!-- Mensagem de não logado -->
         <TextView
@@ -120,14 +249,14 @@
             android:padding="16dp"
             android:visibility="gone"
             android:gravity="center"
-            android:textColor="@color/blue_primary"/>
+            android:textColor="@color/blue_primary" />
 
         <Button
             android:id="@+id/loginButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Entrar"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal" />
 
         <Button
             android:id="@+id/signUpButton"
@@ -141,7 +270,7 @@
             android:outlineSpotShadowColor="@android:color/transparent"
             android:shadowColor="@android:color/transparent"
             android:textColor="@color/blue_primary"
-            android:textSize="12sp"/>
+            android:textSize="12sp" />
 
     </LinearLayout>
 </ScrollView>

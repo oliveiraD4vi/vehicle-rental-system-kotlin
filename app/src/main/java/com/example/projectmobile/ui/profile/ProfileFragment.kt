@@ -68,29 +68,30 @@ class ProfileFragment : Fragment() {
     }
 
     private fun showUserInfo() {
-        binding.nameTextView.text = "Nome: Isadora Oliveira"
-        binding.emailTextView.text = "Email: isadora@email.com"
-        binding.cpfTextView.text = "CPF: 445.444.565-92"
-        binding.birthdateTextView.text = "Data de Nascimento: 05/04/2001"
-        binding.streetTextView.text = "Rua: Laerte Pinheiro"
-        binding.numberTextView.text = "Número: 47"
-        binding.cityTextView.text = "Cidade: Quixadá"
-        binding.neighborhoodTextView.text = "Bairro: Centro"
-        binding.stateTextView.text = "Estado: CE"
-        binding.countryTextView.text = "País: Brasil"
+        disableEditTextFields()
+        binding.nameEditText.setText("Isadora Oliveira")
+        binding.emailEditText.setText("isadora@email.com")
+        binding.cpfEditText.setText("445.444.565-92")
+        binding.birthdateEditText.setText("05/04/2001")
+        binding.streetEditText.setText("Laerte Pinheiro")
+        binding.numberEditText.setText("47")
+        binding.cityEditText.setText("Quixadá")
+        binding.neighborhoodEditText.setText("Centro")
+        binding.stateEditText.setText("CE")
+        binding.countryEditText.setText("Brasil")
     }
 
     private fun showNotLoggedIn() {
-        binding.nameTextView.visibility = View.GONE
-        binding.emailTextView.visibility = View.GONE
-        binding.cpfTextView.visibility = View.GONE
-        binding.birthdateTextView.visibility = View.GONE
-        binding.streetTextView.visibility = View.GONE
-        binding.numberTextView.visibility = View.GONE
-        binding.cityTextView.visibility = View.GONE
-        binding.neighborhoodTextView.visibility = View.GONE
-        binding.stateTextView.visibility = View.GONE
-        binding.countryTextView.visibility = View.GONE
+        binding.nameEditText.visibility = View.GONE
+        binding.emailEditText.visibility = View.GONE
+        binding.cpfEditText.visibility = View.GONE
+        binding.birthdateEditText.visibility = View.GONE
+        binding.streetEditText.visibility = View.GONE
+        binding.numberEditText.visibility = View.GONE
+        binding.cityEditText.visibility = View.GONE
+        binding.neighborhoodEditText.visibility = View.GONE
+        binding.stateEditText.visibility = View.GONE
+        binding.countryEditText.visibility = View.GONE
         binding.personalInfo.visibility = View.GONE
         binding.address.visibility = View.GONE
 
@@ -98,5 +99,31 @@ class ProfileFragment : Fragment() {
         binding.signUpButton.visibility = View.VISIBLE
 
         binding.notLoggedInTextView.text = "Você não está logado"
+    }
+
+    private fun disableEditTextFields() {
+        binding.nameEditText.isEnabled = false
+        binding.emailEditText.isEnabled = false
+        binding.birthdateEditText.isEnabled = false
+        binding.cpfEditText.isEnabled = false
+        binding.streetEditText.isEnabled = false
+        binding.numberEditText.isEnabled = false
+        binding.cityEditText.isEnabled = false
+        binding.neighborhoodEditText.isEnabled = false
+        binding.stateEditText.isEnabled = false
+        binding.countryEditText.isEnabled = false
+    }
+
+    private fun enableEditTextFields() {
+        binding.nameEditText.isEnabled = true
+        binding.emailEditText.isEnabled = true
+        binding.birthdateEditText.isEnabled = true
+        binding.cpfEditText.isEnabled = true
+        binding.streetEditText.isEnabled = true
+        binding.numberEditText.isEnabled = true
+        binding.cityEditText.isEnabled = true
+        binding.neighborhoodEditText.isEnabled = true
+        binding.stateEditText.isEnabled = true
+        binding.countryEditText.isEnabled = true
     }
 }
