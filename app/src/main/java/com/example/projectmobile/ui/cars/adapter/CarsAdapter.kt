@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectmobile.databinding.RowCarBinding
-import com.example.projectmobile.model.Cars
+import com.example.projectmobile.api.types.Cars
 import com.example.projectmobile.ui.cars.viewholder.CarsViewHolder
 
 class CarsAdapter: RecyclerView.Adapter<CarsViewHolder>() {
