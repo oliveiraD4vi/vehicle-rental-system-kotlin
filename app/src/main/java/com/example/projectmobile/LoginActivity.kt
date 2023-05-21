@@ -1,6 +1,5 @@
 package com.example.projectmobile
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
@@ -143,7 +142,7 @@ class LoginActivity : AppCompatActivity() {
                         startActivity(intent)
                     }
                 } else {
-                    val errorCode = response.message.toString()
+                    val errorCode = response.message
 
                     runOnUiThread {
                         progressBar.visibility = View.GONE

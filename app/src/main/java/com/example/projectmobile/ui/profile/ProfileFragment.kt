@@ -1,17 +1,13 @@
 package com.example.projectmobile.ui.profile
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import com.example.projectmobile.LoginActivity
 import com.example.projectmobile.MainActivity
 import com.example.projectmobile.RegisterActivity
@@ -22,6 +18,8 @@ import com.example.projectmobile.api.types.UserData
 import com.example.projectmobile.databinding.FragmentProfileBinding
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
@@ -62,17 +60,94 @@ class ProfileFragment : Fragment() {
 
         binding.submitButton.setOnClickListener {
             loading()
-            sendDataToServer()
+            sendDataToServer(preferencesManager)
             disableEditTextFields()
         }
     }
 
-    private fun sendDataToServer() {
-        Looper.myLooper()?.let {
-            Handler(it).postDelayed({
-                loaded()
-            }, 2000)
-        }
+    private fun sendDataToServer(preferencesManager: UserPreferencesManager) {
+        loading()
+
+        val apiService = APIService(preferencesManager.getToken())
+        val requestData = getUserDataString(preferencesManager)
+        val url = "/user"
+
+        apiService.putData(url, requestData, object : APICallback {
+            override fun onSuccess(response: APIResponse) {
+                if (!response.error) {
+                    val message = response.message
+
+                    getUserData(preferencesManager)
+                    activity?.runOnUiThread {
+                        Toast.makeText(
+                            requireContext(),
+                            message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } else {
+                    val errorCode = response.message
+
+                    activity?.runOnUiThread {
+                        loaded()
+                        Toast.makeText(
+                            requireContext(),
+                            errorCode,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onError(error: IOException) {
+                activity?.runOnUiThread {
+                    loaded()
+                    Toast.makeText(
+                        requireContext(),
+                        error.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
+    }
+
+    private fun getUserDataString(preferencesManager: UserPreferencesManager): String {
+        val role = preferencesManager.getRole() ?: "CLIENT"
+        val userId = preferencesManager.getUserId() ?: -1
+        val personalDataId = preferencesManager.getUserData()?.personaldataId ?: -1
+
+        val userData = UserData(
+            bornAt = binding.birthdateEditText.text.toString(),
+            city = binding.cityEditText.text.toString(),
+            country = binding.countryEditText.text.toString(),
+            cpf = binding.cpfEditText.text.toString(),
+            email = binding.emailEditText.text.toString(),
+            name = binding.nameEditText.text.toString(),
+            neighborhood = binding.neighborhoodEditText.text.toString(),
+            number = binding.numberEditText.text.toString().toInt(),
+            phone = binding.phoneEditText.text.toString(),
+            state = binding.stateEditText.text.toString(),
+            street = binding.streetEditText.text.toString(),
+            role = role,
+            personaldataId = personalDataId,
+            id = userId.toString().toInt(),
+        )
+
+        return "{\"bornAt\": \"${userData.bornAt}\", " +
+                "\"city\": \"${userData.city}\", " +
+                "\"country\": \"${userData.country}\", " +
+                "\"cpf\": \"${userData.cpf}\", " +
+                "\"email\": \"${userData.email}\", " +
+                "\"id\": ${userData.id}, " +
+                "\"name\": \"${userData.name}\", " +
+                "\"neighborhood\": \"${userData.neighborhood}\", " +
+                "\"number\": ${userData.number}, " +
+                "\"personaldata_id\": ${userData.personaldataId}, " +
+                "\"phone\": \"${userData.phone}\", " +
+                "\"role\": \"${userData.role}\", " +
+                "\"state\": \"${userData.state}\", " +
+                "\"street\": \"${userData.street}\"}"
     }
 
     private fun getUserData(preferencesManager: UserPreferencesManager) {
@@ -160,22 +235,23 @@ class ProfileFragment : Fragment() {
     }
 
     private fun showUserInfo(userData: UserData) {
-        activity?.runOnUiThread {
-            loaded()
-        }
         disableEditTextFields()
 
         binding.nameEditText.setText(userData.name)
         binding.phoneEditText.setText(userData.phone)
         binding.emailEditText.setText(userData.email)
         binding.cpfEditText.setText(userData.cpf)
-        binding.birthdateEditText.setText(userData.bornAt)
+        binding.birthdateEditText.setText(dateFormatter(userData.bornAt))
         binding.streetEditText.setText(userData.street)
         binding.numberEditText.setText(userData.number.toString())
         binding.cityEditText.setText(userData.city)
         binding.neighborhoodEditText.setText(userData.neighborhood)
         binding.stateEditText.setText(userData.state)
         binding.countryEditText.setText(userData.country)
+
+        activity?.runOnUiThread {
+            loaded()
+        }
     }
 
     private fun showNotLoggedIn() {
@@ -236,5 +312,12 @@ class ProfileFragment : Fragment() {
         binding.editButton.visibility = View.VISIBLE
 
         binding.progressBar.visibility = View.GONE
+    }
+
+    private fun dateFormatter(dataString: String): String {
+        val entryFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+        val exitFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+
+        return exitFormat.format(entryFormat.parse(dataString))
     }
 }
