@@ -70,6 +70,7 @@ class ProfileFragment : Fragment() {
     private fun showUserInfo() {
         disableEditTextFields()
         binding.nameEditText.setText("Isadora Oliveira")
+        binding.phoneEditText.setText("(88) 9297-3232")
         binding.emailEditText.setText("isadora@email.com")
         binding.cpfEditText.setText("445.444.565-92")
         binding.birthdateEditText.setText("05/04/2001")
@@ -82,18 +83,9 @@ class ProfileFragment : Fragment() {
     }
 
     private fun showNotLoggedIn() {
-        binding.nameEditText.visibility = View.GONE
-        binding.emailEditText.visibility = View.GONE
-        binding.cpfEditText.visibility = View.GONE
-        binding.birthdateEditText.visibility = View.GONE
-        binding.streetEditText.visibility = View.GONE
-        binding.numberEditText.visibility = View.GONE
-        binding.cityEditText.visibility = View.GONE
-        binding.neighborhoodEditText.visibility = View.GONE
-        binding.stateEditText.visibility = View.GONE
-        binding.countryEditText.visibility = View.GONE
-        binding.personalInfo.visibility = View.GONE
         binding.address.visibility = View.GONE
+        binding.personalInfoLayout.visibility = View.GONE
+        binding.addressLayout.visibility = View.GONE
 
         binding.notLoggedInTextView.visibility = View.VISIBLE
         binding.signUpButton.visibility = View.VISIBLE
@@ -103,6 +95,7 @@ class ProfileFragment : Fragment() {
 
     private fun disableEditTextFields() {
         binding.nameEditText.isEnabled = false
+        binding.phoneEditText.isEnabled = false
         binding.emailEditText.isEnabled = false
         binding.birthdateEditText.isEnabled = false
         binding.cpfEditText.isEnabled = false
@@ -116,6 +109,7 @@ class ProfileFragment : Fragment() {
 
     private fun enableEditTextFields() {
         binding.nameEditText.isEnabled = true
+        binding.phoneEditText.isEnabled = true
         binding.emailEditText.isEnabled = true
         binding.birthdateEditText.isEnabled = true
         binding.cpfEditText.isEnabled = true

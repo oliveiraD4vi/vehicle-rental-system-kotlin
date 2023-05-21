@@ -1,13 +1,16 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:padding="32dp">
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
 
         <ImageView
             android:id="@+id/userIconImageView"
@@ -17,95 +20,115 @@
             android:layout_gravity="center_horizontal" />
 
         <!-- Informações pessoais -->
-        <TextView
-            android:id="@+id/personal_info"
+        <GridLayout
+            android:id="@+id/personal_info_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Informações Pessoais"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:padding="16dp"
-            android:textColor="@color/blue_primary" />
+            android:layout_marginTop="32dp"
+            android:columnCount="2"
+            android:rowCount="5"
+            android:useDefaultMargins="false">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nome: "
-                android:textColor="@color/blue_primary" />
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_pencil"
+                android:layout_gravity="center"
+                android:layout_marginBottom="4dp" />
 
             <EditText
                 android:id="@+id/nameEditText"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Digite seu nome"
-                android:textColor="@color/blue_primary" />
+                android:layout_columnWeight="1"
+                android:textColor="@color/blue_primary"
+                android:background="@drawable/edittext_drawable"
+                android:maxWidth="488dp"
+                android:minHeight="48dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:layout_marginBottom="4dp" />
 
-        </LinearLayout>
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_phone"
+                android:layout_gravity="center"
+                android:layout_marginBottom="4dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/phoneEditText"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Email: "
-                android:textColor="@color/blue_primary" />
+                android:layout_columnWeight="1"
+                android:textColor="@color/blue_primary"
+                android:background="@drawable/edittext_drawable"
+                android:maxWidth="488dp"
+                android:minHeight="48dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:layout_marginBottom="4dp" />
+
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_mail"
+                android:layout_gravity="center"
+                android:layout_marginBottom="4dp" />
 
             <EditText
                 android:id="@+id/emailEditText"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Digite seu email"
-                android:textColor="@color/blue_primary" />
+                android:layout_columnWeight="1"
+                android:textColor="@color/blue_primary"
+                android:background="@drawable/edittext_drawable"
+                android:maxWidth="488dp"
+                android:minHeight="48dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:layout_marginBottom="4dp" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="CPF: "
-                android:textColor="@color/blue_primary" />
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_hash"
+                android:layout_gravity="center"
+                android:layout_marginBottom="4dp" />
 
             <EditText
                 android:id="@+id/cpfEditText"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Digite seu CPF"
-                android:textColor="@color/blue_primary" />
+                android:layout_columnWeight="1"
+                android:textColor="@color/blue_primary"
+                android:background="@drawable/edittext_drawable"
+                android:maxWidth="488dp"
+                android:minHeight="48dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:layout_marginBottom="4dp" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Data de Nascimento: "
-                android:textColor="@color/blue_primary" />
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_calendar"
+                android:layout_gravity="center"
+                android:layout_marginBottom="4dp" />
 
             <EditText
                 android:id="@+id/birthdateEditText"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Digite sua data de nascimento"
-                android:textColor="@color/blue_primary" />
+                android:layout_columnWeight="1"
+                android:textColor="@color/blue_primary"
+                android:background="@drawable/edittext_drawable"
+                android:maxWidth="488dp"
+                android:minHeight="48dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp" />
 
-        </LinearLayout>
+        </GridLayout>
 
         <!-- Endereço -->
         <TextView
@@ -115,128 +138,146 @@
             android:text="Endereço"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:padding="16dp"
-            android:textColor="@color/blue_primary" />
+            android:textColor="@color/blue_primary"
+            android:paddingTop="16dp"
+            android:layout_marginVertical="16dp"
+            android:paddingBottom="8dp" />
 
-        <LinearLayout
+        <GridLayout
+            android:id="@+id/address_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:columnCount="2"
+            android:rowCount="4"
+            android:useDefaultMargins="false">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Rua: "
+                android:layout_gravity="end"
+                android:layout_marginBottom="4dp"
                 android:textColor="@color/blue_primary" />
 
             <EditText
                 android:id="@+id/streetEditText"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Digite o nome da rua"
-                android:textColor="@color/blue_primary" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                android:layout_columnWeight="1"
+                android:textColor="@color/blue_primary"
+                android:background="@drawable/edittext_drawable"
+                android:maxWidth="488dp"
+                android:minHeight="48dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:layout_marginBottom="4dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Número: "
+                android:text="Num: "
+                android:layout_gravity="end"
+                android:layout_marginBottom="4dp"
                 android:textColor="@color/blue_primary" />
 
             <EditText
                 android:id="@+id/numberEditText"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Digite o número"
-                android:textColor="@color/blue_primary" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                android:layout_columnWeight="1"
+                android:textColor="@color/blue_primary"
+                android:background="@drawable/edittext_drawable"
+                android:maxWidth="488dp"
+                android:minHeight="48dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:layout_marginBottom="4dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Cidade: "
+                android:layout_gravity="end"
+                android:layout_marginBottom="4dp"
                 android:textColor="@color/blue_primary" />
 
             <EditText
                 android:id="@+id/cityEditText"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Digite o nome da cidade"
-                android:textColor="@color/blue_primary" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                android:layout_columnWeight="1"
+                android:textColor="@color/blue_primary"
+                android:background="@drawable/edittext_drawable"
+                android:maxWidth="488dp"
+                android:minHeight="48dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:layout_marginBottom="4dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Bairro: "
+                android:layout_gravity="end"
+                android:layout_marginBottom="4dp"
                 android:textColor="@color/blue_primary" />
 
             <EditText
                 android:id="@+id/neighborhoodEditText"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Digite o nome do bairro"
-                android:textColor="@color/blue_primary" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                android:layout_columnWeight="1"
+                android:textColor="@color/blue_primary"
+                android:background="@drawable/edittext_drawable"
+                android:maxWidth="488dp"
+                android:minHeight="48dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:layout_marginBottom="4dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Estado: "
+                android:layout_gravity="end"
+                android:layout_marginBottom="4dp"
                 android:textColor="@color/blue_primary" />
 
             <EditText
                 android:id="@+id/stateEditText"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Digite o nome do estado"
-                android:textColor="@color/blue_primary" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                android:layout_columnWeight="1"
+                android:textColor="@color/blue_primary"
+                android:background="@drawable/edittext_drawable"
+                android:maxWidth="488dp"
+                android:minHeight="48dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:layout_marginBottom="4dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="País: "
+                android:layout_gravity="end"
+                android:layout_marginBottom="4dp"
                 android:textColor="@color/blue_primary" />
 
             <EditText
                 android:id="@+id/countryEditText"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Digite o nome do país"
-                android:textColor="@color/blue_primary" />
+                android:layout_columnWeight="1"
+                android:textColor="@color/blue_primary"
+                android:background="@drawable/edittext_drawable"
+                android:maxWidth="488dp"
+                android:minHeight="48dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:layout_marginBottom="4dp" />
 
-        </LinearLayout>
+        </GridLayout>
 
         <!-- Mensagem de não logado -->
         <TextView
@@ -246,16 +287,18 @@
             android:text="Você não está logado"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:padding="16dp"
             android:visibility="gone"
             android:gravity="center"
-            android:textColor="@color/blue_primary" />
+            android:textColor="@color/blue_primary"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp" />
 
         <Button
             android:id="@+id/loginButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Entrar"
+            android:layout_marginTop="16dp"
             android:layout_gravity="center_horizontal" />
 
         <Button
@@ -273,4 +316,5 @@
             android:textSize="12sp" />
 
     </LinearLayout>
+
 </ScrollView>
