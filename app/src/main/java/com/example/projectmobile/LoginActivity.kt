@@ -20,8 +20,6 @@ import java.io.IOException
 
 
 class LoginActivity : AppCompatActivity() {
-    private val apiService = APIService()
-
     private lateinit var editTextEmail: EditText
     private lateinit var editTextPassword: EditText
     private lateinit var buttonSubmit: Button
@@ -111,6 +109,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun sendDataToServer() {
+        val apiService = APIService()
         val url = "/user/login"
         val email = editTextEmail.text.toString()
         val password = editTextPassword.text.toString()
@@ -144,8 +143,7 @@ class LoginActivity : AppCompatActivity() {
                         startActivity(intent)
                     }
                 } else {
-                    // A resposta da API indica um erro
-                    val errorCode = response.message.toString() // Obtém o código de erro da API
+                    val errorCode = response.message.toString()
 
                     runOnUiThread {
                         progressBar.visibility = View.GONE
@@ -153,7 +151,7 @@ class LoginActivity : AppCompatActivity() {
                         clearFields()
                         Toast.makeText(
                             this@LoginActivity,
-                            "Erro na chamada da API. Código: $errorCode",
+                            errorCode,
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -167,7 +165,7 @@ class LoginActivity : AppCompatActivity() {
                     clearFields()
                     Toast.makeText(
                         this@LoginActivity,
-                        "Erro na chamada da API. Código: ${error.message}",
+                        error.message,
                         Toast.LENGTH_SHORT
                     ).show()
                 }
