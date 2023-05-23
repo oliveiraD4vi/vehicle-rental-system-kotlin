@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.projectmobile.MainActivity
+import com.example.projectmobile.R
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
@@ -18,11 +19,13 @@ import com.example.projectmobile.api.types.Cars
 import com.example.projectmobile.ui.cars.adapter.CarsAdapter
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
+import java.net.URL
 
-class CarsFragment : Fragment() {
+class CarsFragment : Fragment(), View.OnClickListener {
     private var _binding: FragmentCarsBinding? = null
     private val binding get() = _binding!!
     private val adapter = CarsAdapter()
+    private lateinit var preferencesManager: UserPreferencesManager
 
     private lateinit var carsViewModel: CarsViewModel
 
@@ -31,7 +34,7 @@ class CarsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val preferencesManager = UserPreferencesManager(requireContext())
+        preferencesManager = UserPreferencesManager(requireContext())
         carsViewModel = ViewModelProvider(this)[CarsViewModel::class.java]
         _binding = FragmentCarsBinding.inflate(inflater, container, false)
 
@@ -41,7 +44,9 @@ class CarsFragment : Fragment() {
         //adapter
         binding.recyclerCars.adapter = adapter
 
-        getAll(preferencesManager)
+        getAll(preferencesManager, "/vehicle/list?page=1&size=100&sort=ASC&search=")
+
+        binding.imageSearch.setOnClickListener(this)
 
         return binding.root
     }
@@ -50,9 +55,8 @@ class CarsFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-    private fun getAll(preferencesManager: UserPreferencesManager){
+    private fun getAll(preferencesManager: UserPreferencesManager, url: String){
         val apiService = APIService()
-        val url = "/vehicle/list?page=1&size=100&sort=ASC&search="
         var listCar: List<Cars> = listOf()
 
         apiService.getData(url, object : APICallback {
@@ -92,5 +96,18 @@ class CarsFragment : Fragment() {
                 }
             }
         })
+    }
+
+    override fun onClick(v: View) {
+        if(v.id == R.id.image_search){
+            handleSearch()
+        }
+    }
+
+    private fun handleSearch(){
+        val search: String = binding.editResearch.text.toString()
+        val url: String = "/vehicle/list?page=1&size=100&sort=ASC&search=$search"
+        getAll(preferencesManager, url)
+
     }
 }
