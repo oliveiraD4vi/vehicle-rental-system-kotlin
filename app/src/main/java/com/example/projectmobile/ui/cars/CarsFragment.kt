@@ -52,7 +52,7 @@ class CarsFragment : Fragment() {
     }
     private fun getAll(preferencesManager: UserPreferencesManager){
         val apiService = APIService()
-        val url = "/vehicle/list?page=1&size=15&sort=ASC&search="
+        val url = "/vehicle/list?page=1&size=100&sort=ASC&search="
         var listCar: List<Cars> = listOf()
 
         apiService.getData(url, object : APICallback {

@@ -36,6 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:textColor="@color/blue_primary"
         android:text="Toyota Corolla Cross"
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
