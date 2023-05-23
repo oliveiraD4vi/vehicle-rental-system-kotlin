@@ -115,11 +115,13 @@ class CarsFragment : Fragment(), View.OnClickListener {
     }
 
     private fun loading() {
+        binding.notFound.visibility = View.GONE
         binding.recyclerCars.visibility = View.GONE
         binding.progressBar.visibility = View.VISIBLE
     }
 
     private fun loaded() {
+        binding.notFound.visibility = View.GONE
         binding.recyclerCars.visibility = View.VISIBLE
         binding.progressBar.visibility = View.GONE
     }
