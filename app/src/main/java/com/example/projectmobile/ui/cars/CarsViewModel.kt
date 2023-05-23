@@ -6,6 +6,4 @@ import androidx.lifecycle.ViewModel
 import com.example.projectmobile.api.types.Cars
 
 class CarsViewModel : ViewModel() {
-    private var _carsList = MutableLiveData<ArrayList<Cars>>()
-    var carsList: LiveData<ArrayList<Cars>> = _carsList
 }

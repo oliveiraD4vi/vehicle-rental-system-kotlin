@@ -26,8 +26,6 @@ class CarsFragment : Fragment() {
 
     private lateinit var carsViewModel: CarsViewModel
 
-    var carsList = ArrayList<Cars>()
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,7 +42,6 @@ class CarsFragment : Fragment() {
         binding.recyclerCars.adapter = adapter
 
         getAll(preferencesManager)
-        observe()
 
         return binding.root
     }
@@ -53,25 +50,18 @@ class CarsFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-    private fun observe(){
-        carsViewModel.carsList.observe(viewLifecycleOwner) {
-            adapter.updatedCars(it)
-        }
-    }
-
     private fun getAll(preferencesManager: UserPreferencesManager){
         val apiService = APIService()
-        val url = "/vehicle/list?page=1&size=5&sort=ASC&search="
+        val url = "/vehicle/list?page=1&size=15&sort=ASC&search="
+        var listCar: List<Cars> = listOf()
 
         apiService.getData(url, object : APICallback {
             override fun onSuccess(response: APIResponse) {
                 if (!response.error) {
-                    val carsListApi: ArrayList<Cars>? = response.vehicles
-
+                    val carsListApi: List<Cars>? = response.vehicles
                     if (carsListApi != null) {
-                        for(i in carsListApi){
-                            carsList.add(i)
+                        activity?.runOnUiThread {
+                            adapter.updatedCars(carsListApi)
                         }
                     }
                 } else {

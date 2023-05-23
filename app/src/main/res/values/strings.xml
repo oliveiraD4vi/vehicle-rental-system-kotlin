@@ -24,4 +24,6 @@
     <string name="have_account">Já tem uma conta? Faça login</string>
     <string name="register_button">Cadastrar</string>
     <string name="title_activity_admin_home">AdminHomeActivity</string>
+    <string name="car_name">%1$s %2$s</string>
+    <string name="car_price">%1$s %2$s</string>
 </resources>
