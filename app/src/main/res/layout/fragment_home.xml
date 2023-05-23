@@ -5,101 +5,122 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:padding="32dp"
     tools:context=".ui.home.HomeFragment">
-
-    <TextView
-        android:id="@+id/text_title1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Faça sua"
-        android:textColor="@color/yellow_primary"
-        android:textSize="36dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/view_home"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Reserva"
-        android:textColor="@color/black"
-        android:textSize="36dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_title1" />
 
     <View
         android:id="@+id/view_home"
-        android:layout_width="0dp"
-        android:layout_height="300dp"
-        android:layout_margin="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
         android:background="@color/yellow_primary"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_name_logo"
+        app:layout_constraintBottom_toTopOf="@+id/card_home"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/text_withdrawal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="Data de Retirada"
-        android:textColor="@color/white"
-        android:textSize="24dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/view_home"
-        app:layout_constraintTop_toTopOf="@+id/view_home" />
-
-    <Button
-        android:id="@+id/button_withdrawal"
-        android:layout_width="228dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:backgroundTint="@color/white"
-        android:padding="8dp"
-        android:text="ESCOLHA UMA DATA"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="@+id/view_home"
-        app:layout_constraintTop_toBottomOf="@+id/text_withdrawal" />
+    <View
+        android:id="@+id/card_home"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="100dp"
+        android:background="@color/white"
+        android:elevation="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/text_delivery"
+        android:id="@+id/withdraw"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="Data de Entrega"
-        android:textColor="@color/white"
-        android:textSize="24dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/button_withdrawal"
-        app:layout_constraintTop_toBottomOf="@+id/button_withdrawal" />
+        android:layout_marginTop="32dp"
+        android:text="Data de retirada"
+        android:textColor="@color/blue_primary"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/card_withdrawal"
+        app:layout_constraintTop_toTopOf="@+id/card_home" />
 
-    <Button
-        android:id="@+id/button_delivery"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_withdrawal"
         android:layout_width="228dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="@color/white"
-        android:padding="8dp"
-        android:text="ESCOLHA UMA DATA"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="@+id/text_delivery"
-        app:layout_constraintTop_toBottomOf="@+id/text_delivery" />
+        android:layout_marginTop="16dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/withdraw">
+
+        <Button
+            android:id="@+id/button_withdrawal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:text="DATA DE RETIRADA"
+            android:textColor="@color/white"
+            android:textSize="16dp" />
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/delivery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Data de develução"
+        android:textColor="@color/blue_primary"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@+id/card_delivery"
+        app:layout_constraintTop_toBottomOf="@+id/card_withdrawal" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_delivery"
+        android:layout_width="228dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardElevation="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/delivery">
+
+        <Button
+            android:id="@+id/button_delivery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:text="DATA DE DEVOLUÇÃO"
+            android:textColor="@color/white"
+            android:textSize="16dp" />
+
+    </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/button_continue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="@color/white"
         android:text="Continuar"
+        android:textColor="@color/blue_primary"
         android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/card_home"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view_home" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
