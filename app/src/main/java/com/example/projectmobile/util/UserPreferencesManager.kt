@@ -4,10 +4,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.example.projectmobile.api.types.Cars
 import com.example.projectmobile.api.types.UserData
 import com.google.gson.Gson
 
 class UserPreferencesManager(private val context: Context) {
+    private val gson = Gson()
     private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("USER_CREDENTIALS", Context.MODE_PRIVATE)
 
@@ -17,6 +19,7 @@ class UserPreferencesManager(private val context: Context) {
         const val ROLE = "role"
         const val LOGGED_IN = "loggedIn"
         const val DATA = "userData"
+        const val SELECTED_CAR = "selectedCar"
     }
 
     fun saveUserId(userId: String) {
@@ -60,18 +63,32 @@ class UserPreferencesManager(private val context: Context) {
     }
 
     fun saveData(data: UserData) {
-        val gson = Gson()
         val json = gson.toJson(data)
 
         sharedPreferences.edit().putString(DATA, json).apply()
     }
 
     fun getUserData(): UserData? {
-        val gson = Gson()
         val data = sharedPreferences.getString(DATA, null)
 
         if (data != null) {
             return gson.fromJson(data, UserData::class.java)
+        }
+
+        return null
+    }
+
+    fun saveSelectedCar(car: Cars) {
+        val json = gson.toJson(car)
+
+        sharedPreferences.edit().putString(SELECTED_CAR, json).apply()
+    }
+
+    fun getSelectedCar(): Cars? {
+        val data = sharedPreferences.getString(SELECTED_CAR, null)
+
+        if (data != null) {
+            return gson.fromJson(data, Cars::class.java)
         }
 
         return null

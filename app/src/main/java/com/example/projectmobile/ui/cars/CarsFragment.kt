@@ -19,6 +19,7 @@ import com.example.projectmobile.databinding.FragmentCarsBinding
 import com.example.projectmobile.api.types.Cars
 import com.example.projectmobile.ui.cars.adapter.CarsAdapter
 import com.example.projectmobile.ui.formreservation.FormReservationDataActivity
+import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
 
 class CarsFragment : Fragment() {
@@ -35,9 +36,11 @@ class CarsFragment : Fragment() {
         carsViewModel = ViewModelProvider(this)[CarsViewModel::class.java]
         _binding = FragmentCarsBinding.inflate(inflater, container, false)
 
-        // Configure o ouvinte de clique no adaptador
-        val adapter = CarsAdapter { _ ->
-            // falta salvar o carro e pegar novamente depois
+        val preferencesManager = UserPreferencesManager(requireContext())
+
+        // Listener function to car click
+        val adapter = CarsAdapter { car ->
+            preferencesManager.saveSelectedCar(car)
             startActivity(Intent(requireContext(), FormReservationDataActivity::class.java))
         }
 

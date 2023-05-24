@@ -18,14 +18,13 @@ class FormReservationDataActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
         supportActionBar?.hide()
 
-        binding.imageBackDataForm.setOnClickListener(this)
+        binding.returnButton.setOnClickListener(this)
         binding.buttonCancelDataForm.setOnClickListener(this)
         binding.buttonNextDataForm.setOnClickListener(this)
     }
 
     override fun onClick(view: View) {
-        if (view.id == R.id.image_back_data_form) {
-            startActivity(Intent(this, MainActivity::class.java))
+        if (view.id == R.id.returnButton) {
             finish()
         } else if (view.id == R.id.button_cancel_data_form) {
             startActivity(Intent(this, MainActivity::class.java))
