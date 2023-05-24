@@ -73,9 +73,9 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:text="ESCOLHA UMA DATA"
-            android:textStyle="bold"
             android:textColor="@color/white"
-            android:textSize="16dp" />
+            android:textSize="16dp"
+            android:textStyle="bold" />
 
     </androidx.cardview.widget.CardView>
 
@@ -108,9 +108,9 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:text="ESCOLHA UMA DATA"
-            android:textStyle="bold"
             android:textColor="@color/white"
-            android:textSize="16dp" />
+            android:textSize="16dp"
+            android:textStyle="bold" />
 
     </androidx.cardview.widget.CardView>
 
@@ -126,5 +126,29 @@
         app:layout_constraintBottom_toBottomOf="@+id/card_home"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/phrase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Descubra a liberdade"
+        android:textColor="@color/blue_primary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/card_home" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="sobre quatro rodas!"
+        android:textColor="@color/blue_primary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/phrase" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

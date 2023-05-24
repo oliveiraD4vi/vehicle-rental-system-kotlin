@@ -262,8 +262,7 @@ class ProfileFragment : Fragment() {
 
         binding.notLoggedInTextView.visibility = View.VISIBLE
         binding.signUpButton.visibility = View.VISIBLE
-
-        binding.notLoggedInTextView.text = "Você não está logado"
+        binding.notLoggedInTextView.visibility = View.VISIBLE
     }
 
     private fun disableEditTextFields() {

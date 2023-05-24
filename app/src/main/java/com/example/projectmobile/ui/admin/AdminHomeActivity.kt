@@ -18,14 +18,12 @@ class AdminHomeActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         val preferencesManager = UserPreferencesManager(this)
-        val text: TextView = findViewById(R.id.text_content)
-        text.text = "Olá, " + preferencesManager.getRole()
 
         val logoutButton: Button = findViewById(R.id.button_logout)
         logoutButton.setOnClickListener {
             preferencesManager.logout()
-
             val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }
     }

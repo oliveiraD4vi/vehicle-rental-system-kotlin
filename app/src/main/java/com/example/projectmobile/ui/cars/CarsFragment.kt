@@ -40,7 +40,7 @@ class CarsFragment : Fragment(), View.OnClickListener {
         //adapter
         binding.recyclerCars.adapter = adapter
 
-        getAll("/vehicle/list?page=1&size=100&sort=ASC&search=")
+        handleSearch()
 
         binding.imageSearch.setOnClickListener(this)
 
@@ -49,7 +49,13 @@ class CarsFragment : Fragment(), View.OnClickListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.editResearch.setText("")
         _binding = null
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.editResearch.setText("")
     }
 
     private fun getAll(url: String){
