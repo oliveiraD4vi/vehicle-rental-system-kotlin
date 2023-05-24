@@ -2,23 +2,18 @@ package com.example.projectmobile.ui.home
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.DatePicker
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.projectmobile.LoginActivity
-import com.example.projectmobile.MainActivity
 import com.example.projectmobile.R
 import com.example.projectmobile.databinding.FragmentHomeBinding
-import com.example.projectmobile.ui.formreservation.FormReservationDataActivity
-import com.example.projectmobile.util.UserPreferencesManager
+import com.example.projectmobile.ui.cars.CarsFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -105,10 +100,18 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
 
     private fun handleContinue(dataWithdrawal: String, dataDelivery: String) {
         if (dataWithdrawal == "ESCOLHA UMA DATA" || dataDelivery == "ESCOLHA UMA DATA") {
-            Toast.makeText(requireContext(), "As datas devem ser definidas!", Toast.LENGTH_SHORT)
-                .show()
+            Toast.makeText(
+                requireContext(),
+                "As datas devem ser definidas!",
+                Toast.LENGTH_SHORT,
+            ).show()
         } else {
-            startActivity(Intent(requireContext(), FormReservationDataActivity::class.java))
+            val fragment = CarsFragment()
+            val fragmentManager = requireActivity().supportFragmentManager
+            val transaction = fragmentManager.beginTransaction()
+            transaction.replace(R.id.container, fragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
         }
     }
 }

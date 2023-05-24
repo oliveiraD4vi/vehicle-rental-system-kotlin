@@ -1,5 +1,6 @@
 package com.example.projectmobile.ui.cars
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -17,12 +18,12 @@ import com.example.projectmobile.api.types.APIResponse
 import com.example.projectmobile.databinding.FragmentCarsBinding
 import com.example.projectmobile.api.types.Cars
 import com.example.projectmobile.ui.cars.adapter.CarsAdapter
+import com.example.projectmobile.ui.formreservation.FormReservationDataActivity
 import java.io.IOException
 
-class CarsFragment : Fragment(), View.OnClickListener {
+class CarsFragment : Fragment() {
     private var _binding: FragmentCarsBinding? = null
     private val binding get() = _binding!!
-    private val adapter = CarsAdapter()
 
     private lateinit var carsViewModel: CarsViewModel
 
@@ -34,15 +35,23 @@ class CarsFragment : Fragment(), View.OnClickListener {
         carsViewModel = ViewModelProvider(this)[CarsViewModel::class.java]
         _binding = FragmentCarsBinding.inflate(inflater, container, false)
 
+        // Configure o ouvinte de clique no adaptador
+        val adapter = CarsAdapter { _ ->
+            // falta salvar o carro e pegar novamente depois
+            startActivity(Intent(requireContext(), FormReservationDataActivity::class.java))
+        }
+
         //layout
         binding.recyclerCars.layoutManager = LinearLayoutManager(context)
 
         //adapter
         binding.recyclerCars.adapter = adapter
 
-        handleSearch()
+        handleSearch(adapter)
 
-        binding.imageSearch.setOnClickListener(this)
+        binding.imageSearch.setOnClickListener {
+            handleSearch(adapter)
+        }
 
         return binding.root
     }
@@ -58,7 +67,7 @@ class CarsFragment : Fragment(), View.OnClickListener {
         binding.editResearch.setText("")
     }
 
-    private fun getAll(url: String){
+    private fun getAll(adapter: CarsAdapter, url: String){
         loading()
         val apiService = APIService()
 
@@ -108,16 +117,10 @@ class CarsFragment : Fragment(), View.OnClickListener {
         })
     }
 
-    override fun onClick(v: View) {
-        if(v.id == R.id.image_search){
-            handleSearch()
-        }
-    }
-
-    private fun handleSearch(){
+    private fun handleSearch(adapter: CarsAdapter){
         val search: String = binding.editResearch.text.toString()
         val url = "/vehicle/list?page=1&size=100&sort=ASC&search=$search"
-        getAll(url)
+        getAll(adapter, url)
     }
 
     private fun loading() {
