@@ -8,11 +8,17 @@
     android:padding="32dp"
     tools:context=".ui.formreservation.FormReservationVehicleActivity">
 
-    <ImageView
-        android:id="@+id/image_back_vehicle_form"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:src="@drawable/ic_back"
+    <ImageButton
+        android:id="@+id/returnButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/go_back_button_description"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:src="?attr/homeAsUpIndicator"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/blue_primary" />
@@ -22,14 +28,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
         android:text="Confirmar Veículo"
-        android:layout_marginTop="64dp"
         android:textColor="@color/blue_primary"
-        android:textSize="32dp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/yellow_primary"
+        app:layout_constraintBottom_toBottomOf="@+id/image_car1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_title_vehicle" />
+
+    <!-- Barra de Progresso -->
+<!--    <ProgressBar-->
+<!--        android:id="@+id/progressBar"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:indeterminateTint="@color/yellow_primary"-->
+<!--        android:visibility="gone"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.498"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <TextView
         android:id="@+id/text_name_car"
@@ -37,8 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:textColor="@color/blue_primary"
-        android:text="Toyota Corolla Cross"
-        android:textSize="25dp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_title_vehicle" />
@@ -46,7 +75,8 @@
     <ImageView
         android:id="@+id/image_car1"
         android:layout_width="256dp"
-        android:layout_height="256dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="@color/white"
         android:src="@mipmap/img_car1_foreground"
         app:layout_constraintEnd_toEndOf="parent"
@@ -54,16 +84,16 @@
         app:layout_constraintTop_toBottomOf="@id/text_title_vehicle" />
 
     <TextView
+        android:id="@+id/text_price_car"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/yellow_primary"
+        android:layout_marginBottom="16dp"
         android:paddingStart="16dp"
         android:paddingTop="8dp"
         android:paddingEnd="16dp"
         android:paddingBottom="8dp"
-        android:text="R$ 129,00"
         android:textColor="@color/black"
-        android:textSize="25dp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/image_car1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -73,12 +103,12 @@
         android:id="@+id/text_withdrawal_vehicle_form"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:text="Data de Retirada"
         android:textColor="@color/black"
-        android:textSize="24dp"
+        android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/button_withdrawal_vehicle_form"
         app:layout_constraintTop_toBottomOf="@id/image_car1" />
 
     <Button
@@ -90,6 +120,7 @@
         android:padding="8dp"
         android:text="ESCOLHA UMA DATA"
         android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_withdrawal_vehicle_form" />
 
@@ -97,12 +128,12 @@
         android:id="@+id/text_delivery_vehicle_form"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:text="Data de Retirada"
         android:textColor="@color/black"
         android:textSize="24dp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/button_delivery_vehicle_form"
         app:layout_constraintTop_toBottomOf="@id/button_withdrawal_vehicle_form" />
 
     <Button
@@ -114,6 +145,7 @@
         android:padding="8dp"
         android:text="ESCOLHA UMA DATA"
         android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/text_delivery_vehicle_form" />
 

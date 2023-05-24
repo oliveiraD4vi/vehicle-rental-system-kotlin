@@ -8,11 +8,17 @@
     android:padding="32dp"
     tools:context=".ui.formreservation.FormReservationPaymentActivity">
 
-    <ImageView
-        android:id="@+id/image_back_payment_form"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:src="@drawable/ic_back"
+    <ImageButton
+        android:id="@+id/returnButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/go_back_button_description"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:src="?attr/homeAsUpIndicator"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/blue_primary" />
@@ -23,9 +29,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="Efetuar Pagamento"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="32dp"
         android:textColor="@color/blue_primary"
-        android:textSize="32dp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

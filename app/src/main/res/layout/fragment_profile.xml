@@ -32,7 +32,7 @@
             android:id="@+id/personal_info_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
             android:columnCount="2"
             android:rowCount="5"
             android:useDefaultMargins="false">
@@ -295,9 +295,9 @@
             android:gravity="center"
             android:paddingTop="16dp"
             android:paddingBottom="8dp"
-            android:text="Você não está logado"
+            android:text="Olá! Entre na sua conta"
             android:textColor="@color/blue_primary"
-            android:textSize="18sp"
+            android:textSize="24sp"
             android:textStyle="bold"
             android:visibility="gone" />
 

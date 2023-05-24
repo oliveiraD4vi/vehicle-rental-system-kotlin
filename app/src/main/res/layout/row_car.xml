@@ -5,8 +5,8 @@
     android:layout_height="200dp"
     android:layout_marginBottom="16dp"
     android:background="@drawable/rounded_background"
-    android:padding="16dp"
-    android:layout_marginHorizontal="16dp">
+    android:paddingVertical="24dp"
+    android:layout_marginHorizontal="32dp">
 
     <TextView
         android:id="@+id/text_name_car_row"
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:text="Toyota Corolla Cross"
         android:textColor="@color/blue_primary"
-        android:textSize="35dp"
+        android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -36,7 +36,7 @@
         android:paddingEnd="16dp"
         android:text="R$ 129,00"
         android:textColor="@color/yellow_primary"
-        android:textSize="30dp"
+        android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/image_car_row"
         app:layout_constraintEnd_toEndOf="parent"

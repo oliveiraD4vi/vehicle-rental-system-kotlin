@@ -17,14 +17,13 @@ class FormReservationPaymentActivity : AppCompatActivity(), View.OnClickListener
         setContentView(binding.root)
         supportActionBar?.hide()
 
-        binding.imageBackPaymentForm.setOnClickListener(this)
+        binding.returnButton.setOnClickListener(this)
         binding.buttonCancelPaymentForm.setOnClickListener(this)
         binding.buttonConfirmPaymentForm.setOnClickListener(this)
     }
 
     override fun onClick(view: View) {
-        if (view.id == R.id.image_back_payment_form) {
-            startActivity(Intent(this, FormReservationVehicleActivity::class.java))
+        if (view.id == R.id.returnButton) {
             finish()
         } else if (view.id == R.id.button_cancel_payment_form) {
             startActivity(Intent(this, MainActivity::class.java))
