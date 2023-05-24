@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.projectmobile.R
 import com.example.projectmobile.databinding.FragmentHomeBinding
 import com.example.projectmobile.ui.cars.CarsFragment
+import com.example.projectmobile.util.UserPreferencesManager
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -22,8 +23,7 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
     private var _binding: FragmentHomeBinding? = null
     private lateinit var homeViewModel: HomeViewModel
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    private val preferencesManager = UserPreferencesManager(requireContext())
     private val binding get() = _binding!!
 
     @SuppressLint("SimpleDateFormat")
@@ -42,6 +42,9 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
         binding.buttonWithdrawal.setOnClickListener(this)
         binding.buttonDelivery.setOnClickListener(this)
         binding.buttonContinue.setOnClickListener(this)
+
+        // Verify if a date is already selected
+        verifySelectedDate()
 
         observeViewModel()
         return root
@@ -71,8 +74,10 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
         calendar.set(year, month, dayOfMonth)
         var dueDate = dateFormat.format(calendar.time)
         if (id == R.id.button_withdrawal.toString()) {
+            preferencesManager.saveWithdrawDate(dueDate)
             binding.buttonWithdrawal.text = dueDate
         } else if (id == R.id.button_delivery.toString()) {
+            preferencesManager.saveDeliveryDate(dueDate)
             binding.buttonDelivery.text = dueDate
         }
     }
@@ -112,6 +117,18 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
             transaction.replace(R.id.container, fragment)
             transaction.addToBackStack(null)
             transaction.commit()
+        }
+    }
+
+    private fun verifySelectedDate() {
+        val wDate = preferencesManager.getWithdrawDate()
+        if (wDate != null) {
+            binding.buttonWithdrawal.text = wDate
+        }
+
+        val dDate = preferencesManager.getDeliveryDate()
+        if (dDate != null) {
+            binding.buttonDelivery.text = dDate
         }
     }
 }

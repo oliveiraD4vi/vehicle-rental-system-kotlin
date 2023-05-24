@@ -20,6 +20,8 @@ class UserPreferencesManager(private val context: Context) {
         const val LOGGED_IN = "loggedIn"
         const val DATA = "userData"
         const val SELECTED_CAR = "selectedCar"
+        const val SELECTED_DATE_W = "selectedWithdraw"
+        const val SELECTED_DATE_D = "selectedDelivery"
     }
 
     fun saveUserId(userId: String) {
@@ -92,5 +94,21 @@ class UserPreferencesManager(private val context: Context) {
         }
 
         return null
+    }
+
+    fun saveWithdrawDate(date: String) {
+        sharedPreferences.edit().putString(SELECTED_DATE_W, date).apply()
+    }
+
+    fun getWithdrawDate(): String? {
+        return sharedPreferences.getString(SELECTED_DATE_W, null)
+    }
+
+    fun saveDeliveryDate(date: String) {
+        sharedPreferences.edit().putString(SELECTED_DATE_D, date).apply()
+    }
+
+    fun getDeliveryDate(): String? {
+        return sharedPreferences.getString(SELECTED_DATE_D, null)
     }
 }

@@ -32,8 +32,10 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
         setContentView(binding.root)
         supportActionBar?.hide()
 
-        // Verifica carro selecionado
+        // Verify selected vehicle
         verifySelectedCar()
+        // Verify if a date is already selected
+        verifySelectedDate()
 
         binding.buttonWithdrawalVehicleForm.setOnClickListener(this)
         binding.buttonDeliveryVehicleForm.setOnClickListener(this)
@@ -66,8 +68,10 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
         calendar.set(year, month, dayOfMonth)
         var dueDate = dateFormat.format(calendar.time)
         if (id == R.id.button_withdrawal_vehicle_form.toString()) {
+            preferencesManager.saveWithdrawDate(dueDate)
             binding.buttonWithdrawalVehicleForm.text = dueDate
         } else if (id == R.id.button_delivery_vehicle_form.toString()) {
+            preferencesManager.saveDeliveryDate(dueDate)
             binding.buttonDeliveryVehicleForm.text = dueDate
         }
     }
@@ -99,6 +103,26 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
         if (car != null) {
             binding.textNameCar.text = "${car.brand} ${car.model}"
             binding.textPriceCar.text = "R$ ${car.value}"
+        } else {
+            binding.buttonNextVehicleForm.isEnabled = false
+
+            Toast.makeText(
+                applicationContext,
+                "O carro deve ser selecionado!",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun verifySelectedDate() {
+        val wDate = preferencesManager.getWithdrawDate()
+        if (wDate != null) {
+            binding.buttonWithdrawalVehicleForm.text = wDate
+        }
+
+        val dDate = preferencesManager.getDeliveryDate()
+        if (dDate != null) {
+            binding.buttonDeliveryVehicleForm.text = dDate
         }
     }
 }
