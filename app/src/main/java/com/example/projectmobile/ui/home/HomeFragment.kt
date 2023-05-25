@@ -23,7 +23,6 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
     private var _binding: FragmentHomeBinding? = null
     private lateinit var homeViewModel: HomeViewModel
 
-    private val preferencesManager = UserPreferencesManager(requireContext())
     private val binding get() = _binding!!
 
     @SuppressLint("SimpleDateFormat")
@@ -56,23 +55,29 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
     }
 
     override fun onClick(view: View) {
-        if (view.id == R.id.button_withdrawal) {
-            id = view.id.toString()
-            handleDate()
-        } else if (view.id == R.id.button_delivery) {
-            id = view.id.toString()
-            handleDate()
-        } else if (view.id == R.id.button_continue) {
-            val dataWithdrawal = binding.buttonWithdrawal.text.toString()
-            val dataDelivery = binding.buttonDelivery.text.toString()
-            handleContinue(dataWithdrawal, dataDelivery)
+        when (view.id) {
+            R.id.button_withdrawal -> {
+                id = view.id.toString()
+                handleDate()
+            }
+            R.id.button_delivery -> {
+                id = view.id.toString()
+                handleDate()
+            }
+            R.id.button_continue -> {
+                val dataWithdrawal = binding.buttonWithdrawal.text.toString()
+                val dataDelivery = binding.buttonDelivery.text.toString()
+                handleContinue(dataWithdrawal, dataDelivery)
+            }
         }
     }
 
     override fun onDateSet(v: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
+        val preferencesManager = UserPreferencesManager(requireContext())
+
         val calendar = Calendar.getInstance()
         calendar.set(year, month, dayOfMonth)
-        var dueDate = dateFormat.format(calendar.time)
+        val dueDate = dateFormat.format(calendar.time)
         if (id == R.id.button_withdrawal.toString()) {
             preferencesManager.saveWithdrawDate(dueDate)
             binding.buttonWithdrawal.text = dueDate
@@ -121,6 +126,8 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
     }
 
     private fun verifySelectedDate() {
+        val preferencesManager = UserPreferencesManager(requireContext())
+
         val wDate = preferencesManager.getWithdrawDate()
         if (wDate != null) {
             binding.buttonWithdrawal.text = wDate

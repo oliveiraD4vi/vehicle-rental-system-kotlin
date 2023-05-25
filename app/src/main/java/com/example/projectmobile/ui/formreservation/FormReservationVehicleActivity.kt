@@ -18,7 +18,6 @@ import java.util.*
 class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener,
     DatePickerDialog.OnDateSetListener {
     private var id: String = ""
-    private val preferencesManager = UserPreferencesManager(this)
 
     private lateinit var binding: ActivityFormReservationVehicleBinding
 
@@ -32,10 +31,11 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
         setContentView(binding.root)
         supportActionBar?.hide()
 
+        val preferencesManager = UserPreferencesManager(this)
         // Verify selected vehicle
-        verifySelectedCar()
+        verifySelectedCar(preferencesManager)
         // Verify if a date is already selected
-        verifySelectedDate()
+        verifySelectedDate(preferencesManager)
 
         binding.buttonWithdrawalVehicleForm.setOnClickListener(this)
         binding.buttonDeliveryVehicleForm.setOnClickListener(this)
@@ -45,28 +45,36 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
     }
 
     override fun onClick(view: View) {
-        if (view.id == R.id.button_withdrawal_vehicle_form) {
-            id = view.id.toString()
-            handleDate()
-        } else if (view.id == R.id.button_delivery_vehicle_form) {
-            id = view.id.toString()
-            handleDate()
-        } else if (view.id == R.id.button_cancel_vehicle_form) {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-        } else if (view.id == R.id.returnButton) {
-            finish()
-        } else if (view.id == R.id.button_next_vehicle_form) {
-            val dataWithdrawal: String = binding.buttonWithdrawalVehicleForm.text.toString()
-            val dataDelivery: String = binding.buttonDeliveryVehicleForm.text.toString()
-            handleContinue(dataWithdrawal, dataDelivery)
+        when (view.id) {
+            R.id.button_withdrawal_vehicle_form -> {
+                id = view.id.toString()
+                handleDate()
+            }
+            R.id.button_delivery_vehicle_form -> {
+                id = view.id.toString()
+                handleDate()
+            }
+            R.id.button_cancel_vehicle_form -> {
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            }
+            R.id.returnButton -> {
+                finish()
+            }
+            R.id.button_next_vehicle_form -> {
+                val dataWithdrawal: String = binding.buttonWithdrawalVehicleForm.text.toString()
+                val dataDelivery: String = binding.buttonDeliveryVehicleForm.text.toString()
+                handleContinue(dataWithdrawal, dataDelivery)
+            }
         }
     }
 
     override fun onDateSet(v: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
+        val preferencesManager = UserPreferencesManager(this)
+
         val calendar = Calendar.getInstance()
         calendar.set(year, month, dayOfMonth)
-        var dueDate = dateFormat.format(calendar.time)
+        val dueDate = dateFormat.format(calendar.time)
         if (id == R.id.button_withdrawal_vehicle_form.toString()) {
             preferencesManager.saveWithdrawDate(dueDate)
             binding.buttonWithdrawalVehicleForm.text = dueDate
@@ -97,7 +105,7 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
         }
     }
 
-    private fun verifySelectedCar() {
+    private fun verifySelectedCar(preferencesManager: UserPreferencesManager) {
         val car = preferencesManager.getSelectedCar()
 
         if (car != null) {
@@ -114,7 +122,7 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
         }
     }
 
-    private fun verifySelectedDate() {
+    private fun verifySelectedDate(preferencesManager: UserPreferencesManager) {
         val wDate = preferencesManager.getWithdrawDate()
         if (wDate != null) {
             binding.buttonWithdrawalVehicleForm.text = wDate
