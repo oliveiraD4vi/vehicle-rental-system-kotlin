@@ -11,14 +11,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.projectmobile.R
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
 import com.example.projectmobile.databinding.FragmentCarsBinding
 import com.example.projectmobile.api.types.Cars
 import com.example.projectmobile.ui.cars.adapter.CarsAdapter
-import com.example.projectmobile.ui.formreservation.FormReservationDataActivity
+import com.example.projectmobile.ui.formreservation.data.FormReservationDataActivity
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
 

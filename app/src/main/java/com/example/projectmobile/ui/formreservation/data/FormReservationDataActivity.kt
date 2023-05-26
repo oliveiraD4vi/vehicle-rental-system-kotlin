@@ -1,4 +1,4 @@
-package com.example.projectmobile.ui.formreservation
+package com.example.projectmobile.ui.formreservation.data
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -8,6 +8,7 @@ import android.widget.Toast
 import com.example.projectmobile.MainActivity
 import com.example.projectmobile.R
 import com.example.projectmobile.databinding.ActivityFormReservationDataBinding
+import com.example.projectmobile.ui.formreservation.vehicle.FormReservationVehicleActivity
 
 class FormReservationDataActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityFormReservationDataBinding

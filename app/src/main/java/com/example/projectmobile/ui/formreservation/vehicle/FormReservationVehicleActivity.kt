@@ -1,4 +1,4 @@
-package com.example.projectmobile.ui.formreservation
+package com.example.projectmobile.ui.formreservation.vehicle
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
@@ -11,6 +11,7 @@ import android.widget.Toast
 import com.example.projectmobile.MainActivity
 import com.example.projectmobile.R
 import com.example.projectmobile.databinding.ActivityFormReservationVehicleBinding
+import com.example.projectmobile.ui.formreservation.payment.FormReservationPaymentActivity
 import com.example.projectmobile.util.UserPreferencesManager
 import java.text.SimpleDateFormat
 import java.util.*
