@@ -13,4 +13,5 @@
     <color name="black_overlay">#66000000</color>
     <color name="grey_300">#FFCCCCCC</color>
     <color name="grey">#FFC2C2C2</color>
+    <color name="route_color">#FFFF0000</color>
 </resources>

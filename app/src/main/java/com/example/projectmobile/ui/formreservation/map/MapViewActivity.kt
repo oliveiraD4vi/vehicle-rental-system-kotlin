@@ -4,11 +4,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.projectmobile.R
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.widget.Button
 import android.widget.ImageButton
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.projectmobile.MainActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -33,6 +36,13 @@ class MapViewActivity : AppCompatActivity(), OnMapReadyCallback {
         val backButton: ImageButton = findViewById(R.id.returnButton)
         backButton.setOnClickListener {
             finish()
+        }
+
+        val finishButton: Button = findViewById(R.id.finish_button)
+        finishButton.setOnClickListener {
+            val intent = Intent(this@MapViewActivity, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
 
         mapView = findViewById(R.id.mapView)
@@ -91,16 +101,16 @@ class MapViewActivity : AppCompatActivity(), OnMapReadyCallback {
                     googleMap.addMarker(
                         MarkerOptions().position(agencyLocation).title("Agência da Locadora")
                     )
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(agencyLocation, 14f))
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(agencyLocation, 16f))
 
-                    // Simular rota entre a localização atual do usuário e a agência da locadora
+                    // Configurar a rota com dois pontos: localização atual do usuário e agência da locadora
                     val userLocation = LatLng(location.latitude, location.longitude)
-                    val polylineOptions = PolylineOptions()
+                    val routePolylineOptions = PolylineOptions()
                         .add(userLocation)
                         .add(agencyLocation)
                         .width(5f)
-                        .color(ContextCompat.getColor(this, R.color.yellow_primary))
-                    googleMap.addPolyline(polylineOptions)
+                        .color(ContextCompat.getColor(this, R.color.route_color))
+                    googleMap.addPolyline(routePolylineOptions)
                 }
             }
         } else {

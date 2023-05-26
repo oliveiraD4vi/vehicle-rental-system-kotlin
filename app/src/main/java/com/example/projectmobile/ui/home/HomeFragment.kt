@@ -2,6 +2,7 @@ package com.example.projectmobile.ui.home
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.projectmobile.R
 import com.example.projectmobile.databinding.FragmentHomeBinding
 import com.example.projectmobile.ui.cars.CarsFragment
+import com.example.projectmobile.ui.formreservation.map.MapViewActivity
 import com.example.projectmobile.util.UserPreferencesManager
 import java.text.SimpleDateFormat
 import java.util.*
@@ -41,6 +43,7 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
         binding.buttonWithdrawal.setOnClickListener(this)
         binding.buttonDelivery.setOnClickListener(this)
         binding.buttonContinue.setOnClickListener(this)
+        binding.mapView.setOnClickListener(this)
 
         // Verify if a date is already selected
         verifySelectedDate()
@@ -68,6 +71,9 @@ class HomeFragment : Fragment(), View.OnClickListener, DatePickerDialog.OnDateSe
                 val dataWithdrawal = binding.buttonWithdrawal.text.toString()
                 val dataDelivery = binding.buttonDelivery.text.toString()
                 handleContinue(dataWithdrawal, dataDelivery)
+            }
+            R.id.map_view -> {
+                startActivity(Intent(requireContext(), MapViewActivity::class.java))
             }
         }
     }
