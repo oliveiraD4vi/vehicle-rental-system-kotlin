@@ -8,13 +8,13 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
+import android.os.Looper
 import android.widget.Button
 import android.widget.ImageButton
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.projectmobile.MainActivity
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
@@ -27,6 +27,15 @@ class MapViewActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mapView: MapView
     private lateinit var googleMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    private val locationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            val lastLocation = locationResult.lastLocation
+            if (lastLocation != null) {
+                updateMapWithLocation(lastLocation)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,11 +103,13 @@ class MapViewActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onPause() {
         super.onPause()
         mapView.onPause()
+        stopLocationUpdates()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         mapView.onDestroy()
+        stopLocationUpdates()
     }
 
     override fun onLowMemory() {
@@ -140,6 +151,24 @@ class MapViewActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
         }
+
+        val updateLocationButton: ImageButton = findViewById(R.id.update_location_button)
+        updateLocationButton.setOnClickListener {
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                fusedLocationClient.requestLocationUpdates(
+                    LocationRequest.create(),
+                    locationCallback,
+                    Looper.getMainLooper()
+                )
+            }
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -158,6 +187,33 @@ class MapViewActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun initializeMap() {
         mapView.getMapAsync(this)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+    }
+
+    private fun stopLocationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback)
+    }
+
+    private fun updateMapWithLocation(location: Location) {
+        // Remova a polyline anterior, se houver
+        googleMap.clear()
+
+        // Personalize o mapa conforme suas necessidades, como definir a posição inicial e adicionar um marcador
+        val latitude = -4.969732  // Latitude da agência da locadora
+        val longitude = -39.016754  // Longitude da agência da locadora
+        val agencyLocation = LatLng(latitude, longitude)
+        googleMap.addMarker(
+            MarkerOptions().position(agencyLocation).title("Agência da Locadora")
+        )
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(agencyLocation, 16f))
+
+        // Configurar a rota com dois pontos: localização atual do usuário e agência da locadora
+        val userLocation = LatLng(location.latitude, location.longitude)
+        val routePolylineOptions = PolylineOptions()
+            .add(userLocation)
+            .add(agencyLocation)
+            .width(5f)
+            .color(ContextCompat.getColor(this, R.color.route_color))
+        googleMap.addPolyline(routePolylineOptions)
     }
 
     companion object {
