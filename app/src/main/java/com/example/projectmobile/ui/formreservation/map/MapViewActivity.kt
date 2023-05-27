@@ -7,6 +7,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.net.Uri
 import android.widget.Button
 import android.widget.ImageButton
 import androidx.core.app.ActivityCompat
@@ -43,6 +44,16 @@ class MapViewActivity : AppCompatActivity(), OnMapReadyCallback {
             val intent = Intent(this@MapViewActivity, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
+        }
+
+        val viewOnMapButton: Button = findViewById(R.id.view_on_map)
+        viewOnMapButton.setOnClickListener {
+            val latitude = -4.969732  // Latitude da agência da locadora
+            val longitude = -39.016754  // Longitude da agência da locadora
+            val uri = "geo:$latitude,$longitude?q=$latitude,$longitude(Agência da Locadora)"
+            val mapIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+            mapIntent.setPackage("com.google.android.apps.maps")  // Define o pacote do aplicativo de mapas do Google
+            startActivity(mapIntent)
         }
 
         mapView = findViewById(R.id.mapView)
