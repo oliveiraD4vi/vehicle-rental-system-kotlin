@@ -155,7 +155,7 @@ class ProfileFragment : Fragment() {
 
         val apiService = APIService(preferencesManager.getToken())
         val userId = preferencesManager.getUserId()
-        val url = "/user?id=$userId"
+        val url = "/user/personal?id=$userId"
 
         apiService.getData(url, object : APICallback {
             override fun onSuccess(response: APIResponse) {

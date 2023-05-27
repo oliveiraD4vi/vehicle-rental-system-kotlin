@@ -8,10 +8,11 @@ import android.os.Looper
 import android.text.TextUtils
 import android.util.Patterns
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ProgressBar
+import android.widget.*
+import com.example.projectmobile.api.callback.APICallback
+import com.example.projectmobile.api.service.APIService
+import com.example.projectmobile.api.types.APIResponse
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -67,11 +68,7 @@ class RegisterActivity : AppCompatActivity() {
             disableFields()
             progressBar.visibility = View.VISIBLE
 
-            Handler(Looper.getMainLooper()).postDelayed({
-                progressBar.visibility = View.GONE
-                enableFields()
-                clearFields()
-            }, 3000)
+            sendDataToServer()
         }
     }
 
@@ -132,6 +129,65 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         return true
+    }
+
+    private fun sendDataToServer() {
+        val apiService = APIService()
+        val url = "/user/register"
+
+        val requestData = constructRequestData()
+
+        apiService.postData(url, requestData, object : APICallback {
+            override fun onSuccess(response: APIResponse) {
+                if (!response.error) {
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@RegisterActivity,
+                            response.message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    startActivity(Intent(this@RegisterActivity, LoginActivity::class.java))
+                } else {
+                    val errorCode = response.message
+
+                    runOnUiThread {
+                        progressBar.visibility = View.GONE
+                        enableFields()
+                        clearFields()
+                        Toast.makeText(
+                            this@RegisterActivity,
+                            errorCode,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onError(error: IOException) {
+                runOnUiThread {
+                    progressBar.visibility = View.GONE
+                    enableFields()
+                    clearFields()
+                    Toast.makeText(
+                        this@RegisterActivity,
+                        error.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
+    }
+
+    private fun constructRequestData(): String {
+        val name = editNome.text.toString()
+        val email = editEmail.text.toString()
+        val password = editSenha.text.toString()
+        val birthday = editDataNascimento.text.toString()
+        val cpf = editCPF.text.toString()
+
+        return "{\"name\": \"$name\", \"email\": \"$email\", \"password\": \"$password\", \"bornAt\": \"$birthday\", \"cpf\": \"$cpf\"}"
     }
 
     private fun disableFields() {
