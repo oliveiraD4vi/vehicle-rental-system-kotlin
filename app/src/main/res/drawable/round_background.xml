@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#FFFFFF" /> <!-- Define a cor de fundo do ícone -->
+    <corners android:radius="100dp" /> <!-- Define o raio do canto para torná-lo redondo -->
+</shape>
