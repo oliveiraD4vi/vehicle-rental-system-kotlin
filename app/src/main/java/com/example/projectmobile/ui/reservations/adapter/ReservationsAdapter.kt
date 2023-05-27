@@ -5,13 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectmobile.api.types.Reservation
 import com.example.projectmobile.databinding.RowCarBinding
+import com.example.projectmobile.databinding.RowReservationsBinding
 import com.example.projectmobile.ui.reservations.viewholder.ReservationsViewHolder
 
 class ReservationsAdapter(private val onItemClick: (Reservation) -> Unit) : RecyclerView.Adapter<ReservationsViewHolder>() {
     private var reservationList: List<Reservation> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReservationsViewHolder {
-        val item = RowCarBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val item = RowReservationsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ReservationsViewHolder(item, onItemClick)
     }
 

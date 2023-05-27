@@ -1,13 +1,22 @@
 package com.example.projectmobile.ui.reservations
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.projectmobile.LoginActivity
+import com.example.projectmobile.MainActivity
+import com.example.projectmobile.api.callback.APICallback
+import com.example.projectmobile.api.service.APIService
+import com.example.projectmobile.api.types.APIResponse
 import com.example.projectmobile.databinding.FragmentReservationsBinding
+import com.example.projectmobile.util.UserPreferencesManager
+import java.io.IOException
 
 class ReservationsFragment : Fragment() {
 
@@ -22,9 +31,8 @@ class ReservationsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val reservationsViewModel =
-            ViewModelProvider(this).get(ReservationsViewModel::class.java)
-
+        val preferencesManager = UserPreferencesManager(requireContext())
+        verifyUserRole(preferencesManager)
         _binding = FragmentReservationsBinding.inflate(inflater, container, false)
 
         return binding.root
@@ -34,4 +42,12 @@ class ReservationsFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    private fun verifyUserRole(preferencesManager: UserPreferencesManager) {
+        if (!preferencesManager.isLoggedIn()) {
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
 }
