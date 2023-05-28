@@ -8,9 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
-import com.example.projectmobile.LoginActivity
+import com.example.projectmobile.ui.auth.LoginActivity
 import com.example.projectmobile.MainActivity
-import com.example.projectmobile.RegisterActivity
+import com.example.projectmobile.ui.auth.RegisterActivity
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
