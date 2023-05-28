@@ -3,10 +3,10 @@ package com.example.projectmobile.api.types
 data class APIResponse(
     val error: Boolean,
     val data: Any?,
-    val vehicles: List<Cars>?,
-    val reservations: List<Any>?,
+    val vehicles: List<Car>?,
+    val reservations: List<Reservation>?,
     val message: String,
     val authData: AuthData?,
-    val user: UserData?,
-    val users: List<UserData>?,
+    val user: User?,
+    val users: List<User>?,
 )

@@ -14,7 +14,7 @@ import com.example.projectmobile.ui.auth.RegisterActivity
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
-import com.example.projectmobile.api.types.UserData
+import com.example.projectmobile.api.types.User
 import com.example.projectmobile.databinding.FragmentProfileBinding
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
@@ -117,7 +117,7 @@ class ProfileFragment : Fragment() {
         val userId = preferencesManager.getUserId() ?: -1
         val personalDataId = preferencesManager.getUserData()?.personaldataId ?: -1
 
-        val userData = UserData(
+        val userData = User(
             bornAt = binding.birthdateEditText.text.toString(),
             city = binding.cityEditText.text.toString(),
             country = binding.countryEditText.text.toString(),
@@ -160,7 +160,7 @@ class ProfileFragment : Fragment() {
         apiService.getData(url, object : APICallback {
             override fun onSuccess(response: APIResponse) {
                 if (!response.error) {
-                    val data: UserData? = response.user
+                    val data: User? = response.user
                     if (data != null) {
                         preferencesManager.saveData(data)
                         showUserInfo(data)
@@ -234,7 +234,7 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun showUserInfo(userData: UserData) {
+    private fun showUserInfo(userData: User) {
         disableEditTextFields()
 
         binding.nameEditText.setText(userData.name)

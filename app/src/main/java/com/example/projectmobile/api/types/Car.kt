@@ -1,6 +1,6 @@
 package com.example.projectmobile.api.types
 
-data class Cars(
+data class Car(
     val id: Int,
     val brand: String,
     val model: String,

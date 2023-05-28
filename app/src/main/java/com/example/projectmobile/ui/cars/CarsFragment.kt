@@ -15,7 +15,7 @@ import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
 import com.example.projectmobile.databinding.FragmentCarsBinding
-import com.example.projectmobile.api.types.Cars
+import com.example.projectmobile.api.types.Car
 import com.example.projectmobile.ui.cars.adapter.CarsAdapter
 import com.example.projectmobile.ui.formreservation.data.FormReservationDataActivity
 import com.example.projectmobile.util.UserPreferencesManager
@@ -76,7 +76,7 @@ class CarsFragment : Fragment() {
         apiService.getData(url, object : APICallback {
             override fun onSuccess(response: APIResponse) {
                 if (!response.error) {
-                    val carsListApi: List<Cars>? = response.vehicles
+                    val carsListApi: List<Car>? = response.vehicles
                     if (carsListApi != null) {
                         activity?.runOnUiThread {
                             adapter.updatedCars(carsListApi)
