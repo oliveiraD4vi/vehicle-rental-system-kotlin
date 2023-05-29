@@ -84,11 +84,7 @@ class CarsFragment : Fragment() {
                     }
 
                     activity?.runOnUiThread {
-                        Looper.myLooper()?.let {
-                            Handler(it).postDelayed({
-                                loaded()
-                            }, 300)
-                        }
+                        loaded()
                     }
                 } else {
                     val errorCode = response.message

@@ -3,10 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    android:layout_marginBottom="16dp"
-    android:background="@drawable/rounded_background"
-    android:paddingVertical="24dp"
-    android:layout_marginHorizontal="32dp">
+    android:layout_marginHorizontal="32dp"
+    android:layout_marginVertical="8dp"
+    android:background="@drawable/rounded_white_background"
+    android:elevation="4dp"
+    android:paddingVertical="24dp">
 
     <TextView
         android:id="@+id/text_name_car_row"
