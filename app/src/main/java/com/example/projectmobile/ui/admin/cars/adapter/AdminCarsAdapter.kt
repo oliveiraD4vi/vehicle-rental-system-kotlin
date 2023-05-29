@@ -25,6 +25,7 @@ class AdminCarsAdapter : RecyclerView.Adapter<AdminCarsViewHolder>() {
 
     fun updateCars(list: List<Car>){
         carsList = list
+        println(list)
         notifyDataSetChanged()
     }
 }

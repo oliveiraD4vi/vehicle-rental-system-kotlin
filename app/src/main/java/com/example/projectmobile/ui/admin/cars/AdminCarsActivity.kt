@@ -21,17 +21,17 @@ class AdminCarsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityAdminCarsBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_admin_cars)
+        setContentView(binding.root)
 
         supportActionBar?.hide()
 
         val adapter = AdminCarsAdapter()
 
-        //layout
-        binding.recyclerCars.layoutManager = LinearLayoutManager(this)
-
         //adapter
         binding.recyclerCars.adapter = adapter
+
+        //layout
+        binding.recyclerCars.layoutManager = LinearLayoutManager(this)
 
         binding.returnButton.setOnClickListener {
             finish()
