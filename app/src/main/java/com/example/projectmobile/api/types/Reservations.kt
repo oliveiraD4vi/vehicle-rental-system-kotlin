@@ -1,6 +1,6 @@
 package com.example.projectmobile.api.types
 
-data class Reservation (
+data class Reservations (
     val user_id: Int,
     val vehicle_id: Int,
     val pickup: String,

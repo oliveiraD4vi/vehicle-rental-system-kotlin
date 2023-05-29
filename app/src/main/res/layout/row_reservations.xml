@@ -3,16 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginBottom="16dp"
+    android:layout_marginBottom="10dp"
     android:background="@drawable/edittext_drawable"
     android:layout_marginHorizontal="32dp">
 
     <TextView
+        android:id="@+id/text_date_withdrawal_delivery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nome do Carro"
-        android:textSize="18dp"
-        android:textColor="@color/blue_primary"
+        android:text="00/00/0000 - 00/00/0000"
+        android:textSize="15dp"
+        android:textColor="@color/yellow_primary"
         android:textStyle="bold"
         android:paddingStart="8dp"
         app:layout_constraintStart_toStartOf="parent"
