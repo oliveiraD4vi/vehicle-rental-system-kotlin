@@ -4,7 +4,8 @@
     android:layout_height="50dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginBottom="10dp"
-    android:background="@drawable/edittext_drawable"
+    android:elevation="4dp"
+    android:background="@drawable/rounded_background"
     android:layout_marginHorizontal="32dp">
 
     <TextView
