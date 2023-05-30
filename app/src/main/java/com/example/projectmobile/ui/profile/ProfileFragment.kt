@@ -199,11 +199,10 @@ class ProfileFragment : Fragment() {
 
     private fun verifyUserLoggedIn(preferencesManager: UserPreferencesManager) {
         val buttonLogin: Button = binding.loginButton
+        val buttonLogout: Button = binding.buttonLogout
         val buttonRegister: Button = binding.signUpButton
 
         if (preferencesManager.isLoggedIn()) {
-            buttonLogin.text = "Sair"
-
             val data = preferencesManager.getUserData()
 
             if (data != null) {
@@ -216,15 +215,15 @@ class ProfileFragment : Fragment() {
         }
 
         buttonLogin.setOnClickListener {
-            var intent = Intent(activity, LoginActivity::class.java)
+            val intent = Intent(activity, LoginActivity::class.java)
+            startActivity(intent)
+        }
 
-            if (preferencesManager.isLoggedIn()) {
-                preferencesManager.logout()
+        buttonLogout.setOnClickListener {
+            preferencesManager.logout()
 
-                intent = Intent(activity, MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            }
-
+            val intent = Intent(activity, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }
 
@@ -255,6 +254,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun showNotLoggedIn() {
+        binding.buttonLogout.visibility = View.GONE
         binding.address.visibility = View.GONE
         binding.personalInfoLayout.visibility = View.GONE
         binding.addressLayout.visibility = View.GONE
@@ -296,6 +296,7 @@ class ProfileFragment : Fragment() {
     private fun loading() {
         binding.progressBar.visibility = View.VISIBLE
 
+        binding.buttonLogout.visibility = View.GONE
         binding.loginButton.visibility = View.GONE
         binding.personalInfoLayout.visibility = View.GONE
         binding.address.visibility = View.GONE
@@ -304,12 +305,13 @@ class ProfileFragment : Fragment() {
     }
 
     private fun loaded() {
-        binding.loginButton.visibility = View.VISIBLE
+        binding.buttonLogout.visibility = View.VISIBLE
         binding.personalInfoLayout.visibility = View.VISIBLE
         binding.addressLayout.visibility = View.VISIBLE
         binding.address.visibility = View.VISIBLE
         binding.editButton.visibility = View.VISIBLE
 
+        binding.loginButton.visibility = View.GONE
         binding.progressBar.visibility = View.GONE
     }
 
