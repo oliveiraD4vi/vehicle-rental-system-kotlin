@@ -17,7 +17,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ReservationsEmptyActivity"
+            android:name=".ui.reservations.ReservationsEmptyActivity"
             android:exported="false" />
         <activity
             android:name=".ui.formreservation.map.MapViewActivity"
