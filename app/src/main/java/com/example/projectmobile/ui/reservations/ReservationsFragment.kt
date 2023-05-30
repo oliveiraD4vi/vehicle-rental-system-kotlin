@@ -2,6 +2,8 @@ package com.example.projectmobile.ui.reservations
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -64,6 +66,7 @@ class ReservationsFragment : Fragment() {
     }
 
     private fun getReservations(preferencesManager: UserPreferencesManager, adapter: ReservationsAdapter){
+        loading()
         val apiService = APIService(preferencesManager.getToken())
         val id = preferencesManager.getUserId()
         val url: String = "/reservation/user?id=$id"
@@ -77,6 +80,15 @@ class ReservationsFragment : Fragment() {
                             adapter.updatedReservations(reservationsListApi)
                         }
                     }
+
+                    activity?.runOnUiThread {
+                        Looper.myLooper()?.let {
+                            Handler(it).postDelayed({
+                                loaded()
+                            }, 300)
+                        }
+                    }
+
                 } else {
                     val errorCode = response.message
                     activity?.runOnUiThread {
@@ -101,6 +113,18 @@ class ReservationsFragment : Fragment() {
                 }
             }
         })
+    }
+
+    private fun loading() {
+        binding.recyclerReservations.visibility = View.GONE
+        binding.buttonReservationsNew.visibility = View.GONE
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    private fun loaded() {
+        binding.recyclerReservations.visibility = View.VISIBLE
+        binding.buttonReservationsNew.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.GONE
     }
 
 }
