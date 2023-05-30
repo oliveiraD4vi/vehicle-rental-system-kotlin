@@ -29,8 +29,7 @@
         android:contentDescription="trash icon"
         app:layout_constraintEnd_toStartOf="@id/arrow_right"
         android:backgroundTint="@android:color/transparent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/arrow_right"

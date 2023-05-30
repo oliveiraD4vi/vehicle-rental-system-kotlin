@@ -2,36 +2,51 @@ package com.example.projectmobile.ui.admin.reservations
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ImageButton
+import android.view.View
 import android.widget.Toast
-import com.example.projectmobile.R
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
+import com.example.projectmobile.databinding.ActivityAdminCarsBinding
+import com.example.projectmobile.databinding.ActivityAdminReservationsBinding
+import com.example.projectmobile.ui.admin.reservations.adapter.AdminReservationAdapter
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
 
 class AdminReservationsActivity : AppCompatActivity() {
+    private var _binding: ActivityAdminReservationsBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_admin_reservations)
+        _binding = ActivityAdminReservationsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         supportActionBar?.hide()
 
-        val backButton: ImageButton = findViewById(R.id.returnButton)
-        backButton.setOnClickListener {
+        val adapter = AdminReservationAdapter()
+
+        //adapter
+        binding.recyclerReservations.adapter = adapter
+
+        //layout
+        binding.recyclerReservations.layoutManager = LinearLayoutManager(this)
+
+        binding.returnButton.setOnClickListener {
             finish()
         }
 
-        handleSearch("")
+        handleSearch("", adapter)
     }
 
-    private fun handleSearch(search: String) {
+    private fun handleSearch(search: String, adapter: AdminReservationAdapter) {
         val preferencesManager = UserPreferencesManager(this)
-        getReservationsData(preferencesManager, search)
+        getReservationsData(preferencesManager, search, adapter)
     }
 
-    private fun getReservationsData(preferencesManager: UserPreferencesManager, search: String) {
+    private fun getReservationsData(preferencesManager: UserPreferencesManager, search: String, adapter: AdminReservationAdapter) {
+        binding.recyclerReservations.visibility = View.GONE
         val apiService = APIService(preferencesManager.getToken())
         val url = "/reservation/list?page=1&size=100&sort=ASC&search=$search"
 
@@ -39,7 +54,15 @@ class AdminReservationsActivity : AppCompatActivity() {
             override fun onSuccess(response: APIResponse) {
                 if (!response.error) {
                     val data = response.reservations
-                    println(data)
+                    if (data != null) {
+                        runOnUiThread {
+                            adapter.updateReservations(data)
+                        }
+                    }
+
+                    runOnUiThread {
+                        binding.recyclerReservations.visibility = View.VISIBLE
+                    }
                 } else {
                     val errorCode = response.message
 
