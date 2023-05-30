@@ -1,6 +1,7 @@
 package com.example.projectmobile.ui.reservations.viewholder
 
 import android.annotation.SuppressLint
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectmobile.R
 import com.example.projectmobile.api.types.Cars
@@ -16,6 +17,11 @@ class ReservationsViewHolder(
     fun bind(reservations: Reservations) {
         val date = dateFormatter(reservations.pickup) + " - " + dateFormatter(reservations.devolution)
         bind.textDateWithdrawalDelivery.text = date
+        if(reservations.status == "CREATED" || reservations.status == "PICKUP" || reservations.status == "CONFIRMED"){
+            bind.imageAttention.visibility = View.VISIBLE
+        } else if(reservations.status == "FINALIZED"){
+            bind.imageCheck.visibility = View.VISIBLE
+        }
     }
 
     private fun dateFormatter(dataString: String): String {

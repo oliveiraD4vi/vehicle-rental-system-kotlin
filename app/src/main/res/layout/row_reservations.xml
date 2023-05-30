@@ -22,13 +22,39 @@
         app:layout_constraintBottom_toBottomOf="parent"/>
 
     <ImageView
+        android:id="@+id/image_attention"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_reservations"
+        android:src="@drawable/ic_attention"
         app:tint="@color/yellow_primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:paddingEnd="8dp"/>
+        android:paddingEnd="8dp"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/image_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_check"
+        app:tint="#90ee90"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:paddingEnd="8dp"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/image_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_cancel"
+        app:tint="#ff0000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:paddingEnd="8dp"
+        android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
