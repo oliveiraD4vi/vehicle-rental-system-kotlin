@@ -79,7 +79,6 @@ class ReservationsFragment : Fragment() {
                     }
                 } else {
                     val errorCode = response.message
-
                     activity?.runOnUiThread {
                         Toast.makeText(
                             requireContext(),
@@ -92,7 +91,8 @@ class ReservationsFragment : Fragment() {
 
             override fun onError(error: IOException) {
                 activity?.runOnUiThread {
-
+                    val intent = Intent(requireContext(), ReservationsEmptyActivity::class.java)
+                    startActivity(intent)
                     Toast.makeText(
                         requireContext(),
                         error.message,

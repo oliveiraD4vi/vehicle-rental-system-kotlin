@@ -79,7 +79,6 @@ class CarsFragment : Fragment() {
                     val carsListApi: List<Cars>? = response.vehicles
                     if (carsListApi != null) {
                         activity?.runOnUiThread {
-                            println(carsListApi)
                             adapter.updatedCars(carsListApi)
                         }
                     }

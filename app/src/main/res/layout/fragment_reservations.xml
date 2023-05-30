@@ -8,6 +8,15 @@
     android:padding="32dp"
     tools:context=".ui.reservations.ReservationsFragment">
 
+    <ImageView
+        android:id="@+id/image_back_reservations_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:tint="@color/blue_primary"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_reservations"
         android:layout_width="0dp"
@@ -18,6 +27,7 @@
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <Button
+        android:id="@+id/button_reservations_new"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
