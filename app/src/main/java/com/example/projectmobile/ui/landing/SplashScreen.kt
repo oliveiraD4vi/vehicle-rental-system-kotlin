@@ -1,12 +1,13 @@
-package com.example.projectmobile
+package com.example.projectmobile.ui.landing
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
-import android.view.View
 import android.widget.Toast
+import com.example.projectmobile.MainActivity
+import com.example.projectmobile.R
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse

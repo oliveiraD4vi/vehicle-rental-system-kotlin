@@ -1,6 +1,6 @@
 package com.example.projectmobile.api.types
 
-data class UserData(
+data class User(
     val bornAt: String,
     val city: String,
     val country: String,

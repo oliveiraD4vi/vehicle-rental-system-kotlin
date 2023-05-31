@@ -4,9 +4,9 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.example.projectmobile.api.types.Cars
-import com.example.projectmobile.api.types.Reservations
 import com.example.projectmobile.api.types.UserData
+import com.example.projectmobile.api.types.Car
+import com.example.projectmobile.api.types.User
 import com.google.gson.Gson
 
 class UserPreferencesManager(private val context: Context) {
@@ -66,33 +66,33 @@ class UserPreferencesManager(private val context: Context) {
         sharedPreferences.edit().clear().apply()
     }
 
-    fun saveData(data: UserData) {
+    fun saveData(data: User) {
         val json = gson.toJson(data)
 
         sharedPreferences.edit().putString(DATA, json).apply()
     }
 
-    fun getUserData(): UserData? {
+    fun getUserData(): User? {
         val data = sharedPreferences.getString(DATA, null)
 
         if (data != null) {
-            return gson.fromJson(data, UserData::class.java)
+            return gson.fromJson(data, User::class.java)
         }
 
         return null
     }
 
-    fun saveSelectedCar(car: Cars) {
+    fun saveSelectedCar(car: Car) {
         val json = gson.toJson(car)
 
         sharedPreferences.edit().putString(SELECTED_CAR, json).apply()
     }
 
-    fun getSelectedCar(): Cars? {
+    fun getSelectedCar(): Car? {
         val data = sharedPreferences.getString(SELECTED_CAR, null)
 
         if (data != null) {
-            return gson.fromJson(data, Cars::class.java)
+            return gson.fromJson(data, Car::class.java)
         }
 
         return null

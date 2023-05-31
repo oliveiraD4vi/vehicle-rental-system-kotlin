@@ -319,6 +319,20 @@
             android:visibility="gone" />
 
         <Button
+            android:id="@+id/button_logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@android:color/transparent"
+            android:outlineAmbientShadowColor="@android:color/transparent"
+            android:outlineSpotShadowColor="@android:color/transparent"
+            android:shadowColor="@android:color/transparent"
+            android:text="Sair"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/blue_primary"
+            android:textSize="16dp" />
+
+        <Button
             android:id="@+id/signUpButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

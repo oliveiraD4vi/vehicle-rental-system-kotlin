@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectmobile.databinding.RowCarBinding
-import com.example.projectmobile.api.types.Cars
+import com.example.projectmobile.api.types.Car
 import com.example.projectmobile.ui.cars.viewholder.CarsViewHolder
 
-class CarsAdapter(private val onItemClick: (Cars) -> Unit) : RecyclerView.Adapter<CarsViewHolder>() {
-    private var carsList: List<Cars> = listOf()
+class CarsAdapter(private val onItemClick: (Car) -> Unit) : RecyclerView.Adapter<CarsViewHolder>() {
+    private var carsList: List<Car> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarsViewHolder {
         val item = RowCarBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -23,7 +23,7 @@ class CarsAdapter(private val onItemClick: (Cars) -> Unit) : RecyclerView.Adapte
         return carsList.count()
     }
 
-    fun updatedCars(list: List<Cars>){
+    fun updatedCars(list: List<Car>){
         carsList = list
         notifyDataSetChanged()
     }

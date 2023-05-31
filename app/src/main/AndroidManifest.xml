@@ -18,10 +18,36 @@
         tools:targetApi="31">
         <activity
             android:name=".ui.reservations.ReservationsDetailsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.reservations.ReservationsEmptyActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.admin.users.user.VisualizeUserActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.admin.reservations.reservation.VisualizeReservationActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.admin.cars.car.VisualizeCarActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.admin.cars.AdminCarsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.admin.reservations.AdminReservationsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.admin.users.AdminUsersActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.formreservation.map.MapViewActivity"
             android:exported="false"
@@ -44,11 +70,11 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".ui.auth.RegisterActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.auth.LoginActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -57,7 +83,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.ProjectMobile" />
         <activity
-            android:name=".SplashScreen"
+            android:name=".ui.landing.SplashScreen"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>

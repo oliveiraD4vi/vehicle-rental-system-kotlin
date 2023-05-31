@@ -1,4 +1,4 @@
-package com.example.projectmobile
+package com.example.projectmobile.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,6 +10,8 @@ import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.projectmobile.MainActivity
+import com.example.projectmobile.R
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.types.APIResponse
 import com.example.projectmobile.api.service.APIService

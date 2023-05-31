@@ -8,13 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
-import com.example.projectmobile.LoginActivity
+import com.example.projectmobile.ui.auth.LoginActivity
 import com.example.projectmobile.MainActivity
-import com.example.projectmobile.RegisterActivity
+import com.example.projectmobile.ui.auth.RegisterActivity
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
-import com.example.projectmobile.api.types.UserData
+import com.example.projectmobile.api.types.User
 import com.example.projectmobile.databinding.FragmentProfileBinding
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
@@ -117,7 +117,7 @@ class ProfileFragment : Fragment() {
         val userId = preferencesManager.getUserId() ?: -1
         val personalDataId = preferencesManager.getUserData()?.personaldataId ?: -1
 
-        val userData = UserData(
+        val userData = User(
             bornAt = binding.birthdateEditText.text.toString(),
             city = binding.cityEditText.text.toString(),
             country = binding.countryEditText.text.toString(),
@@ -160,7 +160,7 @@ class ProfileFragment : Fragment() {
         apiService.getData(url, object : APICallback {
             override fun onSuccess(response: APIResponse) {
                 if (!response.error) {
-                    val data: UserData? = response.user
+                    val data: User? = response.user
                     if (data != null) {
                         preferencesManager.saveData(data)
                         showUserInfo(data)
@@ -199,11 +199,10 @@ class ProfileFragment : Fragment() {
 
     private fun verifyUserLoggedIn(preferencesManager: UserPreferencesManager) {
         val buttonLogin: Button = binding.loginButton
+        val buttonLogout: Button = binding.buttonLogout
         val buttonRegister: Button = binding.signUpButton
 
         if (preferencesManager.isLoggedIn()) {
-            buttonLogin.text = "Sair"
-
             val data = preferencesManager.getUserData()
 
             if (data != null) {
@@ -216,15 +215,15 @@ class ProfileFragment : Fragment() {
         }
 
         buttonLogin.setOnClickListener {
-            var intent = Intent(activity, LoginActivity::class.java)
+            val intent = Intent(activity, LoginActivity::class.java)
+            startActivity(intent)
+        }
 
-            if (preferencesManager.isLoggedIn()) {
-                preferencesManager.logout()
+        buttonLogout.setOnClickListener {
+            preferencesManager.logout()
 
-                intent = Intent(activity, MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            }
-
+            val intent = Intent(activity, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }
 
@@ -234,7 +233,7 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun showUserInfo(userData: UserData) {
+    private fun showUserInfo(userData: User) {
         disableEditTextFields()
 
         binding.nameEditText.setText(userData.name)
@@ -255,6 +254,7 @@ class ProfileFragment : Fragment() {
     }
 
     private fun showNotLoggedIn() {
+        binding.buttonLogout.visibility = View.GONE
         binding.address.visibility = View.GONE
         binding.personalInfoLayout.visibility = View.GONE
         binding.addressLayout.visibility = View.GONE
@@ -296,6 +296,7 @@ class ProfileFragment : Fragment() {
     private fun loading() {
         binding.progressBar.visibility = View.VISIBLE
 
+        binding.buttonLogout.visibility = View.GONE
         binding.loginButton.visibility = View.GONE
         binding.personalInfoLayout.visibility = View.GONE
         binding.address.visibility = View.GONE
@@ -304,12 +305,13 @@ class ProfileFragment : Fragment() {
     }
 
     private fun loaded() {
-        binding.loginButton.visibility = View.VISIBLE
+        binding.buttonLogout.visibility = View.VISIBLE
         binding.personalInfoLayout.visibility = View.VISIBLE
         binding.addressLayout.visibility = View.VISIBLE
         binding.address.visibility = View.VISIBLE
         binding.editButton.visibility = View.VISIBLE
 
+        binding.loginButton.visibility = View.GONE
         binding.progressBar.visibility = View.GONE
     }
 
