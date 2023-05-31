@@ -149,6 +149,49 @@ class AdminUsersActivity : AppCompatActivity(), UserClickListener {
     }
 
     private fun deleteItem(user: User) {
-        Toast.makeText(this, "${user.name} deletado", Toast.LENGTH_SHORT).show()
+        loading()
+        val preferencesManager = UserPreferencesManager(this)
+        val apiService = APIService(preferencesManager.getToken())
+        val url = "/user?id=${user.id}"
+
+        apiService.deleteData(url, object : APICallback {
+            override fun onSuccess(response: APIResponse) {
+                if (!response.error) {
+                    val message = response.message
+
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@AdminUsersActivity,
+                            message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        handleSearch()
+                    }
+                } else {
+                    val errorCode = response.message
+
+                    runOnUiThread {
+                        loaded()
+                        Toast.makeText(
+                            this@AdminUsersActivity,
+                            errorCode,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onError(error: IOException) {
+                runOnUiThread {
+                    loaded()
+                    Toast.makeText(
+                        this@AdminUsersActivity,
+                        error.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
     }
 }

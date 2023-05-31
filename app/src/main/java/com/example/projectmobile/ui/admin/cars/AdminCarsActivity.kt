@@ -146,6 +146,49 @@ class AdminCarsActivity : AppCompatActivity(), CarClickListener {
     }
 
     private fun deleteItem(car: Car) {
-        Toast.makeText(this, "${car.brand} deletado", Toast.LENGTH_SHORT).show()
+        loading()
+        val preferencesManager = UserPreferencesManager(this)
+        val apiService = APIService(preferencesManager.getToken())
+        val url = "/vehicle?id=${car.id}"
+
+        apiService.deleteData(url, object : APICallback {
+            override fun onSuccess(response: APIResponse) {
+                if (!response.error) {
+                    val message = response.message
+
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@AdminCarsActivity,
+                            message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        handleSearch()
+                    }
+                } else {
+                    val errorCode = response.message
+
+                    runOnUiThread {
+                        loaded()
+                        Toast.makeText(
+                            this@AdminCarsActivity,
+                            errorCode,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onError(error: IOException) {
+                runOnUiThread {
+                    loaded()
+                    Toast.makeText(
+                        this@AdminCarsActivity,
+                        error.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
     }
 }

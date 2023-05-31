@@ -152,6 +152,49 @@ class AdminReservationsActivity : AppCompatActivity(), ReservationClickListener 
     }
 
     private fun deleteItem(reservation: Reservation) {
-        Toast.makeText(this, "${reservation.devolution} deletado", Toast.LENGTH_SHORT).show()
+        loading()
+        val preferencesManager = UserPreferencesManager(this)
+        val apiService = APIService(preferencesManager.getToken())
+        val url = "/reservation?id=${reservation.id}"
+
+        apiService.deleteData(url, object : APICallback {
+            override fun onSuccess(response: APIResponse) {
+                if (!response.error) {
+                    val message = response.message
+
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@AdminReservationsActivity,
+                            message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        handleSearch()
+                    }
+                } else {
+                    val errorCode = response.message
+
+                    runOnUiThread {
+                        loaded()
+                        Toast.makeText(
+                            this@AdminReservationsActivity,
+                            errorCode,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onError(error: IOException) {
+                runOnUiThread {
+                    loaded()
+                    Toast.makeText(
+                        this@AdminReservationsActivity,
+                        error.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
     }
 }
