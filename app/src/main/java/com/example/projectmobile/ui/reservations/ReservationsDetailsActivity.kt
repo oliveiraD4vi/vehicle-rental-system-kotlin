@@ -2,11 +2,13 @@ package com.example.projectmobile.ui.reservations
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import com.example.projectmobile.R
 import com.example.projectmobile.api.types.Reservations
 import com.example.projectmobile.databinding.ActivityReservationsDetailsBinding
 import com.example.projectmobile.util.UserPreferencesManager
 
-class ReservationsDetailsActivity : AppCompatActivity() {
+class ReservationsDetailsActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityReservationsDetailsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,6 +19,12 @@ class ReservationsDetailsActivity : AppCompatActivity() {
         val preferencesManager = UserPreferencesManager(this)
 
         val reservations: Reservations? = preferencesManager.getSelectedReservation()
-        println(reservations)
+        binding.imageBackDetails.setOnClickListener(this)
+    }
+
+    override fun onClick(view: View) {
+        if(view.id == R.id.image_back_details){
+            finish()
+        }
     }
 }
