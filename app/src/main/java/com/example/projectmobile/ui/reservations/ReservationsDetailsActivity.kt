@@ -43,7 +43,7 @@ class ReservationsDetailsActivity : AppCompatActivity(), View.OnClickListener {
             override fun onSuccess(response: APIResponse) {
                 if (!response.error) {
                     val data = response.vehicle
-                    println(data)
+
                 } else {
                     val errorCode = response.message
 
