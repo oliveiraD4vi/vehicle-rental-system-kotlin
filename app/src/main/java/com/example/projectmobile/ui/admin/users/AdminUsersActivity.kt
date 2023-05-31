@@ -1,5 +1,7 @@
 package com.example.projectmobile.ui.admin.users
 
+import android.app.Dialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -10,15 +12,19 @@ import com.example.projectmobile.R
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
+import com.example.projectmobile.api.types.User
 import com.example.projectmobile.databinding.ActivityAdminCarsBinding
 import com.example.projectmobile.databinding.ActivityAdminUsersBinding
+import com.example.projectmobile.databinding.ModalLayoutBinding
 import com.example.projectmobile.ui.admin.users.adapter.AdminUserAdapter
+import com.example.projectmobile.ui.admin.users.user.VisualizeUserActivity
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
 
-class AdminUsersActivity : AppCompatActivity() {
+class AdminUsersActivity : AppCompatActivity(), UserClickListener {
     private var _binding: ActivityAdminUsersBinding? = null
     private val binding get() = _binding!!
+    private val adapter = AdminUserAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,8 +32,6 @@ class AdminUsersActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.hide()
-
-        val adapter = AdminUserAdapter()
 
         //adapter
         binding.recyclerUsers.adapter = adapter
@@ -39,24 +43,20 @@ class AdminUsersActivity : AppCompatActivity() {
             finish()
         }
 
-        handleSearch("", adapter)
+        handleSearch()
 
         binding.imageSearch.setOnClickListener {
-            val string = binding.editResearch.text.toString()
-            handleSearch(string, adapter)
+            handleSearch()
         }
     }
 
-    private fun handleSearch(search: String, adapter: AdminUserAdapter) {
+    private fun handleSearch() {
+        val search = binding.editResearch.text.toString()
         val preferencesManager = UserPreferencesManager(this)
-        getUsersData(preferencesManager, search, adapter)
+        getUsersData(preferencesManager, search)
     }
 
-    private fun getUsersData(
-        preferencesManager: UserPreferencesManager,
-        search: String,
-        adapter: AdminUserAdapter
-    ) {
+    private fun getUsersData(preferencesManager: UserPreferencesManager, search: String) {
         loading()
         val apiService = APIService(preferencesManager.getToken())
         val url = "/user/list?page=1&size=100&sort=ASC&search=$search"
@@ -120,5 +120,35 @@ class AdminUsersActivity : AppCompatActivity() {
 
         binding.notFound.visibility = View.VISIBLE
         binding.recyclerUsers.visibility = View.GONE
+    }
+
+    override fun onEditCarClick(user: User) {
+        startActivity(Intent(this@AdminUsersActivity, VisualizeUserActivity::class.java))
+    }
+
+    override fun onDeleteCarClick(user: User) {
+        showDeleteConfirmationDialog(user)
+    }
+
+    private fun showDeleteConfirmationDialog(user: User) {
+        val dialog = Dialog(this)
+        val dialogBinding: ModalLayoutBinding = ModalLayoutBinding.inflate(layoutInflater)
+        val dialogView = dialogBinding.root
+        dialog.setContentView(dialogView)
+
+        dialogBinding.btnCancelar.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialogBinding.btnConfirmar.setOnClickListener {
+            deleteItem(user)
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun deleteItem(user: User) {
+        Toast.makeText(this, "${user.name} deletado", Toast.LENGTH_SHORT).show()
     }
 }

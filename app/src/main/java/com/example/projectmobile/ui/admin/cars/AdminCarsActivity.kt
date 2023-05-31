@@ -1,22 +1,27 @@
 package com.example.projectmobile.ui.admin.cars
 
+import android.app.Dialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.projectmobile.R
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
+import com.example.projectmobile.api.types.Car
 import com.example.projectmobile.databinding.ActivityAdminCarsBinding
+import com.example.projectmobile.databinding.ModalLayoutBinding
 import com.example.projectmobile.ui.admin.cars.adapter.AdminCarsAdapter
+import com.example.projectmobile.ui.admin.cars.car.VisualizeCarActivity
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
 
-class AdminCarsActivity : AppCompatActivity() {
+class AdminCarsActivity : AppCompatActivity(), CarClickListener {
     private var _binding: ActivityAdminCarsBinding? = null
     private val binding get() = _binding!!
+    private val adapter = AdminCarsAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,8 +29,6 @@ class AdminCarsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.hide()
-
-        val adapter = AdminCarsAdapter()
 
         //adapter
         binding.recyclerCars.adapter = adapter
@@ -37,24 +40,20 @@ class AdminCarsActivity : AppCompatActivity() {
             finish()
         }
 
-        handleSearch("", adapter)
+        handleSearch()
 
         binding.imageSearch.setOnClickListener {
-            val string = binding.editResearch.text.toString()
-            handleSearch(string, adapter)
+            handleSearch()
         }
     }
 
-    private fun handleSearch(search: String, adapter: AdminCarsAdapter) {
+    private fun handleSearch() {
+        val search = binding.editResearch.text.toString()
         val preferencesManager = UserPreferencesManager(this)
-        getVehiclesData(preferencesManager, search, adapter)
+        getVehiclesData(preferencesManager, search)
     }
 
-    private fun getVehiclesData(
-        preferencesManager: UserPreferencesManager,
-        search: String,
-        adapter: AdminCarsAdapter
-    ) {
+    private fun getVehiclesData(preferencesManager: UserPreferencesManager, search: String) {
         loading()
         val apiService = APIService(preferencesManager.getToken())
         val url = "/vehicle/list?page=1&size=100&sort=ASC&search=$search"
@@ -63,7 +62,6 @@ class AdminCarsActivity : AppCompatActivity() {
             override fun onSuccess(response: APIResponse) {
                 if (!response.error) {
                     val data = response.vehicles
-                    println(data)
                     if (data != null) {
                         runOnUiThread {
                             adapter.updateCars(data)
@@ -119,5 +117,35 @@ class AdminCarsActivity : AppCompatActivity() {
 
         binding.notFound.visibility = View.VISIBLE
         binding.recyclerCars.visibility = View.GONE
+    }
+
+    override fun onEditCarClick(car: Car) {
+        startActivity(Intent(this@AdminCarsActivity, VisualizeCarActivity::class.java))
+    }
+
+    override fun onDeleteCarClick(car: Car) {
+        showDeleteConfirmationDialog(car)
+    }
+
+    private fun showDeleteConfirmationDialog(car: Car) {
+        val dialog = Dialog(this)
+        val dialogBinding: ModalLayoutBinding = ModalLayoutBinding.inflate(layoutInflater)
+        val dialogView = dialogBinding.root
+        dialog.setContentView(dialogView)
+
+        dialogBinding.btnCancelar.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialogBinding.btnConfirmar.setOnClickListener {
+            deleteItem(car)
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun deleteItem(car: Car) {
+        Toast.makeText(this, "${car.brand} deletado", Toast.LENGTH_SHORT).show()
     }
 }

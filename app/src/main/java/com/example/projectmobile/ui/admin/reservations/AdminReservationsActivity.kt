@@ -1,5 +1,7 @@
 package com.example.projectmobile.ui.admin.reservations
 
+import android.app.Dialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -8,15 +10,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
+import com.example.projectmobile.api.types.Reservation
 import com.example.projectmobile.databinding.ActivityAdminCarsBinding
 import com.example.projectmobile.databinding.ActivityAdminReservationsBinding
+import com.example.projectmobile.databinding.ModalLayoutBinding
 import com.example.projectmobile.ui.admin.reservations.adapter.AdminReservationAdapter
+import com.example.projectmobile.ui.admin.reservations.reservation.VisualizeReservationActivity
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
 
-class AdminReservationsActivity : AppCompatActivity() {
+class AdminReservationsActivity : AppCompatActivity(), ReservationClickListener {
     private var _binding: ActivityAdminReservationsBinding? = null
     private val binding get() = _binding!!
+    private val adapter = AdminReservationAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,8 +30,6 @@ class AdminReservationsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         supportActionBar?.hide()
-
-        val adapter = AdminReservationAdapter()
 
         //adapter
         binding.recyclerReservations.adapter = adapter
@@ -37,24 +41,20 @@ class AdminReservationsActivity : AppCompatActivity() {
             finish()
         }
 
-        handleSearch("", adapter)
+        handleSearch()
 
         binding.imageSearch.setOnClickListener {
-            val string = binding.editResearch.text.toString()
-            handleSearch(string, adapter)
+            handleSearch()
         }
     }
 
-    private fun handleSearch(search: String, adapter: AdminReservationAdapter) {
+    private fun handleSearch() {
+        val search = binding.editResearch.text.toString()
         val preferencesManager = UserPreferencesManager(this)
-        getReservationsData(preferencesManager, search, adapter)
+        getReservationsData(preferencesManager, search)
     }
 
-    private fun getReservationsData(
-        preferencesManager: UserPreferencesManager,
-        search: String,
-        adapter: AdminReservationAdapter
-    ) {
+    private fun getReservationsData(preferencesManager: UserPreferencesManager, search: String) {
         loading()
         val apiService = APIService(preferencesManager.getToken())
         val url = "/reservation/list?page=1&size=100&sort=ASC&search=$search"
@@ -118,5 +118,40 @@ class AdminReservationsActivity : AppCompatActivity() {
 
         binding.notFound.visibility = View.VISIBLE
         binding.recyclerReservations.visibility = View.GONE
+    }
+
+    override fun onEditCarClick(reservation: Reservation) {
+        startActivity(
+            Intent(
+                this@AdminReservationsActivity,
+                VisualizeReservationActivity::class.java
+            )
+        )
+    }
+
+    override fun onDeleteCarClick(reservation: Reservation) {
+        showDeleteConfirmationDialog(reservation)
+    }
+
+    private fun showDeleteConfirmationDialog(reservation: Reservation) {
+        val dialog = Dialog(this)
+        val dialogBinding: ModalLayoutBinding = ModalLayoutBinding.inflate(layoutInflater)
+        val dialogView = dialogBinding.root
+        dialog.setContentView(dialogView)
+
+        dialogBinding.btnCancelar.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialogBinding.btnConfirmar.setOnClickListener {
+            deleteItem(reservation)
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun deleteItem(reservation: Reservation) {
+        Toast.makeText(this, "${reservation.devolution} deletado", Toast.LENGTH_SHORT).show()
     }
 }

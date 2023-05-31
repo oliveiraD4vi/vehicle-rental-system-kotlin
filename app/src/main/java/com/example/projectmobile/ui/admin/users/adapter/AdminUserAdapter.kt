@@ -5,14 +5,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectmobile.api.types.User
 import com.example.projectmobile.databinding.RowAdminItemBinding
+import com.example.projectmobile.ui.admin.users.UserClickListener
 import com.example.projectmobile.ui.admin.users.viewholder.AdminUserViewHolder
 
-class AdminUserAdapter : RecyclerView.Adapter<AdminUserViewHolder>() {
+class AdminUserAdapter(private val userClickListener: UserClickListener) : RecyclerView.Adapter<AdminUserViewHolder>() {
     private var usersList: List<User> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdminUserViewHolder {
         val item = RowAdminItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return AdminUserViewHolder(item)
+        return AdminUserViewHolder(item, userClickListener)
     }
 
     override fun getItemCount(): Int {
