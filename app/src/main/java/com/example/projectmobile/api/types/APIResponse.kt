@@ -5,7 +5,7 @@ data class APIResponse(
     val data: Any?,
     val vehicles: List<Car>?,
     val reservations: List<Reservation>?,
-    val Car: Car?,
+    val vehicle: Car?,
     val message: String,
     val authData: AuthData?,
     val user: User?,

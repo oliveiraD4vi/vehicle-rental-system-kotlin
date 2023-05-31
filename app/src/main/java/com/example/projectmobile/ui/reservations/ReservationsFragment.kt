@@ -10,15 +10,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.projectmobile.LoginActivity
 import com.example.projectmobile.R
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
-import com.example.projectmobile.api.types.Cars
-import com.example.projectmobile.api.types.Reservations
+import com.example.projectmobile.api.types.Reservation
 import com.example.projectmobile.databinding.FragmentReservationsBinding
-import com.example.projectmobile.ui.cars.adapter.CarsAdapter
+import com.example.projectmobile.ui.auth.LoginActivity
 import com.example.projectmobile.ui.formreservation.data.FormReservationDataActivity
 import com.example.projectmobile.ui.reservations.adapter.ReservationsAdapter
 import com.example.projectmobile.util.UserPreferencesManager
@@ -26,9 +24,6 @@ import java.io.IOException
 
 class ReservationsFragment : Fragment(), View.OnClickListener {
     private var _binding: FragmentReservationsBinding? = null
-    private var reservationsList: List<Reservations> = listOf()
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -41,18 +36,18 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
         val preferencesManager = UserPreferencesManager(requireContext())
         val cond: Boolean = verifyUserRole(preferencesManager)
 
-        val adapter = ReservationsAdapter{ reservation ->
+        val adapter = ReservationsAdapter { reservation ->
             preferencesManager.saveSelectedReservation(reservation)
             startActivity(Intent(requireContext(), ReservationsDetailsActivity::class.java))
         }
 
+        // layout
         binding.recyclerReservations.layoutManager = LinearLayoutManager(context)
 
         //adapter
         binding.recyclerReservations.adapter = adapter
 
-        if(cond)
-            getReservations(preferencesManager, adapter)
+        if (cond) getReservations(preferencesManager, adapter)
 
         binding.buttonReservationsNew.setOnClickListener(this)
 
@@ -70,19 +65,23 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
             startActivity(intent)
             return false
         }
+
         return true
     }
 
-    private fun getReservations(preferencesManager: UserPreferencesManager, adapter: ReservationsAdapter){
+    private fun getReservations(
+        preferencesManager: UserPreferencesManager,
+        adapter: ReservationsAdapter
+    ) {
         loading()
         val apiService = APIService(preferencesManager.getToken())
         val id = preferencesManager.getUserId()
-        val url: String = "/reservation/user?id=$id"
+        val url = "/reservation/user?id=$id"
 
         apiService.getData(url, object : APICallback {
             override fun onSuccess(response: APIResponse) {
                 if (!response.error) {
-                    val reservationsListApi: List<Reservations>? = response.reservations
+                    val reservationsListApi: List<Reservation>? = response.reservations
                     if (reservationsListApi != null) {
                         activity?.runOnUiThread {
                             adapter.updatedReservations(reservationsListApi)
@@ -90,11 +89,7 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
                     }
 
                     activity?.runOnUiThread {
-                        Looper.myLooper()?.let {
-                            Handler(it).postDelayed({
-                                loaded()
-                            }, 300)
-                        }
+                        loaded()
                     }
 
                 } else {
@@ -136,10 +131,9 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(view: View) {
-        if(view.id == R.id.button_reservations_new){
+        if (view.id == R.id.button_reservations_new) {
             val intent = Intent(requireContext(), FormReservationDataActivity::class.java)
             startActivity(intent)
         }
     }
-
 }

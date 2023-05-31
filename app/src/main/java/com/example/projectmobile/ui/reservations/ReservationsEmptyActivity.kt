@@ -4,15 +4,14 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.example.projectmobile.LoginActivity
 import com.example.projectmobile.MainActivity
 import com.example.projectmobile.R
-import com.example.projectmobile.databinding.ActivityMainBinding
 import com.example.projectmobile.databinding.ActivityReservationsEmptyBinding
 import com.example.projectmobile.ui.formreservation.data.FormReservationDataActivity
 
 class ReservationsEmptyActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityReservationsEmptyBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityReservationsEmptyBinding.inflate(layoutInflater)
