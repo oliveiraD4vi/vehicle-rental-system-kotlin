@@ -36,6 +36,7 @@ class ReservationsDetailsActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun getVehicleData() {
+        loading()
         val preferencesManager = UserPreferencesManager(this)
         val apiService = APIService(preferencesManager.getToken())
         val reservation = preferencesManager.getSelectedReservation()
@@ -60,6 +61,10 @@ class ReservationsDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
                             binding.textNameCarDetails.text = data.brand + " " + data.model
                             binding.textPriceCar.text = "R$ " + data.value.toString()
+                        }
+
+                        runOnUiThread {
+                            loaded()
                         }
 
                     }
@@ -94,5 +99,49 @@ class ReservationsDetailsActivity : AppCompatActivity(), View.OnClickListener {
         val exitFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
         return exitFormat.format(entryFormat.parse(dataString))
+    }
+
+    private fun loading() {
+        binding.textDaily.visibility = View.GONE
+        binding.textPriceCar.visibility = View.GONE
+        binding.textNameCarDetails.visibility = View.GONE
+        binding.textPlateDetails.visibility = View.GONE
+        binding.textStepDetails.visibility = View.GONE
+        binding.textColorDetails.visibility = View.GONE
+        binding.textNameCarDetails.visibility = View.GONE
+        binding.textDevolutionDetails.visibility = View.GONE
+        binding.textWithdrawalDetails.visibility = View.GONE
+        binding.textTotal.visibility = View.GONE
+        binding.textStatusDetails.visibility = View.GONE
+        binding.textTitleCar.visibility = View.GONE
+        binding.textTitleReservation.visibility = View.GONE
+        binding.viewReservationsDetails.visibility = View.GONE
+        binding.viewCarDetails.visibility = View.GONE
+        binding.imageCarDetails.visibility = View.GONE
+        binding.buttonDetails.visibility = View.GONE
+
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    private fun loaded() {
+        binding.textDaily.visibility = View.VISIBLE
+        binding.textPriceCar.visibility = View.VISIBLE
+        binding.textNameCarDetails.visibility = View.VISIBLE
+        binding.textPlateDetails.visibility = View.VISIBLE
+        binding.textStepDetails.visibility = View.VISIBLE
+        binding.textColorDetails.visibility = View.VISIBLE
+        binding.textNameCarDetails.visibility = View.VISIBLE
+        binding.textDevolutionDetails.visibility = View.VISIBLE
+        binding.textWithdrawalDetails.visibility = View.VISIBLE
+        binding.textTotal.visibility = View.VISIBLE
+        binding.textStatusDetails.visibility = View.GONE
+        binding.textTitleCar.visibility = View.VISIBLE
+        binding.textTitleReservation.visibility = View.VISIBLE
+        binding.viewReservationsDetails.visibility = View.VISIBLE
+        binding.viewCarDetails.visibility = View.VISIBLE
+        binding.imageCarDetails.visibility = View.VISIBLE
+        binding.buttonDetails.visibility = View.VISIBLE
+
+        binding.progressBar.visibility = View.GONE
     }
 }
