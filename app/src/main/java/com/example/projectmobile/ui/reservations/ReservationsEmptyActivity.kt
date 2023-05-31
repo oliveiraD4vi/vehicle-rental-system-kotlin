@@ -9,6 +9,7 @@ import com.example.projectmobile.MainActivity
 import com.example.projectmobile.R
 import com.example.projectmobile.databinding.ActivityMainBinding
 import com.example.projectmobile.databinding.ActivityReservationsEmptyBinding
+import com.example.projectmobile.ui.formreservation.data.FormReservationDataActivity
 
 class ReservationsEmptyActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityReservationsEmptyBinding
@@ -19,11 +20,15 @@ class ReservationsEmptyActivity : AppCompatActivity(), View.OnClickListener {
         supportActionBar?.hide()
 
         binding.imageBackEmpty.setOnClickListener(this)
+        binding.buttonReservationsNewEmpty.setOnClickListener(this)
     }
 
     override fun onClick(view: View) {
         if(view.id == R.id.image_back_empty){
             val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        } else if(view.id == R.id.button_reservations_new_empty){
+            val intent = Intent(this, FormReservationDataActivity::class.java)
             startActivity(intent)
         }
     }

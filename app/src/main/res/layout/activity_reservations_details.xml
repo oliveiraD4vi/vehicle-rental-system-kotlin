@@ -11,11 +11,17 @@
     android:paddingBottom="32dp"
     tools:context=".ui.reservations.ReservationsDetailsActivity">
 
-    <ImageView
+    <ImageButton
         android:id="@+id/image_back_details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_back"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/go_back_button_description"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:src="?attr/homeAsUpIndicator"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/blue_primary" />

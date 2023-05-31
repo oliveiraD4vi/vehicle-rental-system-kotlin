@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.projectmobile.LoginActivity
+import com.example.projectmobile.R
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
@@ -23,7 +24,7 @@ import com.example.projectmobile.ui.reservations.adapter.ReservationsAdapter
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
 
-class ReservationsFragment : Fragment() {
+class ReservationsFragment : Fragment(), View.OnClickListener {
     private var _binding: FragmentReservationsBinding? = null
     private var reservationsList: List<Reservations> = listOf()
     // This property is only valid between onCreateView and
@@ -52,6 +53,8 @@ class ReservationsFragment : Fragment() {
 
         if(cond)
             getReservations(preferencesManager, adapter)
+
+        binding.buttonReservationsNew.setOnClickListener(this)
 
         return binding.root
     }
@@ -130,6 +133,13 @@ class ReservationsFragment : Fragment() {
         binding.recyclerReservations.visibility = View.VISIBLE
         binding.buttonReservationsNew.visibility = View.VISIBLE
         binding.progressBar.visibility = View.GONE
+    }
+
+    override fun onClick(view: View) {
+        if(view.id == R.id.button_reservations_new){
+            val intent = Intent(requireContext(), FormReservationDataActivity::class.java)
+            startActivity(intent)
+        }
     }
 
 }

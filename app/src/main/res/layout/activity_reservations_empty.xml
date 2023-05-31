@@ -8,14 +8,20 @@
     android:padding="32dp"
     tools:context=".ui.reservations.ReservationsEmptyActivity">
 
-    <ImageView
+    <ImageButton
         android:id="@+id/image_back_empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:tint="@color/blue_primary"
-        android:src="@drawable/ic_back"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/go_back_button_description"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:src="?attr/homeAsUpIndicator"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/blue_primary" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -32,6 +38,7 @@
         />
 
     <Button
+        android:id="@+id/button_reservations_new_empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
