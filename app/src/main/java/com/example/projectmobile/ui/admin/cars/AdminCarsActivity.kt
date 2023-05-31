@@ -38,6 +38,11 @@ class AdminCarsActivity : AppCompatActivity() {
         }
 
         handleSearch("", adapter)
+
+        binding.imageSearch.setOnClickListener {
+            val string = binding.editResearch.text.toString()
+            handleSearch(string, adapter)
+        }
     }
 
     private fun handleSearch(search: String, adapter: AdminCarsAdapter) {
@@ -45,8 +50,12 @@ class AdminCarsActivity : AppCompatActivity() {
         getVehiclesData(preferencesManager, search, adapter)
     }
 
-    private fun getVehiclesData(preferencesManager: UserPreferencesManager, search: String, adapter: AdminCarsAdapter) {
-        binding.recyclerCars.visibility = View.GONE
+    private fun getVehiclesData(
+        preferencesManager: UserPreferencesManager,
+        search: String,
+        adapter: AdminCarsAdapter
+    ) {
+        loading()
         val apiService = APIService(preferencesManager.getToken())
         val url = "/vehicle/list?page=1&size=100&sort=ASC&search=$search"
 
@@ -62,12 +71,13 @@ class AdminCarsActivity : AppCompatActivity() {
                     }
 
                     runOnUiThread {
-                        binding.recyclerCars.visibility = View.VISIBLE
+                        loaded()
                     }
                 } else {
                     val errorCode = response.message
 
                     runOnUiThread {
+                        loadedWithZero()
                         Toast.makeText(
                             this@AdminCarsActivity,
                             errorCode,
@@ -79,6 +89,7 @@ class AdminCarsActivity : AppCompatActivity() {
 
             override fun onError(error: IOException) {
                 runOnUiThread {
+                    loadedWithZero()
                     Toast.makeText(
                         this@AdminCarsActivity,
                         error.message,
@@ -87,5 +98,26 @@ class AdminCarsActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun loading() {
+        binding.progressBar.visibility = View.VISIBLE
+
+        binding.notFound.visibility = View.GONE
+        binding.recyclerCars.visibility = View.GONE
+    }
+
+    private fun loaded() {
+        binding.progressBar.visibility = View.GONE
+
+        binding.notFound.visibility = View.GONE
+        binding.recyclerCars.visibility = View.VISIBLE
+    }
+
+    private fun loadedWithZero() {
+        binding.progressBar.visibility = View.GONE
+
+        binding.notFound.visibility = View.VISIBLE
+        binding.recyclerCars.visibility = View.GONE
     }
 }

@@ -38,6 +38,11 @@ class AdminReservationsActivity : AppCompatActivity() {
         }
 
         handleSearch("", adapter)
+
+        binding.imageSearch.setOnClickListener {
+            val string = binding.editResearch.text.toString()
+            handleSearch(string, adapter)
+        }
     }
 
     private fun handleSearch(search: String, adapter: AdminReservationAdapter) {
@@ -45,8 +50,12 @@ class AdminReservationsActivity : AppCompatActivity() {
         getReservationsData(preferencesManager, search, adapter)
     }
 
-    private fun getReservationsData(preferencesManager: UserPreferencesManager, search: String, adapter: AdminReservationAdapter) {
-        binding.recyclerReservations.visibility = View.GONE
+    private fun getReservationsData(
+        preferencesManager: UserPreferencesManager,
+        search: String,
+        adapter: AdminReservationAdapter
+    ) {
+        loading()
         val apiService = APIService(preferencesManager.getToken())
         val url = "/reservation/list?page=1&size=100&sort=ASC&search=$search"
 
@@ -61,12 +70,13 @@ class AdminReservationsActivity : AppCompatActivity() {
                     }
 
                     runOnUiThread {
-                        binding.recyclerReservations.visibility = View.VISIBLE
+                        loaded()
                     }
                 } else {
                     val errorCode = response.message
 
                     runOnUiThread {
+                        loadedWithZero()
                         Toast.makeText(
                             this@AdminReservationsActivity,
                             errorCode,
@@ -78,6 +88,7 @@ class AdminReservationsActivity : AppCompatActivity() {
 
             override fun onError(error: IOException) {
                 runOnUiThread {
+                    loadedWithZero()
                     Toast.makeText(
                         this@AdminReservationsActivity,
                         error.message,
@@ -86,5 +97,26 @@ class AdminReservationsActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun loading() {
+        binding.progressBar.visibility = View.VISIBLE
+
+        binding.notFound.visibility = View.GONE
+        binding.recyclerReservations.visibility = View.GONE
+    }
+
+    private fun loaded() {
+        binding.progressBar.visibility = View.GONE
+
+        binding.notFound.visibility = View.GONE
+        binding.recyclerReservations.visibility = View.VISIBLE
+    }
+
+    private fun loadedWithZero() {
+        binding.progressBar.visibility = View.GONE
+
+        binding.notFound.visibility = View.VISIBLE
+        binding.recyclerReservations.visibility = View.GONE
     }
 }

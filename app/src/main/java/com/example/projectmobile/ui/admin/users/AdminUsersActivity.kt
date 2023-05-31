@@ -40,15 +40,24 @@ class AdminUsersActivity : AppCompatActivity() {
         }
 
         handleSearch("", adapter)
+
+        binding.imageSearch.setOnClickListener {
+            val string = binding.editResearch.text.toString()
+            handleSearch(string, adapter)
+        }
     }
 
     private fun handleSearch(search: String, adapter: AdminUserAdapter) {
-        binding.recyclerUsers.visibility = View.GONE
         val preferencesManager = UserPreferencesManager(this)
         getUsersData(preferencesManager, search, adapter)
     }
 
-    private fun getUsersData(preferencesManager: UserPreferencesManager, search: String, adapter: AdminUserAdapter) {
+    private fun getUsersData(
+        preferencesManager: UserPreferencesManager,
+        search: String,
+        adapter: AdminUserAdapter
+    ) {
+        loading()
         val apiService = APIService(preferencesManager.getToken())
         val url = "/user/list?page=1&size=100&sort=ASC&search=$search"
 
@@ -63,12 +72,13 @@ class AdminUsersActivity : AppCompatActivity() {
                     }
 
                     runOnUiThread {
-                        binding.recyclerUsers.visibility = View.VISIBLE
+                        loaded()
                     }
                 } else {
                     val errorCode = response.message
 
                     runOnUiThread {
+                        loadedWithZero()
                         Toast.makeText(
                             this@AdminUsersActivity,
                             errorCode,
@@ -80,6 +90,7 @@ class AdminUsersActivity : AppCompatActivity() {
 
             override fun onError(error: IOException) {
                 runOnUiThread {
+                    loadedWithZero()
                     Toast.makeText(
                         this@AdminUsersActivity,
                         error.message,
@@ -88,5 +99,26 @@ class AdminUsersActivity : AppCompatActivity() {
                 }
             }
         })
+    }
+
+    private fun loading() {
+        binding.progressBar.visibility = View.VISIBLE
+
+        binding.notFound.visibility = View.GONE
+        binding.recyclerUsers.visibility = View.GONE
+    }
+
+    private fun loaded() {
+        binding.progressBar.visibility = View.GONE
+
+        binding.notFound.visibility = View.GONE
+        binding.recyclerUsers.visibility = View.VISIBLE
+    }
+
+    private fun loadedWithZero() {
+        binding.progressBar.visibility = View.GONE
+
+        binding.notFound.visibility = View.VISIBLE
+        binding.recyclerUsers.visibility = View.GONE
     }
 }
