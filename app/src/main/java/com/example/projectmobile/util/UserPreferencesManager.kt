@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.projectmobile.api.types.Cars
+import com.example.projectmobile.api.types.Reservations
 import com.example.projectmobile.api.types.UserData
 import com.google.gson.Gson
 
@@ -20,6 +21,7 @@ class UserPreferencesManager(private val context: Context) {
         const val LOGGED_IN = "loggedIn"
         const val DATA = "userData"
         const val SELECTED_CAR = "selectedCar"
+        const val SELECTED_RESERVATION = "selectedReservation"
         const val SELECTED_DATE_W = "selectedWithdraw"
         const val SELECTED_DATE_D = "selectedDelivery"
     }
@@ -93,6 +95,21 @@ class UserPreferencesManager(private val context: Context) {
             return gson.fromJson(data, Cars::class.java)
         }
 
+        return null
+    }
+
+    fun saveSelectedReservation(reservations: Reservations) {
+        val json = gson.toJson(reservations)
+
+        sharedPreferences.edit().putString(SELECTED_RESERVATION, json).apply()
+    }
+
+    fun getSelectedReservation(): Reservations? {
+        val data = sharedPreferences.getString(SELECTED_RESERVATION, null)
+
+        if (data != null) {
+            return gson.fromJson(data, Reservations::class.java)
+        }
         return null
     }
 

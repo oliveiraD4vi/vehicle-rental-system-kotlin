@@ -38,9 +38,11 @@ class ReservationsFragment : Fragment() {
         _binding = FragmentReservationsBinding.inflate(inflater, container, false)
 
         val preferencesManager = UserPreferencesManager(requireContext())
-        verifyUserRole(preferencesManager)
+        val cond: Boolean = verifyUserRole(preferencesManager)
 
         val adapter = ReservationsAdapter{ reservation ->
+            preferencesManager.saveSelectedReservation(reservation)
+            startActivity(Intent(requireContext(), ReservationsDetailsActivity::class.java))
         }
 
         binding.recyclerReservations.layoutManager = LinearLayoutManager(context)
@@ -48,7 +50,8 @@ class ReservationsFragment : Fragment() {
         //adapter
         binding.recyclerReservations.adapter = adapter
 
-        getReservations(preferencesManager, adapter)
+        if(cond)
+            getReservations(preferencesManager, adapter)
 
         return binding.root
     }
@@ -58,11 +61,13 @@ class ReservationsFragment : Fragment() {
         _binding = null
     }
 
-    private fun verifyUserRole(preferencesManager: UserPreferencesManager) {
+    private fun verifyUserRole(preferencesManager: UserPreferencesManager): Boolean {
         if (!preferencesManager.isLoggedIn()) {
             val intent = Intent(requireContext(), LoginActivity::class.java)
             startActivity(intent)
+            return false
         }
+        return true
     }
 
     private fun getReservations(preferencesManager: UserPreferencesManager, adapter: ReservationsAdapter){

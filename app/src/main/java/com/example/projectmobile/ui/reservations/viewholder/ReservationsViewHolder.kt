@@ -22,8 +22,11 @@ class ReservationsViewHolder(
         } else if(reservations.status == "FINALIZED"){
             bind.imageCheck.visibility = View.VISIBLE
         }
-    }
 
+        bind.root.setOnClickListener {
+            onItemClick(reservations)
+        }
+    }
     private fun dateFormatter(dataString: String): String {
         val entryFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
         val exitFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
