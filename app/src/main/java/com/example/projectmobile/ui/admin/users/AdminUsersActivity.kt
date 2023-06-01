@@ -5,18 +5,16 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.projectmobile.R
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
 import com.example.projectmobile.api.types.User
-import com.example.projectmobile.databinding.ActivityAdminCarsBinding
 import com.example.projectmobile.databinding.ActivityAdminUsersBinding
 import com.example.projectmobile.databinding.ModalLayoutBinding
 import com.example.projectmobile.ui.admin.users.adapter.AdminUserAdapter
+import com.example.projectmobile.ui.admin.users.user.CreateUserActivity
 import com.example.projectmobile.ui.admin.users.user.VisualizeUserActivity
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
@@ -41,6 +39,10 @@ class AdminUsersActivity : AppCompatActivity(), UserClickListener {
 
         binding.returnButton.setOnClickListener {
             finish()
+        }
+
+        binding.addButton.setOnClickListener {
+            startActivity(Intent(this, CreateUserActivity::class.java))
         }
 
         handleSearch()

@@ -14,6 +14,7 @@ import com.example.projectmobile.api.types.Car
 import com.example.projectmobile.databinding.ActivityAdminCarsBinding
 import com.example.projectmobile.databinding.ModalLayoutBinding
 import com.example.projectmobile.ui.admin.cars.adapter.AdminCarsAdapter
+import com.example.projectmobile.ui.admin.cars.car.CreateCarActivity
 import com.example.projectmobile.ui.admin.cars.car.VisualizeCarActivity
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
@@ -38,6 +39,10 @@ class AdminCarsActivity : AppCompatActivity(), CarClickListener {
 
         binding.returnButton.setOnClickListener {
             finish()
+        }
+
+        binding.addButton.setOnClickListener {
+            startActivity(Intent(this, CreateCarActivity::class.java))
         }
 
         handleSearch()

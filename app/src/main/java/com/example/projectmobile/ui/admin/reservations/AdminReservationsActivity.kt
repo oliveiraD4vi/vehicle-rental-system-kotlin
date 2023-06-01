@@ -11,10 +11,10 @@ import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
 import com.example.projectmobile.api.types.Reservation
-import com.example.projectmobile.databinding.ActivityAdminCarsBinding
 import com.example.projectmobile.databinding.ActivityAdminReservationsBinding
 import com.example.projectmobile.databinding.ModalLayoutBinding
 import com.example.projectmobile.ui.admin.reservations.adapter.AdminReservationAdapter
+import com.example.projectmobile.ui.admin.reservations.reservation.CreateReservationActivity
 import com.example.projectmobile.ui.admin.reservations.reservation.VisualizeReservationActivity
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
@@ -39,6 +39,10 @@ class AdminReservationsActivity : AppCompatActivity(), ReservationClickListener 
 
         binding.returnButton.setOnClickListener {
             finish()
+        }
+
+        binding.addButton.setOnClickListener {
+            startActivity(Intent(this, CreateReservationActivity::class.java))
         }
 
         handleSearch()
