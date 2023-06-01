@@ -15,6 +15,7 @@ import com.example.projectmobile.api.types.APIResponse
 import com.example.projectmobile.api.types.Reservation
 import com.example.projectmobile.databinding.FragmentReservationsBinding
 import com.example.projectmobile.ui.auth.LoginActivity
+import com.example.projectmobile.ui.cars.CarsFragment
 import com.example.projectmobile.ui.formreservation.data.FormReservationDataActivity
 import com.example.projectmobile.ui.reservations.adapter.ReservationsAdapter
 import com.example.projectmobile.util.UserPreferencesManager
@@ -104,6 +105,10 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
 
             override fun onError(error: IOException) {
                 activity?.runOnUiThread {
+                    binding.recyclerReservations.visibility = View.GONE
+                    binding.progressBar.visibility = View.GONE
+                    binding.buttonReservationsNew.visibility = View.VISIBLE
+                    binding.notFound.visibility = View.VISIBLE
                     Toast.makeText(
                         requireContext(),
                         error.message,
@@ -128,8 +133,12 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(view: View) {
         if (view.id == R.id.button_reservations_new) {
-            val intent = Intent(requireContext(), FormReservationDataActivity::class.java)
-            startActivity(intent)
+            val fragment = CarsFragment()
+            val fragmentManager = requireActivity().supportFragmentManager
+            val transaction = fragmentManager.beginTransaction()
+            transaction.replace(R.id.container, fragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
         }
     }
 }
