@@ -106,7 +106,7 @@ class ReservationsDetailsActivity : AppCompatActivity(), View.OnClickListener {
         binding.textStatusDetails.text = "STATUS: " + reservation.status
         binding.textStepDetails.text = "STEP: " + reservation.step
         binding.textColorDetails.text = "COR: " + data.color
-        binding.textPlateDetails.text = "PLACA " + data.plate
+        binding.textPlateDetails.text = "PLACA: " + data.plate
 
         binding.textNameCarDetails.text = data.brand + " " + data.model
         binding.textPriceCar.text = "R$ " + data.value.toString()
@@ -131,7 +131,6 @@ class ReservationsDetailsActivity : AppCompatActivity(), View.OnClickListener {
         binding.textWithdrawalDetails.visibility = View.GONE
         binding.textTotal.visibility = View.GONE
         binding.textStatusDetails.visibility = View.GONE
-        binding.textTitleCar.visibility = View.GONE
         binding.textTitleReservation.visibility = View.GONE
         binding.viewReservationsDetails.visibility = View.GONE
         binding.viewCarDetails.visibility = View.GONE
@@ -153,7 +152,6 @@ class ReservationsDetailsActivity : AppCompatActivity(), View.OnClickListener {
         binding.textWithdrawalDetails.visibility = View.VISIBLE
         binding.textTotal.visibility = View.VISIBLE
         binding.textStatusDetails.visibility = View.VISIBLE
-        binding.textTitleCar.visibility = View.VISIBLE
         binding.textTitleReservation.visibility = View.VISIBLE
         binding.viewReservationsDetails.visibility = View.VISIBLE
         binding.viewCarDetails.visibility = View.VISIBLE

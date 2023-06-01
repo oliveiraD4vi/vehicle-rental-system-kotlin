@@ -50,12 +50,17 @@ class ProfileFragment : Fragment() {
     }
 
     private fun submitActionHandler(preferencesManager: UserPreferencesManager) {
-        binding.editButton.setOnClickListener {
-            enableEditTextFields()
+        binding.editButton.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                enableEditTextFields()
 
-            binding.loginButton.visibility = View.GONE
-            binding.editButton.visibility = View.GONE
-            binding.submitButton.visibility = View.VISIBLE
+                binding.loginButton.visibility = View.GONE
+                binding.submitButton.visibility = View.VISIBLE
+            } else {
+                disableEditTextFields()
+                binding.submitButton.visibility = View.GONE
+                loaded()
+            }
         }
 
         binding.submitButton.setOnClickListener {
@@ -76,8 +81,8 @@ class ProfileFragment : Fragment() {
             override fun onSuccess(response: APIResponse) {
                 if (!response.error) {
                     val message = response.message
-
                     getUserData(preferencesManager)
+
                     activity?.runOnUiThread {
                         Toast.makeText(
                             requireContext(),
@@ -247,6 +252,10 @@ class ProfileFragment : Fragment() {
         binding.neighborhoodEditText.setText(userData.neighborhood)
         binding.stateEditText.setText(userData.state)
         binding.countryEditText.setText(userData.country)
+
+        binding.editButton.post {
+            binding.editButton.isChecked = false
+        }
 
         activity?.runOnUiThread {
             loaded()

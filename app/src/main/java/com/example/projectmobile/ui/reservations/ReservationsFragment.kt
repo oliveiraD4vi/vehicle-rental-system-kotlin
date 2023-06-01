@@ -23,6 +23,7 @@ import java.io.IOException
 class ReservationsFragment : Fragment(), View.OnClickListener {
     private var _binding: FragmentReservationsBinding? = null
     private val binding get() = _binding!!
+
     private lateinit var preferencesManager: UserPreferencesManager
     private lateinit var adapter: ReservationsAdapter
 
