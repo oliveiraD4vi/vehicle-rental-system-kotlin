@@ -1,5 +1,6 @@
 package com.example.projectmobile.ui.reservations
 
+import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -8,8 +9,12 @@ import com.example.projectmobile.R
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
+import com.example.projectmobile.api.types.Car
 import com.example.projectmobile.api.types.Reservation
+import com.example.projectmobile.api.types.Status
 import com.example.projectmobile.databinding.ActivityReservationsDetailsBinding
+import com.example.projectmobile.databinding.ModalLayoutBinding
+import com.example.projectmobile.ui.cars.CarsFragment
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -27,11 +32,15 @@ class ReservationsDetailsActivity : AppCompatActivity(), View.OnClickListener {
         getVehicleData()
 
         binding.imageBackDetails.setOnClickListener(this)
+        binding.buttonDetails.setOnClickListener(this)
     }
 
     override fun onClick(view: View) {
         if (view.id == R.id.image_back_details) {
             finish()
+        } else if (view.id == R.id.button_details) {
+            val preferencesManager = UserPreferencesManager(this)
+            preferencesManager.getSelectedReservation()?.let { onDeleteCarClick(it) }
         }
     }
 
@@ -61,10 +70,14 @@ class ReservationsDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
                             binding.textNameCarDetails.text = data.brand + " " + data.model
                             binding.textPriceCar.text = "R$ " + data.value.toString()
+
                         }
 
                         runOnUiThread {
                             loaded()
+                            if(reservation.status == Status.FINALIZED){
+                                binding.buttonDetails.visibility = View.GONE
+                            }
                         }
 
                     }
@@ -144,4 +157,72 @@ class ReservationsDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
         binding.progressBar.visibility = View.GONE
     }
+
+    fun onDeleteCarClick(reservation: Reservation) {
+        showDeleteConfirmationDialog(reservation)
+    }
+
+    private fun showDeleteConfirmationDialog(reservation: Reservation) {
+        val dialog = Dialog(this)
+        val dialogBinding: ModalLayoutBinding = ModalLayoutBinding.inflate(layoutInflater)
+        val dialogView = dialogBinding.root
+        dialog.setContentView(dialogView)
+
+        dialogBinding.btnCancelar.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialogBinding.btnConfirmar.setOnClickListener {
+            deleteItem(reservation)
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+    private fun deleteItem(reservation: Reservation) {
+        loading()
+        val preferencesManager = UserPreferencesManager(this)
+        val apiService = APIService(preferencesManager.getToken())
+        val url = "/reservation?id=${reservation.id}"
+
+        apiService.deleteData(url, object : APICallback {
+            override fun onSuccess(response: APIResponse) {
+                if (!response.error) {
+                    val message = response.message
+
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@ReservationsDetailsActivity,
+                            message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        finish()
+                    }
+                } else {
+                    val errorCode = response.message
+
+                    runOnUiThread {
+                        loaded()
+                        Toast.makeText(
+                            this@ReservationsDetailsActivity,
+                            errorCode,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onError(error: IOException) {
+                runOnUiThread {
+                    loaded()
+                    Toast.makeText(
+                        this@ReservationsDetailsActivity,
+                        error.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
+    }
+
 }

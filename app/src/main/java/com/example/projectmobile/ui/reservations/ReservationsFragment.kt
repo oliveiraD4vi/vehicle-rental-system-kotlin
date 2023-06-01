@@ -24,6 +24,8 @@ import java.io.IOException
 class ReservationsFragment : Fragment(), View.OnClickListener {
     private var _binding: FragmentReservationsBinding? = null
     private val binding get() = _binding!!
+    private lateinit var preferencesManager: UserPreferencesManager
+    private lateinit var adapter: ReservationsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,10 +34,10 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
     ): View {
         _binding = FragmentReservationsBinding.inflate(inflater, container, false)
 
-        val preferencesManager = UserPreferencesManager(requireContext())
+        preferencesManager = UserPreferencesManager(requireContext())
         val cond: Boolean = verifyUserRole(preferencesManager)
 
-        val adapter = ReservationsAdapter { reservation ->
+        adapter = ReservationsAdapter { reservation ->
             preferencesManager.saveSelectedReservation(reservation)
             startActivity(Intent(requireContext(), ReservationsDetailsActivity::class.java))
         }
@@ -51,6 +53,11 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
         binding.buttonReservationsNew.setOnClickListener(this)
 
         return binding.root
+    }
+
+    override fun onStart(){
+        super.onStart()
+        getReservations(preferencesManager, adapter)
     }
 
     override fun onDestroyView() {
