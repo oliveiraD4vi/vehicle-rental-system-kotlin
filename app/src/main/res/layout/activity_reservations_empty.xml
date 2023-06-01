@@ -6,46 +6,39 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:padding="32dp"
-    tools:context=".ui.reservations.ReservationsFragment">
+    tools:context=".ui.reservations.ReservationsEmptyActivity">
 
-    <!-- Barra de Progresso -->
-    <ProgressBar
-        android:id="@+id/progressBar"
+    <ImageButton
+        android:id="@+id/image_back_empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:indeterminateTint="@color/yellow_primary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight="0dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/go_back_button_description"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:src="?attr/homeAsUpIndicator"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/blue_primary" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Você não tem nenhuma Reserva"
+        android:textSize="32dp"
+        android:gravity="center"
+        android:textColor="@color/yellow_primary"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         />
 
-    <ImageView
-        android:id="@+id/notFound"
-        android:layout_width="24dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:src="@drawable/ic_not_found"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_reservations"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
     <Button
-        android:id="@+id/button_reservations_new"
+        android:id="@+id/button_reservations_new_empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -55,4 +48,5 @@
         android:backgroundTint="@color/yellow_primary"
         android:textColor="@color/white"
         android:textStyle="bold"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

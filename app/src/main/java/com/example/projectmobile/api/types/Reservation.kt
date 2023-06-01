@@ -2,11 +2,11 @@ package com.example.projectmobile.api.types
 
 data class Reservation(
     val id: Int,
-    val userId: Int,
-    val vehicleId: Int,
+    val user_id: Int,
+    val vehicle_id: Int,
     val pickup: String,
     val devolution: String,
     val step: Step,
     val status: Status,
-    val totalValue: Float,
+    val total_value: Float,
 )
