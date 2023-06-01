@@ -57,35 +57,22 @@ class ReservationsDetailsActivity : AppCompatActivity(), View.OnClickListener {
                     val data = response.vehicle
                     if (data != null && reservation != null) {
                         runOnUiThread {
-                            binding.textDaily.text = "DIÁRIA: R$ " + data.value.toString()
-                            binding.textTotal.text = "TOTAL: R$ " + reservation.total_value.toString()
-                            binding.textWithdrawalDetails.text =
-                                "RETIRADA: " + dateFormatter(reservation.pickup)
-                            binding.textDevolutionDetails.text =
-                                "DEVOLUÇÃO: " + dateFormatter(reservation.devolution)
-                            binding.textStatusDetails.text = "STATUS: " + reservation.status
-                            binding.textStepDetails.text = "STEP: " + reservation.step
-                            binding.textColorDetails.text = "COR: " + data.color
-                            binding.textPlateDetails.text = "PLACA " + data.plate
-
-                            binding.textNameCarDetails.text = data.brand + " " + data.model
-                            binding.textPriceCar.text = "R$ " + data.value.toString()
-
+                            composeData(data, reservation)
                         }
 
                         runOnUiThread {
                             loaded()
-                            if(reservation.status == Status.FINALIZED){
+                            if (reservation.status == Status.FINALIZED) {
                                 binding.buttonDetails.visibility = View.GONE
                             }
                         }
-
                     }
 
                 } else {
                     val errorCode = response.message
 
                     runOnUiThread {
+                        finish()
                         Toast.makeText(
                             this@ReservationsDetailsActivity,
                             errorCode,
@@ -97,6 +84,7 @@ class ReservationsDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
             override fun onError(error: IOException) {
                 runOnUiThread {
+                    finish()
                     Toast.makeText(
                         this@ReservationsDetailsActivity,
                         error.message,
@@ -105,6 +93,23 @@ class ReservationsDetailsActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
         })
+    }
+
+    private fun composeData(data: Car, reservation: Reservation) {
+        binding.textDaily.text = "DIÁRIA: R$ " + data.value.toString()
+        binding.textTotal.text =
+            "TOTAL: R$ " + reservation.total_value.toString()
+        binding.textWithdrawalDetails.text =
+            "RETIRADA: " + dateFormatter(reservation.pickup)
+        binding.textDevolutionDetails.text =
+            "DEVOLUÇÃO: " + dateFormatter(reservation.devolution)
+        binding.textStatusDetails.text = "STATUS: " + reservation.status
+        binding.textStepDetails.text = "STEP: " + reservation.step
+        binding.textColorDetails.text = "COR: " + data.color
+        binding.textPlateDetails.text = "PLACA " + data.plate
+
+        binding.textNameCarDetails.text = data.brand + " " + data.model
+        binding.textPriceCar.text = "R$ " + data.value.toString()
     }
 
     private fun dateFormatter(dataString: String): String {
@@ -147,7 +152,7 @@ class ReservationsDetailsActivity : AppCompatActivity(), View.OnClickListener {
         binding.textDevolutionDetails.visibility = View.VISIBLE
         binding.textWithdrawalDetails.visibility = View.VISIBLE
         binding.textTotal.visibility = View.VISIBLE
-        binding.textStatusDetails.visibility = View.GONE
+        binding.textStatusDetails.visibility = View.VISIBLE
         binding.textTitleCar.visibility = View.VISIBLE
         binding.textTitleReservation.visibility = View.VISIBLE
         binding.viewReservationsDetails.visibility = View.VISIBLE
@@ -179,6 +184,7 @@ class ReservationsDetailsActivity : AppCompatActivity(), View.OnClickListener {
 
         dialog.show()
     }
+
     private fun deleteItem(reservation: Reservation) {
         loading()
         val preferencesManager = UserPreferencesManager(this)
@@ -196,6 +202,7 @@ class ReservationsDetailsActivity : AppCompatActivity(), View.OnClickListener {
                             message,
                             Toast.LENGTH_SHORT
                         ).show()
+
                         finish()
                     }
                 } else {
@@ -224,5 +231,4 @@ class ReservationsDetailsActivity : AppCompatActivity(), View.OnClickListener {
             }
         })
     }
-
 }

@@ -16,7 +16,6 @@ import com.example.projectmobile.api.types.Reservation
 import com.example.projectmobile.databinding.FragmentReservationsBinding
 import com.example.projectmobile.ui.auth.LoginActivity
 import com.example.projectmobile.ui.cars.CarsFragment
-import com.example.projectmobile.ui.formreservation.data.FormReservationDataActivity
 import com.example.projectmobile.ui.reservations.adapter.ReservationsAdapter
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
@@ -35,7 +34,6 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
         _binding = FragmentReservationsBinding.inflate(inflater, container, false)
 
         preferencesManager = UserPreferencesManager(requireContext())
-        val cond: Boolean = verifyUserRole(preferencesManager)
 
         adapter = ReservationsAdapter { reservation ->
             preferencesManager.saveSelectedReservation(reservation)
@@ -48,16 +46,15 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
         //adapter
         binding.recyclerReservations.adapter = adapter
 
-        if (cond) getReservations(preferencesManager, adapter)
+        if (verifyUserRole(preferencesManager)) {
+            getReservations(preferencesManager, adapter)
+        } else {
+            loadedWithZero()
+        }
 
         binding.buttonReservationsNew.setOnClickListener(this)
 
         return binding.root
-    }
-
-    override fun onStart(){
-        super.onStart()
-        getReservations(preferencesManager, adapter)
     }
 
     override fun onDestroyView() {
@@ -100,7 +97,9 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
 
                 } else {
                     val errorCode = response.message
+
                     activity?.runOnUiThread {
+                        loadedWithZero()
                         Toast.makeText(
                             requireContext(),
                             errorCode,
@@ -112,10 +111,7 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
 
             override fun onError(error: IOException) {
                 activity?.runOnUiThread {
-                    binding.recyclerReservations.visibility = View.GONE
-                    binding.progressBar.visibility = View.GONE
-                    binding.buttonReservationsNew.visibility = View.VISIBLE
-                    binding.notFound.visibility = View.VISIBLE
+                    loadedWithZero()
                     Toast.makeText(
                         requireContext(),
                         error.message,
@@ -129,13 +125,28 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
     private fun loading() {
         binding.recyclerReservations.visibility = View.GONE
         binding.buttonReservationsNew.visibility = View.GONE
+
         binding.progressBar.visibility = View.VISIBLE
     }
 
     private fun loaded() {
         binding.recyclerReservations.visibility = View.VISIBLE
         binding.buttonReservationsNew.visibility = View.VISIBLE
+
         binding.progressBar.visibility = View.GONE
+    }
+
+    private fun loadedWithZero() {
+        binding.recyclerReservations.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
+
+        if (preferencesManager.isLoggedIn()) {
+            binding.buttonReservationsNew.visibility = View.VISIBLE
+        } else {
+            binding.buttonReservationsNew.visibility = View.GONE
+        }
+
+        binding.notFound.visibility = View.VISIBLE
     }
 
     override fun onClick(view: View) {
