@@ -2,8 +2,6 @@ package com.example.projectmobile.ui.reservations
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -106,8 +104,6 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
 
             override fun onError(error: IOException) {
                 activity?.runOnUiThread {
-                    val intent = Intent(requireContext(), ReservationsEmptyActivity::class.java)
-                    startActivity(intent)
                     Toast.makeText(
                         requireContext(),
                         error.message,
