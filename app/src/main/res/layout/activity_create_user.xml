@@ -23,4 +23,329 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/blue_primary" />
 
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Novo usuário"
+        android:textColor="@color/blue_primary"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/returnButton" />
+
+    <EditText
+        android:id="@+id/editName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginVertical="16dp"
+        android:autofillHints="name"
+        android:background="@drawable/edittext_drawable"
+        android:hint="Nome"
+        android:inputType="text"
+        android:maxWidth="488dp"
+        android:minHeight="48dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:textColor="@color/blue_primary"
+        android:textColorHint="@color/black_overlay"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <EditText
+        android:id="@+id/editEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginVertical="8dp"
+        android:autofillHints="emailAddress"
+        android:background="@drawable/edittext_drawable"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:maxWidth="488dp"
+        android:minHeight="48dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:textColor="@color/blue_primary"
+        android:textColorHint="@color/black_overlay"
+        app:layout_constraintTop_toBottomOf="@+id/editName"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <EditText
+        android:id="@+id/editPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginVertical="8dp"
+        android:autofillHints="password"
+        android:background="@drawable/edittext_drawable"
+        android:hint="Senha"
+        android:inputType="textPassword"
+        android:maxWidth="488dp"
+        android:minHeight="48dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:textColor="@color/blue_primary"
+        android:textColorHint="@color/black_overlay"
+        app:layout_constraintTop_toBottomOf="@+id/editEmail" />
+
+    <EditText
+        android:id="@+id/editCPF"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginVertical="8dp"
+        android:autofillHints="cpf"
+        android:background="@drawable/edittext_drawable"
+        android:hint="CPF"
+        android:inputType="number"
+        android:maxWidth="488dp"
+        android:maxLength="11"
+        android:minHeight="48dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:textColor="@color/blue_primary"
+        android:textColorHint="@color/black_overlay"
+        app:layout_constraintTop_toBottomOf="@+id/editPassword"
+        tools:layout_editor_absoluteX="16dp" />
+
+    <GridLayout
+        android:id="@+id/birthday_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginVertical="8dp"
+        android:columnCount="2"
+        android:rowCount="1"
+        android:useDefaultMargins="false"
+        app:layout_constraintTop_toBottomOf="@+id/editCPF">
+
+        <EditText
+            android:id="@+id/editBirthday"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/edittext_drawable"
+            android:hint="Data de Nascimento"
+            android:inputType="date"
+            android:maxWidth="488dp"
+            android:minHeight="48dp"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:textColor="@color/blue_primary"
+            android:textColorHint="@color/black_overlay"
+            app:layout_constraintTop_toBottomOf="@+id/editCPF"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <EditText
+            android:id="@+id/editPhone"
+            android:layout_width="137dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginVertical="8dp"
+            android:background="@drawable/edittext_drawable"
+            android:hint="Telefone"
+            android:inputType="phone"
+            android:maxWidth="488dp"
+            android:minHeight="48dp"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:textColor="@color/blue_primary"
+            android:textColorHint="@color/black_overlay"
+            app:layout_constraintTop_toBottomOf="@+id/editBirthday"
+            tools:layout_editor_absoluteX="16dp" />
+
+    </GridLayout>
+
+    <TextView
+        android:id="@+id/addressTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"
+        android:text="Endereço"
+        android:textColor="@color/blue_primary"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/birthday_phone"
+        app:layout_constraintTop_toBottomOf="@+id/birthday_phone" />
+
+    <GridLayout
+        android:id="@+id/address_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginVertical="8dp"
+        android:columnCount="2"
+        android:rowCount="1"
+        android:useDefaultMargins="false"
+        app:layout_constraintTop_toBottomOf="@+id/addressTextView">
+
+        <EditText
+            android:id="@+id/editStreet"
+            android:layout_width="257dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/edittext_drawable"
+            android:hint="Rua"
+            android:inputType="text"
+            android:maxWidth="488dp"
+            android:minHeight="48dp"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:textColor="@color/blue_primary"
+            android:textColorHint="@color/black_overlay"
+            app:layout_constraintTop_toBottomOf="@+id/addressTextView"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <EditText
+            android:id="@+id/editNumber"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginVertical="8dp"
+            android:background="@drawable/edittext_drawable"
+            android:hint="Num"
+            android:inputType="numberDecimal"
+            android:maxWidth="488dp"
+            android:minHeight="48dp"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:textColor="@color/blue_primary"
+            android:textColorHint="@color/black_overlay"
+            app:layout_constraintTop_toBottomOf="@+id/editStreet"
+            tools:layout_editor_absoluteX="16dp" />
+
+    </GridLayout>
+
+    <GridLayout
+        android:id="@+id/address_layout_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginVertical="8dp"
+        android:columnCount="2"
+        android:rowCount="1"
+        android:useDefaultMargins="false"
+        app:layout_constraintTop_toBottomOf="@+id/address_layout">
+
+        <EditText
+            android:id="@+id/editNeighborhood"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/edittext_drawable"
+            android:hint="Bairro"
+            android:inputType="text"
+            android:maxWidth="488dp"
+            android:minHeight="48dp"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:textColor="@color/blue_primary"
+            android:textColorHint="@color/black_overlay"
+            app:layout_constraintTop_toBottomOf="@+id/editStreet"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <EditText
+            android:id="@+id/editCity"
+            android:layout_width="157dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/edittext_drawable"
+            android:hint="Cidade"
+            android:inputType="text"
+            android:maxWidth="488dp"
+            android:minHeight="48dp"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:textColor="@color/blue_primary"
+            android:textColorHint="@color/black_overlay"
+            app:layout_constraintTop_toBottomOf="@+id/editStreet"
+            tools:layout_editor_absoluteX="16dp" />
+
+    </GridLayout>
+
+    <GridLayout
+        android:id="@+id/address_layout_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginVertical="8dp"
+        android:columnCount="2"
+        android:rowCount="1"
+        android:useDefaultMargins="false"
+        app:layout_constraintTop_toBottomOf="@+id/address_layout_2">
+
+        <EditText
+            android:id="@+id/editState"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/edittext_drawable"
+            android:hint="Estado"
+            android:inputType="text"
+            android:maxWidth="488dp"
+            android:minHeight="48dp"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:textColor="@color/blue_primary"
+            android:textColorHint="@color/black_overlay"
+            app:layout_constraintTop_toBottomOf="@+id/editStreet"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <EditText
+            android:id="@+id/editCountry"
+            android:layout_width="157dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/edittext_drawable"
+            android:hint="País"
+            android:inputType="text"
+            android:maxWidth="488dp"
+            android:minHeight="48dp"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:textColor="@color/blue_primary"
+            android:textColorHint="@color/black_overlay"
+            app:layout_constraintTop_toBottomOf="@+id/editStreet"
+            tools:layout_editor_absoluteX="16dp" />
+
+    </GridLayout>
+
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:backgroundTint="@color/yellow_primary"
+        android:maxWidth="488dp"
+        android:paddingHorizontal="32dp"
+        android:paddingVertical="4dp"
+        android:text="Cadastrar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/address_layout_3" />
+
+    <!-- Barra de Progresso -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="64dp"
+        android:indeterminateTint="@color/yellow_primary"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
