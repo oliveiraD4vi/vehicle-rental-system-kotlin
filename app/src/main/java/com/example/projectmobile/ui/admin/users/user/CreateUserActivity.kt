@@ -1,10 +1,14 @@
 package com.example.projectmobile.ui.admin.users.user
 
+import android.R
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Patterns
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
@@ -19,14 +23,19 @@ class CreateUserActivity : AppCompatActivity() {
     private var _binding: ActivityCreateUserBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var spinnerUserType: Spinner
     private lateinit var preferencesManager: UserPreferencesManager
+    private var userRole = "CLIENT"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityCreateUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        spinnerUserType = binding.spinnerUserType
         preferencesManager = UserPreferencesManager(this)
+
+        configureUserTypeSpinner()
 
         supportActionBar?.hide()
 
@@ -44,6 +53,27 @@ class CreateUserActivity : AppCompatActivity() {
             if (validateFields(name, email, password, cpf, bornAt)) {
                 sendDataToServer()
             }
+        }
+    }
+
+    private fun configureUserTypeSpinner() {
+        // Definir as opções do Spinner
+        val userTypes = arrayOf("CLIENT", "ADMIN")
+        val adapter = ArrayAdapter(this, R.layout.simple_spinner_item, userTypes)
+
+        // Especificar o layout a ser usado quando as opções aparecerem
+        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+
+        // Anexar o adaptador ao Spinner
+        spinnerUserType.adapter = adapter
+
+        // Definir um ouvinte de seleção para o Spinner
+        spinnerUserType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                userRole = userTypes[position]
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
 
@@ -121,7 +151,8 @@ class CreateUserActivity : AppCompatActivity() {
             "neighborhood": "$neighborhood",
             "state": "$state",
             "city": "$city",
-            "country": "$country"
+            "country": "$country",
+            "role": $userRole
         }""".trimIndent()
     }
 
@@ -186,7 +217,7 @@ class CreateUserActivity : AppCompatActivity() {
 
     private fun loading() {
         binding.titleTextView.visibility = View.GONE
-        binding.editName.visibility = View.GONE
+        binding.nameRole.visibility = View.GONE
         binding.editEmail.visibility = View.GONE
         binding.editPassword.visibility = View.GONE
         binding.editCPF.visibility = View.GONE
@@ -202,7 +233,7 @@ class CreateUserActivity : AppCompatActivity() {
 
     private fun loaded() {
         binding.titleTextView.visibility = View.VISIBLE
-        binding.editName.visibility = View.VISIBLE
+        binding.nameRole.visibility = View.VISIBLE
         binding.editEmail.visibility = View.VISIBLE
         binding.editPassword.visibility = View.VISIBLE
         binding.editCPF.visibility = View.VISIBLE
