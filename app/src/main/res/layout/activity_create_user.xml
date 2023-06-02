@@ -111,23 +111,20 @@
         app:layout_constraintTop_toBottomOf="@+id/editPassword"
         tools:layout_editor_absoluteX="16dp" />
 
-    <GridLayout
+    <LinearLayout
         android:id="@+id/birthday_phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
-        android:layout_marginVertical="8dp"
-        android:columnCount="2"
-        android:rowCount="1"
-        android:useDefaultMargins="false"
         app:layout_constraintTop_toBottomOf="@+id/editCPF">
 
         <EditText
             android:id="@+id/editBirthday"
-            android:layout_width="200dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
             android:layout_marginEnd="10dp"
+            android:layout_weight="70"
             android:background="@drawable/edittext_drawable"
             android:hint="Data de Nascimento"
             android:inputType="date"
@@ -142,10 +139,10 @@
 
         <EditText
             android:id="@+id/editPhone"
-            android:layout_width="137dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="32dp"
             android:layout_marginVertical="8dp"
+            android:layout_weight="30"
             android:background="@drawable/edittext_drawable"
             android:hint="Telefone"
             android:inputType="phone"
@@ -158,7 +155,7 @@
             app:layout_constraintTop_toBottomOf="@+id/editBirthday"
             tools:layout_editor_absoluteX="16dp" />
 
-    </GridLayout>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/addressTextView"
@@ -172,23 +169,20 @@
         app:layout_constraintStart_toStartOf="@+id/birthday_phone"
         app:layout_constraintTop_toBottomOf="@+id/birthday_phone" />
 
-    <GridLayout
+    <LinearLayout
         android:id="@+id/address_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
-        android:layout_marginVertical="8dp"
-        android:columnCount="2"
-        android:rowCount="1"
-        android:useDefaultMargins="false"
         app:layout_constraintTop_toBottomOf="@+id/addressTextView">
 
         <EditText
             android:id="@+id/editStreet"
-            android:layout_width="257dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
             android:layout_marginEnd="10dp"
+            android:layout_weight="80"
             android:background="@drawable/edittext_drawable"
             android:hint="Rua"
             android:inputType="text"
@@ -203,10 +197,10 @@
 
         <EditText
             android:id="@+id/editNumber"
-            android:layout_width="80dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="32dp"
             android:layout_marginVertical="8dp"
+            android:layout_weight="20"
             android:background="@drawable/edittext_drawable"
             android:hint="Num"
             android:inputType="numberDecimal"
@@ -219,25 +213,22 @@
             app:layout_constraintTop_toBottomOf="@+id/editStreet"
             tools:layout_editor_absoluteX="16dp" />
 
-    </GridLayout>
+    </LinearLayout>
 
-    <GridLayout
+    <LinearLayout
         android:id="@+id/address_layout_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
-        android:layout_marginVertical="8dp"
-        android:columnCount="2"
-        android:rowCount="1"
-        android:useDefaultMargins="false"
         app:layout_constraintTop_toBottomOf="@+id/address_layout">
 
         <EditText
             android:id="@+id/editNeighborhood"
-            android:layout_width="180dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
             android:layout_marginEnd="10dp"
+            android:layout_weight="60"
             android:background="@drawable/edittext_drawable"
             android:hint="Bairro"
             android:inputType="text"
@@ -252,10 +243,10 @@
 
         <EditText
             android:id="@+id/editCity"
-            android:layout_width="157dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
-            android:layout_marginEnd="10dp"
+            android:layout_weight="40"
             android:background="@drawable/edittext_drawable"
             android:hint="Cidade"
             android:inputType="text"
@@ -268,25 +259,22 @@
             app:layout_constraintTop_toBottomOf="@+id/editStreet"
             tools:layout_editor_absoluteX="16dp" />
 
-    </GridLayout>
+    </LinearLayout>
 
-    <GridLayout
+    <LinearLayout
         android:id="@+id/address_layout_3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
-        android:layout_marginVertical="8dp"
-        android:columnCount="2"
-        android:rowCount="1"
-        android:useDefaultMargins="false"
         app:layout_constraintTop_toBottomOf="@+id/address_layout_2">
 
         <EditText
             android:id="@+id/editState"
-            android:layout_width="180dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
             android:layout_marginEnd="10dp"
+            android:layout_weight="60"
             android:background="@drawable/edittext_drawable"
             android:hint="Estado"
             android:inputType="text"
@@ -301,10 +289,10 @@
 
         <EditText
             android:id="@+id/editCountry"
-            android:layout_width="157dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
-            android:layout_marginEnd="10dp"
+            android:layout_weight="40"
             android:background="@drawable/edittext_drawable"
             android:hint="País"
             android:inputType="text"
@@ -317,7 +305,7 @@
             app:layout_constraintTop_toBottomOf="@+id/editStreet"
             tools:layout_editor_absoluteX="16dp" />
 
-    </GridLayout>
+    </LinearLayout>
 
     <Button
         android:id="@+id/registerButton"
