@@ -14,8 +14,8 @@ import com.example.projectmobile.api.types.User
 import com.example.projectmobile.databinding.ActivityAdminUsersBinding
 import com.example.projectmobile.databinding.ModalLayoutBinding
 import com.example.projectmobile.ui.admin.users.adapter.AdminUserAdapter
-import com.example.projectmobile.ui.admin.users.user.CreateUserActivity
-import com.example.projectmobile.ui.admin.users.user.VisualizeUserActivity
+import com.example.projectmobile.ui.admin.users.clicklistener.UserClickListener
+import com.example.projectmobile.ui.admin.users.manager.ManageUserActivity
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
 
@@ -24,10 +24,14 @@ class AdminUsersActivity : AppCompatActivity(), UserClickListener {
     private val binding get() = _binding!!
     private val adapter = AdminUserAdapter(this)
 
+    private lateinit var preferencesManager: UserPreferencesManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityAdminUsersBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        preferencesManager = UserPreferencesManager(this)
 
         supportActionBar?.hide()
 
@@ -42,7 +46,7 @@ class AdminUsersActivity : AppCompatActivity(), UserClickListener {
         }
 
         binding.addButton.setOnClickListener {
-            startActivity(Intent(this, CreateUserActivity::class.java))
+            startActivity(Intent(this, ManageUserActivity::class.java))
         }
 
         handleSearch()
@@ -54,11 +58,10 @@ class AdminUsersActivity : AppCompatActivity(), UserClickListener {
 
     private fun handleSearch() {
         val search = binding.editResearch.text.toString()
-        val preferencesManager = UserPreferencesManager(this)
-        getUsersData(preferencesManager, search)
+        getUsersData(search)
     }
 
-    private fun getUsersData(preferencesManager: UserPreferencesManager, search: String) {
+    private fun getUsersData(search: String) {
         loading()
         val apiService = APIService(preferencesManager.getToken())
         val url = "/user/list?page=1&size=100&sort=ASC&search=$search"
@@ -125,7 +128,8 @@ class AdminUsersActivity : AppCompatActivity(), UserClickListener {
     }
 
     override fun onEditCarClick(user: User) {
-        startActivity(Intent(this@AdminUsersActivity, VisualizeUserActivity::class.java))
+        preferencesManager.saveSelectedUser(user)
+        startActivity(Intent(this@AdminUsersActivity, ManageUserActivity::class.java))
     }
 
     override fun onDeleteCarClick(user: User) {
@@ -152,7 +156,6 @@ class AdminUsersActivity : AppCompatActivity(), UserClickListener {
 
     private fun deleteItem(user: User) {
         loading()
-        val preferencesManager = UserPreferencesManager(this)
         val apiService = APIService(preferencesManager.getToken())
         val url = "/user?id=${user.id}"
 

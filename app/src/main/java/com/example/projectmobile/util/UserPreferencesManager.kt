@@ -20,6 +20,7 @@ class UserPreferencesManager(private val context: Context) {
         const val DATA = "userData"
         const val SELECTED_CAR = "selectedCar"
         const val SELECTED_RESERVATION = "selectedReservation"
+        const val SELECTED_USER = "selectedUser"
         const val SELECTED_DATE_W = "selectedWithdraw"
         const val SELECTED_DATE_D = "selectedDelivery"
     }
@@ -96,6 +97,10 @@ class UserPreferencesManager(private val context: Context) {
         return null
     }
 
+    fun removeSelectedCar() {
+        sharedPreferences.edit().remove(SELECTED_CAR).apply()
+    }
+
     fun saveSelectedReservation(reservation: Reservation) {
         val json = gson.toJson(reservation)
 
@@ -110,6 +115,30 @@ class UserPreferencesManager(private val context: Context) {
         }
 
         return null
+    }
+
+    fun removeSelectedReservation() {
+        sharedPreferences.edit().remove(SELECTED_RESERVATION).apply()
+    }
+
+    fun saveSelectedUser(user: User) {
+        val json = gson.toJson(user)
+
+        sharedPreferences.edit().putString(SELECTED_USER, json).apply()
+    }
+
+    fun getSelectedUser(): User? {
+        val data = sharedPreferences.getString(SELECTED_USER, null)
+
+        if (data != null) {
+            return gson.fromJson(data, User::class.java)
+        }
+
+        return null
+    }
+
+    fun removeSelectedUser() {
+        sharedPreferences.edit().remove(SELECTED_USER).apply()
     }
 
     fun saveWithdrawDate(date: String) {

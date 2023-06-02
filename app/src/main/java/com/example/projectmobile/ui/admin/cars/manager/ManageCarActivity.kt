@@ -1,4 +1,4 @@
-package com.example.projectmobile.ui.admin.reservations.reservation
+package com.example.projectmobile.ui.admin.cars.manager
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,19 +8,19 @@ import android.widget.Toast
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
-import com.example.projectmobile.databinding.ActivityCreateReservationBinding
+import com.example.projectmobile.databinding.ActivityCreateCarBinding
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
 
-class CreateReservationActivity : AppCompatActivity() {
-    private var _binding: ActivityCreateReservationBinding? = null
+class ManageCarActivity : AppCompatActivity() {
+    private var _binding: ActivityCreateCarBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var preferencesManager: UserPreferencesManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _binding = ActivityCreateReservationBinding.inflate(layoutInflater)
+        _binding = ActivityCreateCarBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         preferencesManager = UserPreferencesManager(this)
@@ -32,40 +32,52 @@ class CreateReservationActivity : AppCompatActivity() {
         }
 
         binding.registerButton.setOnClickListener {
-            val userId = binding.userId.text.toString()
-            val vehicleId = binding.vehicleId.text.toString()
-            val pickup = binding.pickup.text.toString()
-            val devolution = binding.devolution.text.toString()
+            val brand = binding.editBrand.text.toString()
+            val model = binding.editModel.text.toString()
+            val color = binding.editColor.text.toString()
+            val plate = binding.editPlate.text.toString()
+            val price = binding.editPrice.text.toString()
 
-            if (validateFields(userId, vehicleId, pickup, devolution)) {
+            if (validateFields(brand, model, color, plate, price)) {
                 sendDataToServer()
             }
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        preferencesManager.removeSelectedCar()
+    }
+
     private fun validateFields(
-        userId: String,
-        vehicleId: String,
-        pickup: String,
-        devolution: String,
+        brand: String,
+        model: String,
+        color: String,
+        plate: String,
+        price: String,
     ): Boolean {
-        if (TextUtils.isEmpty(userId)) {
-            binding.userId.error = "Campo obrigatório"
+        if (TextUtils.isEmpty(brand)) {
+            binding.editBrand.error = "Campo obrigatório"
             return false
         }
 
-        if (TextUtils.isEmpty(vehicleId)) {
-            binding.vehicleId.error = "Campo obrigatório"
+        if (TextUtils.isEmpty(model)) {
+            binding.editModel.error = "Campo obrigatório"
             return false
         }
 
-        if (TextUtils.isEmpty(pickup)) {
-            binding.pickup.error = "Campo obrigatório"
+        if (TextUtils.isEmpty(color)) {
+            binding.editColor.error = "Campo obrigatório"
             return false
         }
 
-        if (TextUtils.isEmpty(devolution)) {
-            binding.devolution.error = "Campo obrigatório"
+        if (TextUtils.isEmpty(plate)) {
+            binding.editPlate.error = "Campo obrigatório"
+            return false
+        }
+
+        if (TextUtils.isEmpty(price)) {
+            binding.editPrice.error = "Campo obrigatório"
             return false
         }
 
@@ -75,7 +87,7 @@ class CreateReservationActivity : AppCompatActivity() {
     private fun sendDataToServer() {
         loading()
         val apiService = APIService(preferencesManager.getToken())
-        val url = "/reservation/register"
+        val url = "/vehicle/register"
 
         val requestData = getRequestData()
 
@@ -86,7 +98,7 @@ class CreateReservationActivity : AppCompatActivity() {
 
                     runOnUiThread {
                         Toast.makeText(
-                            this@CreateReservationActivity,
+                            this@ManageCarActivity,
                             message,
                             Toast.LENGTH_SHORT
                         ).show()
@@ -99,7 +111,7 @@ class CreateReservationActivity : AppCompatActivity() {
                     runOnUiThread {
                         loaded()
                         Toast.makeText(
-                            this@CreateReservationActivity,
+                            this@ManageCarActivity,
                             errorCode,
                             Toast.LENGTH_SHORT
                         ).show()
@@ -111,7 +123,7 @@ class CreateReservationActivity : AppCompatActivity() {
                 runOnUiThread {
                     loaded()
                     Toast.makeText(
-                        this@CreateReservationActivity,
+                        this@ManageCarActivity,
                         error.message,
                         Toast.LENGTH_SHORT
                     ).show()
@@ -121,24 +133,28 @@ class CreateReservationActivity : AppCompatActivity() {
     }
 
     private fun getRequestData(): String {
-        val userId = binding.userId.text.toString()
-        val vehicleId = binding.vehicleId.text.toString()
-        val pickup = binding.pickup.text.toString()
-        val devolution = binding.devolution.text.toString()
+        val brand = binding.editBrand.text.toString()
+        val model = binding.editModel.text.toString()
+        val color = binding.editColor.text.toString()
+        val plate = binding.editPlate.text.toString()
+        val price = binding.editPrice.text.toString()
 
         return """
-            "userId": "$userId",
-            "vehicleId": "$vehicleId",
-            "pickup": "$pickup",
-            "devolution": "$devolution",
+            "brand": "$brand",
+            "model": "$model",
+            "color": "$color",
+            "plate": "$plate",
+            "value": "$price",
         """.trimIndent()
     }
 
     private fun loading() {
         binding.titleTextView.visibility = View.GONE
-        binding.idLayout.visibility = View.GONE
-        binding.pickup.visibility = View.GONE
-        binding.devolution.visibility = View.GONE
+        binding.editBrand.visibility = View.GONE
+        binding.editModel.visibility = View.GONE
+        binding.editColor.visibility = View.GONE
+        binding.editPlate.visibility = View.GONE
+        binding.editPrice.visibility = View.GONE
         binding.registerButton.visibility = View.GONE
 
         binding.progressBar.visibility = View.VISIBLE
@@ -146,9 +162,11 @@ class CreateReservationActivity : AppCompatActivity() {
 
     private fun loaded() {
         binding.titleTextView.visibility = View.VISIBLE
-        binding.idLayout.visibility = View.VISIBLE
-        binding.pickup.visibility = View.VISIBLE
-        binding.devolution.visibility = View.VISIBLE
+        binding.editBrand.visibility = View.VISIBLE
+        binding.editModel.visibility = View.VISIBLE
+        binding.editColor.visibility = View.VISIBLE
+        binding.editPlate.visibility = View.VISIBLE
+        binding.editPrice.visibility = View.VISIBLE
         binding.registerButton.visibility = View.VISIBLE
 
         binding.progressBar.visibility = View.GONE

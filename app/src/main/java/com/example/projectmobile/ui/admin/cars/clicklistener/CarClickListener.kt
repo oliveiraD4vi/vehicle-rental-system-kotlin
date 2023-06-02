@@ -1,4 +1,4 @@
-package com.example.projectmobile.ui.admin.cars
+package com.example.projectmobile.ui.admin.cars.clicklistener
 
 import com.example.projectmobile.api.types.Car
 

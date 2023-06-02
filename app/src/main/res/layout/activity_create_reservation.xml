@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".ui.admin.reservations.reservation.CreateReservationActivity">
+    tools:context=".ui.admin.reservations.manager.ManageReservationActivity">
 
     <ImageButton
         android:id="@+id/returnButton"

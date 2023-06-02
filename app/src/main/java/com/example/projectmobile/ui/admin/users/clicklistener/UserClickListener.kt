@@ -1,4 +1,4 @@
-package com.example.projectmobile.ui.admin.users
+package com.example.projectmobile.ui.admin.users.clicklistener
 
 import com.example.projectmobile.api.types.User
 

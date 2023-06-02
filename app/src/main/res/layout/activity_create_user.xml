@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".ui.admin.users.user.CreateUserActivity">
+    tools:context=".ui.admin.users.manager.ManageUserActivity">
 
     <ImageButton
         android:id="@+id/returnButton"

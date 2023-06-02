@@ -1,4 +1,4 @@
-package com.example.projectmobile.ui.admin.users.user
+package com.example.projectmobile.ui.admin.users.manager
 
 import android.R
 import androidx.appcompat.app.AppCompatActivity
@@ -19,7 +19,7 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CreateUserActivity : AppCompatActivity() {
+class ManageUserActivity : AppCompatActivity() {
     private var _binding: ActivityCreateUserBinding? = null
     private val binding get() = _binding!!
 
@@ -54,6 +54,11 @@ class CreateUserActivity : AppCompatActivity() {
                 sendDataToServer()
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        preferencesManager.removeSelectedUser()
     }
 
     private fun configureUserTypeSpinner() {
@@ -91,7 +96,7 @@ class CreateUserActivity : AppCompatActivity() {
 
                     runOnUiThread {
                         Toast.makeText(
-                            this@CreateUserActivity,
+                            this@ManageUserActivity,
                             message,
                             Toast.LENGTH_SHORT
                         ).show()
@@ -104,7 +109,7 @@ class CreateUserActivity : AppCompatActivity() {
                     runOnUiThread {
                         loaded()
                         Toast.makeText(
-                            this@CreateUserActivity,
+                            this@ManageUserActivity,
                             errorCode,
                             Toast.LENGTH_SHORT
                         ).show()
@@ -116,7 +121,7 @@ class CreateUserActivity : AppCompatActivity() {
                 runOnUiThread {
                     loaded()
                     Toast.makeText(
-                        this@CreateUserActivity,
+                        this@ManageUserActivity,
                         error.message,
                         Toast.LENGTH_SHORT
                     ).show()

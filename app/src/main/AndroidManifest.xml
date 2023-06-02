@@ -17,31 +17,19 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".ui.admin.cars.car.CreateCarActivity"
+            android:name=".ui.admin.cars.manager.ManageCarActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.admin.reservations.reservation.CreateReservationActivity"
+            android:name=".ui.admin.reservations.manager.ManageReservationActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.admin.users.user.CreateUserActivity"
+            android:name=".ui.admin.users.manager.ManageUserActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.reservations.ReservationsDetailsActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.admin.users.user.VisualizeUserActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.admin.reservations.reservation.VisualizeReservationActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.admin.cars.car.VisualizeCarActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

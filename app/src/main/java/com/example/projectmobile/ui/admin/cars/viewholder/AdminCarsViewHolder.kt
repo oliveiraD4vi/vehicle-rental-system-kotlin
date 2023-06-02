@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projectmobile.R
 import com.example.projectmobile.api.types.Car
 import com.example.projectmobile.databinding.RowAdminItemBinding
-import com.example.projectmobile.ui.admin.cars.CarClickListener
+import com.example.projectmobile.ui.admin.cars.clicklistener.CarClickListener
 
 class AdminCarsViewHolder(private val bind: RowAdminItemBinding, private val carClickListener: CarClickListener): RecyclerView.ViewHolder(bind.root) {
     fun bind(car: Car) {
