@@ -131,12 +131,10 @@ class ManageReservationActivity : AppCompatActivity() {
         val pickup = binding.pickup.text.toString()
         val devolution = binding.devolution.text.toString()
 
-        return """
-            "userId": "$userId",
-            "vehicleId": "$vehicleId",
-            "pickup": "$pickup",
-            "devolution": "$devolution",
-        """.trimIndent()
+        return "{\"userId\": \"$userId\", " +
+                "\"vehicleId\": \"$vehicleId\", " +
+                "\"pickup\": \"$pickup\", " +
+                "\"devolution\": \"$devolution\"}"
     }
 
     private fun loading() {

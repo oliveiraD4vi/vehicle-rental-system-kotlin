@@ -35,6 +35,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/returnButton" />
 
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/editButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginVertical="8dp"
+        android:checked="false"
+        android:text="Editar"
+        android:visibility="gone"
+        android:textColor="@color/blue_primary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+        app:thumbTextPadding="16dp"
+        app:thumbTint="@color/grey_100"
+        app:trackTint="@color/switch_track_list" />
+
     <EditText
         android:id="@+id/editBrand"
         android:layout_width="match_parent"
@@ -51,7 +68,7 @@
         android:paddingVertical="4dp"
         android:textColor="@color/blue_primary"
         android:textColorHint="@color/black_overlay"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+        app:layout_constraintTop_toBottomOf="@+id/editButton"
         tools:layout_editor_absoluteX="16dp" />
 
     <EditText
@@ -141,6 +158,22 @@
         android:paddingHorizontal="32dp"
         android:paddingVertical="4dp"
         android:text="Cadastrar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginVertical="32dp"
+        android:backgroundTint="@color/yellow_primary"
+        android:maxWidth="488dp"
+        android:paddingHorizontal="32dp"
+        android:paddingVertical="4dp"
+        android:text="Salvar"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

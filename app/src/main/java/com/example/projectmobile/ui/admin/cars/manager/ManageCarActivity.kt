@@ -2,17 +2,21 @@ package com.example.projectmobile.ui.admin.cars.manager
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.TextUtils
 import android.view.View
 import android.widget.Toast
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
+import com.example.projectmobile.api.types.Car
 import com.example.projectmobile.databinding.ActivityCreateCarBinding
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
 
 class ManageCarActivity : AppCompatActivity() {
+    private var vehicleId: Int? = null
     private var _binding: ActivityCreateCarBinding? = null
     private val binding get() = _binding!!
 
@@ -31,6 +35,21 @@ class ManageCarActivity : AppCompatActivity() {
             finish()
         }
 
+        verifySelectedItem()
+
+        binding.editButton.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                enableFields()
+
+                binding.registerButton.visibility = View.GONE
+                binding.saveButton.visibility = View.VISIBLE
+            } else {
+                disableFields()
+                loaded(true)
+                binding.saveButton.visibility = View.GONE
+            }
+        }
+
         binding.registerButton.setOnClickListener {
             val brand = binding.editBrand.text.toString()
             val model = binding.editModel.text.toString()
@@ -42,11 +61,42 @@ class ManageCarActivity : AppCompatActivity() {
                 sendDataToServer()
             }
         }
+
+        binding.saveButton.setOnClickListener {
+            val brand = binding.editBrand.text.toString()
+            val model = binding.editModel.text.toString()
+            val color = binding.editColor.text.toString()
+            val plate = binding.editPlate.text.toString()
+            val price = binding.editPrice.text.toString()
+
+            if (validateFields(brand, model, color, plate, price)) {
+                saveData()
+            }
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         preferencesManager.removeSelectedCar()
+    }
+
+    private fun verifySelectedItem() {
+        val item: Car? = preferencesManager.getSelectedCar()
+
+        if (item != null) {
+            vehicleId = item.id
+            binding.titleTextView.text = "ID: $vehicleId"
+            binding.editBrand.setText(item.brand)
+            binding.editPrice.setText(item.value.toString())
+            binding.editPlate.setText(item.plate)
+            binding.editColor.setText(item.color)
+            binding.editModel.setText(item.model)
+
+            binding.editButton.visibility = View.VISIBLE
+            binding.registerButton.visibility = View.GONE
+
+            disableFields()
+        }
     }
 
     private fun validateFields(
@@ -109,7 +159,7 @@ class ManageCarActivity : AppCompatActivity() {
                     val errorCode = response.message
 
                     runOnUiThread {
-                        loaded()
+                        loaded(false)
                         Toast.makeText(
                             this@ManageCarActivity,
                             errorCode,
@@ -121,7 +171,57 @@ class ManageCarActivity : AppCompatActivity() {
 
             override fun onError(error: IOException) {
                 runOnUiThread {
-                    loaded()
+                    loaded(false)
+                    Toast.makeText(
+                        this@ManageCarActivity,
+                        error.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
+    }
+
+    private fun saveData() {
+        loading()
+        val apiService = APIService(preferencesManager.getToken())
+        val url = "/vehicle"
+
+        val requestData = getRequestData()
+
+        println(requestData)
+
+        apiService.putData(url, requestData, object : APICallback {
+            override fun onSuccess(response: APIResponse) {
+                if (!response.error) {
+                    val message = response.message
+
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@ManageCarActivity,
+                            message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    finish()
+                } else {
+                    val errorCode = response.message
+
+                    runOnUiThread {
+                        loaded(true)
+                        Toast.makeText(
+                            this@ManageCarActivity,
+                            errorCode,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onError(error: IOException) {
+                runOnUiThread {
+                    loaded(true)
                     Toast.makeText(
                         this@ManageCarActivity,
                         error.message,
@@ -139,13 +239,12 @@ class ManageCarActivity : AppCompatActivity() {
         val plate = binding.editPlate.text.toString()
         val price = binding.editPrice.text.toString()
 
-        return """
-            "brand": "$brand",
-            "model": "$model",
-            "color": "$color",
-            "plate": "$plate",
-            "value": "$price",
-        """.trimIndent()
+        return "{\"id\": $vehicleId, " +
+                "\"brand\": \"$brand\", " +
+                "\"model\": \"$model\", " +
+                "\"color\": \"$color\", " +
+                "\"plate\": \"$plate\", " +
+                "\"value\": $price}"
     }
 
     private fun loading() {
@@ -156,19 +255,43 @@ class ManageCarActivity : AppCompatActivity() {
         binding.editPlate.visibility = View.GONE
         binding.editPrice.visibility = View.GONE
         binding.registerButton.visibility = View.GONE
+        binding.saveButton.visibility = View.GONE
+        binding.editButton.visibility = View.GONE
 
         binding.progressBar.visibility = View.VISIBLE
     }
 
-    private fun loaded() {
+    private fun loaded(save: Boolean) {
         binding.titleTextView.visibility = View.VISIBLE
         binding.editBrand.visibility = View.VISIBLE
         binding.editModel.visibility = View.VISIBLE
         binding.editColor.visibility = View.VISIBLE
         binding.editPlate.visibility = View.VISIBLE
         binding.editPrice.visibility = View.VISIBLE
-        binding.registerButton.visibility = View.VISIBLE
+
+        if (!save) {
+            binding.registerButton.visibility = View.VISIBLE
+        } else {
+            binding.saveButton.visibility = View.VISIBLE
+            binding.editButton.visibility = View.VISIBLE
+        }
 
         binding.progressBar.visibility = View.GONE
+    }
+
+    private fun disableFields() {
+        binding.editModel.isEnabled = false
+        binding.editBrand.isEnabled = false
+        binding.editColor.isEnabled = false
+        binding.editPlate.isEnabled = false
+        binding.editPrice.isEnabled = false
+    }
+
+    private fun enableFields() {
+        binding.editModel.isEnabled = true
+        binding.editBrand.isEnabled = true
+        binding.editColor.isEnabled = true
+        binding.editPlate.isEnabled = true
+        binding.editPrice.isEnabled = true
     }
 }

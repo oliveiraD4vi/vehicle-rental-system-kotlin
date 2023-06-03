@@ -49,11 +49,14 @@ class AdminCarsActivity : AppCompatActivity(), CarClickListener {
             startActivity(Intent(this, ManageCarActivity::class.java))
         }
 
-        handleSearch()
-
         binding.imageSearch.setOnClickListener {
             handleSearch()
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        handleSearch()
     }
 
     private fun handleSearch() {

@@ -72,10 +72,12 @@ class ProfileFragment : Fragment() {
 
     private fun sendDataToServer(preferencesManager: UserPreferencesManager) {
         loading()
-
         val apiService = APIService(preferencesManager.getToken())
-        val requestData = getUserDataString(preferencesManager)
         val url = "/user"
+
+        val requestData = getUserDataString(preferencesManager)
+
+        println(requestData)
 
         apiService.putData(url, requestData, object : APICallback {
             override fun onSuccess(response: APIResponse) {

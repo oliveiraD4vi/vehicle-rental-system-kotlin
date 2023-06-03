@@ -49,11 +49,14 @@ class AdminUsersActivity : AppCompatActivity(), UserClickListener {
             startActivity(Intent(this, ManageUserActivity::class.java))
         }
 
-        handleSearch()
-
         binding.imageSearch.setOnClickListener {
             handleSearch()
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        handleSearch()
     }
 
     private fun handleSearch() {
