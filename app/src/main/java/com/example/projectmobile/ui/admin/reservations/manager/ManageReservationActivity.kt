@@ -8,11 +8,15 @@ import android.widget.Toast
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
+import com.example.projectmobile.api.types.Reservation
 import com.example.projectmobile.databinding.ActivityCreateReservationBinding
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ManageReservationActivity : AppCompatActivity() {
+    private var reservationId: Int? = null
     private var _binding: ActivityCreateReservationBinding? = null
     private val binding get() = _binding!!
 
@@ -31,6 +35,20 @@ class ManageReservationActivity : AppCompatActivity() {
             finish()
         }
 
+        verifySelectedItem()
+
+        binding.editButton.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                enableFields()
+
+                binding.registerButton.visibility = View.GONE
+                binding.saveButton.visibility = View.VISIBLE
+            } else {
+                disableFields()
+                binding.saveButton.visibility = View.GONE
+            }
+        }
+
         binding.registerButton.setOnClickListener {
             val userId = binding.userId.text.toString()
             val vehicleId = binding.vehicleId.text.toString()
@@ -41,11 +59,33 @@ class ManageReservationActivity : AppCompatActivity() {
                 sendDataToServer()
             }
         }
+
+        binding.saveButton.setOnClickListener {
+//            saveData()
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         preferencesManager.removeSelectedReservation()
+    }
+
+    private fun verifySelectedItem() {
+        val item: Reservation? = preferencesManager.getSelectedReservation()
+
+        if (item != null) {
+            reservationId = item.id
+            binding.titleTextView.text = "ID: $reservationId"
+            binding.userId.setText(item.user_id.toString())
+            binding.vehicleId.setText(item.vehicle_id.toString())
+            binding.pickup.setText(dateFormatter(item.pickup))
+            binding.devolution.setText(dateFormatter(item.devolution))
+
+            binding.editButton.visibility = View.VISIBLE
+            binding.registerButton.visibility = View.GONE
+
+            disableFields()
+        }
     }
 
     private fun validateFields(
@@ -157,5 +197,26 @@ class ManageReservationActivity : AppCompatActivity() {
         binding.registerButton.visibility = View.VISIBLE
 
         binding.progressBar.visibility = View.GONE
+    }
+
+    private fun disableFields() {
+        binding.userId.isEnabled = false
+        binding.vehicleId.isEnabled = false
+        binding.pickup.isEnabled = false
+        binding.devolution.isEnabled = false
+    }
+
+    private fun enableFields() {
+        binding.userId.isEnabled = true
+        binding.vehicleId.isEnabled = true
+        binding.pickup.isEnabled = true
+        binding.devolution.isEnabled = true
+    }
+
+    private fun dateFormatter(dataString: String): String? {
+        val entryFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+        val exitFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+
+        return entryFormat.parse(dataString)?.let { exitFormat.format(it) }
     }
 }
