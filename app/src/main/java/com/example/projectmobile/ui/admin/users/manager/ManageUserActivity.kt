@@ -193,7 +193,7 @@ class ManageUserActivity : AppCompatActivity() {
 
         val requestData = getRequestData()
 
-        println("BBBBBB")
+        println(requestData)
 
         apiService.putData(url, requestData, object : APICallback {
             override fun onSuccess(response: APIResponse) {
@@ -213,7 +213,7 @@ class ManageUserActivity : AppCompatActivity() {
                     val errorCode = response.message
 
                     runOnUiThread {
-                        loaded(false)
+                        loaded(true)
                         Toast.makeText(
                             this@ManageUserActivity,
                             errorCode,
@@ -225,7 +225,7 @@ class ManageUserActivity : AppCompatActivity() {
 
             override fun onError(error: IOException) {
                 runOnUiThread {
-                    loaded(false)
+                    loaded(true)
                     Toast.makeText(
                         this@ManageUserActivity,
                         error.message,
@@ -349,7 +349,6 @@ class ManageUserActivity : AppCompatActivity() {
         binding.titleTextView.visibility = View.VISIBLE
         binding.nameRole.visibility = View.VISIBLE
         binding.editEmail.visibility = View.VISIBLE
-        binding.editPassword.visibility = View.VISIBLE
         binding.editCPF.visibility = View.VISIBLE
         binding.birthdayPhone.visibility = View.VISIBLE
         binding.addressTextView.visibility = View.VISIBLE
@@ -359,6 +358,7 @@ class ManageUserActivity : AppCompatActivity() {
 
         if (!save) {
             binding.registerButton.visibility = View.VISIBLE
+            binding.editPassword.visibility = View.VISIBLE
         } else {
             binding.saveButton.visibility = View.VISIBLE
             binding.editButton.visibility = View.VISIBLE
@@ -380,6 +380,7 @@ class ManageUserActivity : AppCompatActivity() {
         binding.editState.isEnabled = false
         binding.editCity.isEnabled = false
         binding.editCountry.isEnabled = false
+        binding.spinnerUserType.isEnabled = false
     }
 
     private fun enableFields() {
@@ -395,6 +396,7 @@ class ManageUserActivity : AppCompatActivity() {
         binding.editState.isEnabled = true
         binding.editCity.isEnabled = true
         binding.editCountry.isEnabled = true
+        binding.spinnerUserType.isEnabled = true
     }
 
     private fun dateFormatter(dataString: String): String? {
