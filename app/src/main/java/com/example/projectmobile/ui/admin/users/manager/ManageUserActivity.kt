@@ -13,6 +13,7 @@ import android.widget.Toast
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
+import com.example.projectmobile.api.types.User
 import com.example.projectmobile.databinding.ActivityCreateUserBinding
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
@@ -20,6 +21,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class ManageUserActivity : AppCompatActivity() {
+    private var userId: Int? = null
     private var _binding: ActivityCreateUserBinding? = null
     private val binding get() = _binding!!
 
@@ -43,6 +45,21 @@ class ManageUserActivity : AppCompatActivity() {
             finish()
         }
 
+        verifySelectedItem()
+
+        binding.editButton.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                enableFields()
+
+                binding.registerButton.visibility = View.GONE
+                binding.saveButton.visibility = View.VISIBLE
+            } else {
+                disableFields()
+                loaded(true)
+                binding.saveButton.visibility = View.GONE
+            }
+        }
+
         binding.registerButton.setOnClickListener {
             val name = binding.editName.text.toString()
             val email = binding.editEmail.text.toString()
@@ -54,11 +71,50 @@ class ManageUserActivity : AppCompatActivity() {
                 sendDataToServer()
             }
         }
+
+        binding.saveButton.setOnClickListener {
+            val name = binding.editName.text.toString()
+            val email = binding.editEmail.text.toString()
+            val cpf = binding.editCPF.text.toString()
+            val bornAt = binding.editBirthday.text.toString()
+
+            if (validateFields(name, email, null, cpf, bornAt)) {
+                saveData()
+            }
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         preferencesManager.removeSelectedUser()
+    }
+
+    private fun verifySelectedItem() {
+        val item: User? = preferencesManager.getSelectedUser()
+
+        if (item != null) {
+            userId = item.id
+            binding.titleTextView.text = "ID: $userId"
+            binding.editName.setText(item.name)
+            binding.editEmail.setText(item.email)
+
+            binding.editPassword.visibility = View.GONE
+
+            binding.editCPF.setText(item.cpf)
+            binding.editBirthday.setText(dateFormatter(item.bornAt))
+            binding.editPhone.setText(item.phone)
+            binding.editStreet.setText(item.street)
+            binding.editNumber.setText(item.number.toString())
+            binding.editNeighborhood.setText(item.neighborhood)
+            binding.editState.setText(item.state)
+            binding.editCity.setText(item.city)
+            binding.editCountry.setText(item.country)
+
+            binding.editButton.visibility = View.VISIBLE
+            binding.registerButton.visibility = View.GONE
+
+            disableFields()
+        }
     }
 
     private fun configureUserTypeSpinner() {
@@ -107,7 +163,7 @@ class ManageUserActivity : AppCompatActivity() {
                     val errorCode = response.message
 
                     runOnUiThread {
-                        loaded()
+                        loaded(false)
                         Toast.makeText(
                             this@ManageUserActivity,
                             errorCode,
@@ -119,7 +175,57 @@ class ManageUserActivity : AppCompatActivity() {
 
             override fun onError(error: IOException) {
                 runOnUiThread {
-                    loaded()
+                    loaded(false)
+                    Toast.makeText(
+                        this@ManageUserActivity,
+                        error.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
+    }
+
+    private fun saveData() {
+        loading()
+        val apiService = APIService(preferencesManager.getToken())
+        val url = "/user"
+
+        val requestData = getRequestData()
+
+        println("BBBBBB")
+
+        apiService.putData(url, requestData, object : APICallback {
+            override fun onSuccess(response: APIResponse) {
+                if (!response.error) {
+                    val message = response.message
+
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@ManageUserActivity,
+                            message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    finish()
+                } else {
+                    val errorCode = response.message
+
+                    runOnUiThread {
+                        loaded(false)
+                        Toast.makeText(
+                            this@ManageUserActivity,
+                            errorCode,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onError(error: IOException) {
+                runOnUiThread {
+                    loaded(false)
                     Toast.makeText(
                         this@ManageUserActivity,
                         error.message,
@@ -144,27 +250,26 @@ class ManageUserActivity : AppCompatActivity() {
         val city = binding.editCity.text.toString()
         val country = binding.editCountry.text.toString()
 
-        return """{
-            "name": "$name",
-            "email": "$email",
-            "password": "$password",
-            "cpf": "$cpf",
-            "bornAt": "$bornAt",
-            "phone": "$phone",
-            "street": "$street",
-            "number": "$number",
-            "neighborhood": "$neighborhood",
-            "state": "$state",
-            "city": "$city",
-            "country": "$country",
-            "role": $userRole
-        }""".trimIndent()
+        return "{\"id\": $userId, " +
+                "\"name\": \"$name\", " +
+                "\"email\": \"$email\", " +
+                "\"password\": \"$password\", " +
+                "\"cpf\": \"$cpf\", " +
+                "\"bornAt\": \"$bornAt\", " +
+                "\"phone\": \"$phone\", " +
+                "\"street\": \"$street\", " +
+                "\"number\": $number, " +
+                "\"neighborhood\": \"$neighborhood\", " +
+                "\"state\": \"$state\", " +
+                "\"city\": \"$city\", " +
+                "\"country\": \"$country\", " +
+                "\"role\": \"${userRole}\"}"
     }
 
     private fun validateFields(
         nome: String,
         email: String,
-        senha: String,
+        senha: String?,
         cpf: String,
         dataNascimento: String
     ): Boolean {
@@ -181,12 +286,14 @@ class ManageUserActivity : AppCompatActivity() {
             return false
         }
 
-        if (TextUtils.isEmpty(senha)) {
-            binding.editPassword.error = "Campo obrigatório"
-            return false
-        } else if (senha.length < 6) {
-            binding.editPassword.error = "A senha deve conter no mínimo 6 caracteres"
-            return false
+        if (senha != null) {
+            if (TextUtils.isEmpty(senha)) {
+                binding.editPassword.error = "Campo obrigatório"
+                return false
+            } else if (senha.length < 6) {
+                binding.editPassword.error = "A senha deve conter no mínimo 6 caracteres"
+                return false
+            }
         }
 
         if (TextUtils.isEmpty(cpf)) {
@@ -232,11 +339,13 @@ class ManageUserActivity : AppCompatActivity() {
         binding.addressLayout2.visibility = View.GONE
         binding.addressLayout3.visibility = View.GONE
         binding.registerButton.visibility = View.GONE
+        binding.editButton.visibility = View.GONE
+        binding.saveButton.visibility = View.GONE
 
         binding.progressBar.visibility = View.VISIBLE
     }
 
-    private fun loaded() {
+    private fun loaded(save: Boolean) {
         binding.titleTextView.visibility = View.VISIBLE
         binding.nameRole.visibility = View.VISIBLE
         binding.editEmail.visibility = View.VISIBLE
@@ -247,8 +356,51 @@ class ManageUserActivity : AppCompatActivity() {
         binding.addressLayout.visibility = View.VISIBLE
         binding.addressLayout2.visibility = View.VISIBLE
         binding.addressLayout3.visibility = View.VISIBLE
-        binding.registerButton.visibility = View.VISIBLE
+
+        if (!save) {
+            binding.registerButton.visibility = View.VISIBLE
+        } else {
+            binding.saveButton.visibility = View.VISIBLE
+            binding.editButton.visibility = View.VISIBLE
+        }
 
         binding.progressBar.visibility = View.GONE
+    }
+
+    private fun disableFields() {
+        binding.editName.isEnabled = false
+        binding.editEmail.isEnabled = false
+        binding.editPassword.isEnabled = false
+        binding.editCPF.isEnabled = false
+        binding.editBirthday.isEnabled = false
+        binding.editPhone.isEnabled = false
+        binding.editStreet.isEnabled = false
+        binding.editNumber.isEnabled = false
+        binding.editNeighborhood.isEnabled = false
+        binding.editState.isEnabled = false
+        binding.editCity.isEnabled = false
+        binding.editCountry.isEnabled = false
+    }
+
+    private fun enableFields() {
+        binding.editName.isEnabled = true
+        binding.editEmail.isEnabled = true
+        binding.editPassword.isEnabled = true
+        binding.editCPF.isEnabled = true
+        binding.editBirthday.isEnabled = true
+        binding.editPhone.isEnabled = true
+        binding.editStreet.isEnabled = true
+        binding.editNumber.isEnabled = true
+        binding.editNeighborhood.isEnabled = true
+        binding.editState.isEnabled = true
+        binding.editCity.isEnabled = true
+        binding.editCountry.isEnabled = true
+    }
+
+    private fun dateFormatter(dataString: String): String? {
+        val entryFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+        val exitFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+
+        return entryFormat.parse(dataString)?.let { exitFormat.format(it) }
     }
 }
