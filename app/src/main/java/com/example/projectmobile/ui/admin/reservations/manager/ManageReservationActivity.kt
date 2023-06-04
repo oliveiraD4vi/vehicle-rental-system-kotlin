@@ -80,9 +80,11 @@ class ManageReservationActivity : AppCompatActivity() {
     private fun sendDataToServer() {
         loading()
         val apiService = APIService(preferencesManager.getToken())
-        val url = "/reservation/register"
+        val url = "/reservation"
 
         val requestData = getRequestData()
+
+        println(requestData)
 
         apiService.postData(url, requestData, object : APICallback {
             override fun onSuccess(response: APIResponse) {
@@ -131,8 +133,8 @@ class ManageReservationActivity : AppCompatActivity() {
         val pickup = binding.pickup.text.toString()
         val devolution = binding.devolution.text.toString()
 
-        return "{\"userId\": \"$userId\", " +
-                "\"vehicleId\": \"$vehicleId\", " +
+        return "{\"user_id\": \"$userId\", " +
+                "\"vehicle_id\": \"$vehicleId\", " +
                 "\"pickup\": \"$pickup\", " +
                 "\"devolution\": \"$devolution\"}"
     }

@@ -145,6 +145,8 @@ class ManageUserActivity : AppCompatActivity() {
 
         val requestData = getRequestData()
 
+        println(requestData)
+
         apiService.postData(url, requestData, object : APICallback {
             override fun onSuccess(response: APIResponse) {
                 if (!response.error) {
@@ -244,11 +246,15 @@ class ManageUserActivity : AppCompatActivity() {
         val bornAt = binding.editBirthday.text.toString()
         val phone = binding.editPhone.text.toString()
         val street = binding.editStreet.text.toString()
-        val number = binding.editNumber.text.toString()
+        var number: String? = binding.editNumber.text.toString()
         val neighborhood = binding.editNeighborhood.text.toString()
         val state = binding.editState.text.toString()
         val city = binding.editCity.text.toString()
         val country = binding.editCountry.text.toString()
+
+        if (TextUtils.isEmpty(number)) {
+            number = null
+        }
 
         return "{\"id\": $userId, " +
                 "\"name\": \"$name\", " +
