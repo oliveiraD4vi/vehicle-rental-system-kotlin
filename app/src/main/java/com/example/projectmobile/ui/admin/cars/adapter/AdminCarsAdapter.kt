@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectmobile.api.types.Car
 import com.example.projectmobile.databinding.RowAdminItemBinding
-import com.example.projectmobile.ui.admin.cars.CarClickListener
+import com.example.projectmobile.ui.admin.cars.clicklistener.CarClickListener
 import com.example.projectmobile.ui.admin.cars.viewholder.AdminCarsViewHolder
 
 class AdminCarsAdapter(private val carClickListener: CarClickListener) : RecyclerView.Adapter<AdminCarsViewHolder>() {

@@ -1,4 +1,4 @@
-package com.example.projectmobile.ui.admin.reservations
+package com.example.projectmobile.ui.admin.reservations.clicklistener
 
 import com.example.projectmobile.api.types.Reservation
 

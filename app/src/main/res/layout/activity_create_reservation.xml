@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.admin.reservations.manager.ManageReservationActivity">
+
+    <ImageButton
+        android:id="@+id/returnButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="32dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/go_back_button_description"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:src="?attr/homeAsUpIndicator"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/blue_primary" />
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nova reserva"
+        android:textColor="@color/blue_primary"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/returnButton" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/editButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginVertical="8dp"
+        android:checked="false"
+        android:text="Editar"
+        android:visibility="gone"
+        android:textColor="@color/blue_primary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+        app:thumbTextPadding="16dp"
+        app:thumbTint="@color/grey_100"
+        app:trackTint="@color/switch_track_list" />
+
+    <LinearLayout
+        android:id="@+id/id_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:paddingVertical="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/editButton">
+
+        <EditText
+            android:id="@+id/userId"
+            android:layout_width="0dp"
+            android:layout_weight="45"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="16dp"
+            android:autofillHints="emailAddress"
+            android:background="@drawable/edittext_drawable"
+            android:hint="Usuário"
+            android:inputType="number"
+            android:maxWidth="488dp"
+            android:layout_marginEnd="10dp"
+            android:minHeight="48dp"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:textColor="@color/blue_primary"
+            android:textColorHint="@color/black_overlay"
+            app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <EditText
+            android:id="@+id/vehicleId"
+            android:layout_width="0dp"
+            android:layout_weight="45"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="16dp"
+            android:autofillHints="emailAddress"
+            android:background="@drawable/edittext_drawable"
+            android:hint="Carro"
+            android:inputType="number"
+            android:maxWidth="488dp"
+            android:minHeight="48dp"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:textColor="@color/blue_primary"
+            android:textColorHint="@color/black_overlay"
+            app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+            tools:layout_editor_absoluteX="16dp" />
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/pickup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        android:layout_weight="70"
+        android:background="@drawable/edittext_drawable"
+        android:hint="Data de Retirada"
+        android:inputType="date"
+        android:maxWidth="488dp"
+        android:minHeight="48dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:textColor="@color/blue_primary"
+        android:textColorHint="@color/black_overlay"
+        app:layout_constraintEnd_toEndOf="@+id/id_layout"
+        app:layout_constraintStart_toStartOf="@+id/id_layout"
+        app:layout_constraintTop_toBottomOf="@+id/id_layout" />
+
+    <EditText
+        android:id="@+id/devolution"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        android:layout_weight="70"
+        android:background="@drawable/edittext_drawable"
+        android:hint="Data de Devolução"
+        android:inputType="date"
+        android:maxWidth="488dp"
+        android:minHeight="48dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:textColor="@color/blue_primary"
+        android:textColorHint="@color/black_overlay"
+        app:layout_constraintEnd_toEndOf="@+id/pickup"
+        app:layout_constraintStart_toStartOf="@+id/pickup"
+        app:layout_constraintTop_toBottomOf="@+id/pickup" />
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginVertical="32dp"
+        android:backgroundTint="@color/yellow_primary"
+        android:maxWidth="488dp"
+        android:paddingHorizontal="32dp"
+        android:paddingVertical="4dp"
+        android:text="Salvar"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/registerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginVertical="32dp"
+        android:backgroundTint="@color/yellow_primary"
+        android:maxWidth="488dp"
+        android:paddingHorizontal="32dp"
+        android:paddingVertical="4dp"
+        android:text="Cadastrar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Barra de Progresso -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="64dp"
+        android:indeterminateTint="@color/yellow_primary"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

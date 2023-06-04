@@ -5,19 +5,17 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.projectmobile.R
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
 import com.example.projectmobile.api.types.User
-import com.example.projectmobile.databinding.ActivityAdminCarsBinding
 import com.example.projectmobile.databinding.ActivityAdminUsersBinding
 import com.example.projectmobile.databinding.ModalLayoutBinding
 import com.example.projectmobile.ui.admin.users.adapter.AdminUserAdapter
-import com.example.projectmobile.ui.admin.users.user.VisualizeUserActivity
+import com.example.projectmobile.ui.admin.users.clicklistener.UserClickListener
+import com.example.projectmobile.ui.admin.users.manager.ManageUserActivity
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
 
@@ -26,10 +24,14 @@ class AdminUsersActivity : AppCompatActivity(), UserClickListener {
     private val binding get() = _binding!!
     private val adapter = AdminUserAdapter(this)
 
+    private lateinit var preferencesManager: UserPreferencesManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityAdminUsersBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        preferencesManager = UserPreferencesManager(this)
 
         supportActionBar?.hide()
 
@@ -43,20 +45,26 @@ class AdminUsersActivity : AppCompatActivity(), UserClickListener {
             finish()
         }
 
-        handleSearch()
+        binding.addButton.setOnClickListener {
+            startActivity(Intent(this, ManageUserActivity::class.java))
+        }
 
         binding.imageSearch.setOnClickListener {
             handleSearch()
         }
     }
 
-    private fun handleSearch() {
-        val search = binding.editResearch.text.toString()
-        val preferencesManager = UserPreferencesManager(this)
-        getUsersData(preferencesManager, search)
+    override fun onStart() {
+        super.onStart()
+        handleSearch()
     }
 
-    private fun getUsersData(preferencesManager: UserPreferencesManager, search: String) {
+    private fun handleSearch() {
+        val search = binding.editResearch.text.toString()
+        getUsersData(search)
+    }
+
+    private fun getUsersData(search: String) {
         loading()
         val apiService = APIService(preferencesManager.getToken())
         val url = "/user/list?page=1&size=100&sort=ASC&search=$search"
@@ -123,7 +131,8 @@ class AdminUsersActivity : AppCompatActivity(), UserClickListener {
     }
 
     override fun onEditCarClick(user: User) {
-        startActivity(Intent(this@AdminUsersActivity, VisualizeUserActivity::class.java))
+        preferencesManager.saveSelectedUser(user)
+        startActivity(Intent(this@AdminUsersActivity, ManageUserActivity::class.java))
     }
 
     override fun onDeleteCarClick(user: User) {
@@ -150,7 +159,6 @@ class AdminUsersActivity : AppCompatActivity(), UserClickListener {
 
     private fun deleteItem(user: User) {
         loading()
-        val preferencesManager = UserPreferencesManager(this)
         val apiService = APIService(preferencesManager.getToken())
         val url = "/user?id=${user.id}"
 

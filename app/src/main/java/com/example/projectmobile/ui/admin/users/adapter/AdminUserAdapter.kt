@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectmobile.api.types.User
 import com.example.projectmobile.databinding.RowAdminItemBinding
-import com.example.projectmobile.ui.admin.users.UserClickListener
+import com.example.projectmobile.ui.admin.users.clicklistener.UserClickListener
 import com.example.projectmobile.ui.admin.users.viewholder.AdminUserViewHolder
 
 class AdminUserAdapter(private val userClickListener: UserClickListener) : RecyclerView.Adapter<AdminUserViewHolder>() {

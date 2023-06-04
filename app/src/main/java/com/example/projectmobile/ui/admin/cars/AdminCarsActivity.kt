@@ -14,7 +14,8 @@ import com.example.projectmobile.api.types.Car
 import com.example.projectmobile.databinding.ActivityAdminCarsBinding
 import com.example.projectmobile.databinding.ModalLayoutBinding
 import com.example.projectmobile.ui.admin.cars.adapter.AdminCarsAdapter
-import com.example.projectmobile.ui.admin.cars.car.VisualizeCarActivity
+import com.example.projectmobile.ui.admin.cars.clicklistener.CarClickListener
+import com.example.projectmobile.ui.admin.cars.manager.ManageCarActivity
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
 
@@ -23,10 +24,14 @@ class AdminCarsActivity : AppCompatActivity(), CarClickListener {
     private val binding get() = _binding!!
     private val adapter = AdminCarsAdapter(this)
 
+    private lateinit var preferencesManager: UserPreferencesManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityAdminCarsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        preferencesManager = UserPreferencesManager(this)
 
         supportActionBar?.hide()
 
@@ -40,20 +45,26 @@ class AdminCarsActivity : AppCompatActivity(), CarClickListener {
             finish()
         }
 
-        handleSearch()
+        binding.addButton.setOnClickListener {
+            startActivity(Intent(this, ManageCarActivity::class.java))
+        }
 
         binding.imageSearch.setOnClickListener {
             handleSearch()
         }
     }
 
-    private fun handleSearch() {
-        val search = binding.editResearch.text.toString()
-        val preferencesManager = UserPreferencesManager(this)
-        getVehiclesData(preferencesManager, search)
+    override fun onStart() {
+        super.onStart()
+        handleSearch()
     }
 
-    private fun getVehiclesData(preferencesManager: UserPreferencesManager, search: String) {
+    private fun handleSearch() {
+        val search = binding.editResearch.text.toString()
+        getVehiclesData(search)
+    }
+
+    private fun getVehiclesData(search: String) {
         loading()
         val apiService = APIService(preferencesManager.getToken())
         val url = "/vehicle/list?page=1&size=100&sort=ASC&search=$search"
@@ -120,7 +131,8 @@ class AdminCarsActivity : AppCompatActivity(), CarClickListener {
     }
 
     override fun onEditCarClick(car: Car) {
-        startActivity(Intent(this@AdminCarsActivity, VisualizeCarActivity::class.java))
+        preferencesManager.saveSelectedCar(car)
+        startActivity(Intent(this@AdminCarsActivity, ManageCarActivity::class.java))
     }
 
     override fun onDeleteCarClick(car: Car) {
@@ -147,7 +159,6 @@ class AdminCarsActivity : AppCompatActivity(), CarClickListener {
 
     private fun deleteItem(car: Car) {
         loading()
-        val preferencesManager = UserPreferencesManager(this)
         val apiService = APIService(preferencesManager.getToken())
         val url = "/vehicle?id=${car.id}"
 

@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectmobile.api.types.Reservation
 import com.example.projectmobile.databinding.RowAdminItemBinding
-import com.example.projectmobile.ui.admin.reservations.ReservationClickListener
+import com.example.projectmobile.ui.admin.reservations.clicklistener.ReservationClickListener
 import com.example.projectmobile.ui.admin.reservations.viewholder.AdminReservationViewHolder
 
 class AdminReservationAdapter(private val reservationClickListener: ReservationClickListener) : RecyclerView.Adapter<AdminReservationViewHolder>() {

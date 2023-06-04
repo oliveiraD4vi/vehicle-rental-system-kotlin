@@ -11,11 +11,11 @@ import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
 import com.example.projectmobile.api.types.Reservation
-import com.example.projectmobile.databinding.ActivityAdminCarsBinding
 import com.example.projectmobile.databinding.ActivityAdminReservationsBinding
 import com.example.projectmobile.databinding.ModalLayoutBinding
 import com.example.projectmobile.ui.admin.reservations.adapter.AdminReservationAdapter
-import com.example.projectmobile.ui.admin.reservations.reservation.VisualizeReservationActivity
+import com.example.projectmobile.ui.admin.reservations.clicklistener.ReservationClickListener
+import com.example.projectmobile.ui.admin.reservations.manager.ManageReservationActivity
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
 
@@ -24,10 +24,14 @@ class AdminReservationsActivity : AppCompatActivity(), ReservationClickListener 
     private val binding get() = _binding!!
     private val adapter = AdminReservationAdapter(this)
 
+    private lateinit var preferencesManager: UserPreferencesManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityAdminReservationsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        preferencesManager = UserPreferencesManager(this)
 
         supportActionBar?.hide()
 
@@ -41,20 +45,26 @@ class AdminReservationsActivity : AppCompatActivity(), ReservationClickListener 
             finish()
         }
 
-        handleSearch()
+        binding.addButton.setOnClickListener {
+            startActivity(Intent(this, ManageReservationActivity::class.java))
+        }
 
         binding.imageSearch.setOnClickListener {
             handleSearch()
         }
     }
 
-    private fun handleSearch() {
-        val search = binding.editResearch.text.toString()
-        val preferencesManager = UserPreferencesManager(this)
-        getReservationsData(preferencesManager, search)
+    override fun onStart() {
+        super.onStart()
+        handleSearch()
     }
 
-    private fun getReservationsData(preferencesManager: UserPreferencesManager, search: String) {
+    private fun handleSearch() {
+        val search = binding.editResearch.text.toString()
+        getReservationsData(search)
+    }
+
+    private fun getReservationsData(search: String) {
         loading()
         val apiService = APIService(preferencesManager.getToken())
         val url = "/reservation/list?page=1&size=100&sort=ASC&search=$search"
@@ -121,10 +131,11 @@ class AdminReservationsActivity : AppCompatActivity(), ReservationClickListener 
     }
 
     override fun onEditCarClick(reservation: Reservation) {
+        preferencesManager.saveSelectedReservation(reservation)
         startActivity(
             Intent(
                 this@AdminReservationsActivity,
-                VisualizeReservationActivity::class.java
+                ManageReservationActivity::class.java
             )
         )
     }
@@ -153,7 +164,6 @@ class AdminReservationsActivity : AppCompatActivity(), ReservationClickListener 
 
     private fun deleteItem(reservation: Reservation) {
         loading()
-        val preferencesManager = UserPreferencesManager(this)
         val apiService = APIService(preferencesManager.getToken())
         val url = "/reservation?id=${reservation.id}"
 
