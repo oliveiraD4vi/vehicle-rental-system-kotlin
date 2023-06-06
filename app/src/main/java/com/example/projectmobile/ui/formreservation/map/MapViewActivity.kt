@@ -31,11 +31,14 @@ class MapViewActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map_view)
+
         supportActionBar?.hide()
+
         val backButton: ImageButton = findViewById(R.id.returnButton)
         backButton.setOnClickListener {
             finish()
         }
+
         val finishButton: Button = findViewById(R.id.finish_button)
         finishButton.setOnClickListener {
             val intent = Intent(this@MapViewActivity, MainActivity::class.java)
@@ -106,6 +109,10 @@ class MapViewActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
 
+        // Ativar controles do mapa
+        map.uiSettings.isZoomControlsEnabled = true
+        map.uiSettings.isCompassEnabled = true
+
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -117,13 +124,12 @@ class MapViewActivity : AppCompatActivity(), OnMapReadyCallback {
             // Obter a localização atual do usuário
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 location?.let {
-                    // Personalize o mapa conforme suas necessidades, como definir a posição inicial e adicionar um marcador
-                    val latitude = -4.969732  // Latitude da agência da locadora
-                    val longitude = -39.016754  // Longitude da agência da locadora
-                    val agencyLocation = LatLng(latitude, longitude)
+                    val agencyLocation = LatLng(AGENCY_LATITUDE, AGENCY_LONGITUDE)
+
                     googleMap.addMarker(
                         MarkerOptions().position(agencyLocation).title("Agência da Locadora")
                     )
+
                     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(agencyLocation, 16f))
                     // Configurar a rota com dois pontos: localização atual do usuário e agência da locadora
                     val userLocation = LatLng(location.latitude, location.longitude)
@@ -158,5 +164,7 @@ class MapViewActivity : AppCompatActivity(), OnMapReadyCallback {
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 123
+        private const val AGENCY_LATITUDE = -4.969732
+        private const val AGENCY_LONGITUDE = -39.016754
     }
 }
