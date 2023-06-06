@@ -48,9 +48,7 @@ class MapViewActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val viewOnMapButton: Button = findViewById(R.id.view_on_map)
         viewOnMapButton.setOnClickListener {
-            val latitude = -4.969732  // Latitude da agência da locadora
-            val longitude = -39.016754  // Longitude da agência da locadora
-            val uri = "geo:$latitude,$longitude?q=$latitude,$longitude(Agência da Locadora)"
+            val uri = "geo:$AGENCY_LATITUDE,$AGENCY_LONGITUDE?q=$AGENCY_LATITUDE,$AGENCY_LONGITUDE(Agência da Locadora)"
             val mapIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
             mapIntent.setPackage("com.google.android.apps.maps")  // Define o pacote do aplicativo de mapas do Google
             startActivity(mapIntent)
@@ -131,13 +129,16 @@ class MapViewActivity : AppCompatActivity(), OnMapReadyCallback {
                     )
 
                     googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(agencyLocation, 16f))
+
                     // Configurar a rota com dois pontos: localização atual do usuário e agência da locadora
                     val userLocation = LatLng(location.latitude, location.longitude)
+
                     val routePolylineOptions = PolylineOptions()
                         .add(userLocation)
                         .add(agencyLocation)
                         .width(5f)
                         .color(ContextCompat.getColor(this, R.color.route_color))
+
                     googleMap.addPolyline(routePolylineOptions)
                 }
             }
