@@ -1,19 +1,19 @@
 package com.example.projectmobile.ui.formreservation.map
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import com.example.projectmobile.R
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.net.Uri
+import android.os.Bundle
 import android.os.Looper
 import android.widget.Button
 import android.widget.ImageButton
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.projectmobile.MainActivity
+import com.example.projectmobile.R
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -24,9 +24,11 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 
 class MapViewActivity : AppCompatActivity(), OnMapReadyCallback {
+
     private lateinit var mapView: MapView
     private lateinit var googleMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var routePolyline: PolylineOptions
 
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
@@ -57,31 +59,21 @@ class MapViewActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val viewOnMapButton: Button = findViewById(R.id.view_on_map)
         viewOnMapButton.setOnClickListener {
-            val latitude = -4.969732  // Latitude da agência da locadora
-            val longitude = -39.016754  // Longitude da agência da locadora
+            val latitude = AGENCY_LATITUDE
+            val longitude = AGENCY_LONGITUDE
             val uri = "geo:$latitude,$longitude?q=$latitude,$longitude(Agência da Locadora)"
             val mapIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
-            mapIntent.setPackage("com.google.android.apps.maps")  // Define o pacote do aplicativo de mapas do Google
+            mapIntent.setPackage("com.google.android.apps.maps")
             startActivity(mapIntent)
         }
 
         mapView = findViewById(R.id.mapView)
         mapView.onCreate(savedInstanceState)
 
-        // Verificar permissões de localização
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
+        if (checkLocationPermissions()) {
             initializeMap()
         } else {
-            // Solicitar permissão de localização, se não estiver concedida
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                LOCATION_PERMISSION_REQUEST_CODE
-            )
+            requestLocationPermissions()
         }
     }
 
@@ -120,53 +112,31 @@ class MapViewActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
 
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            // Obter a localização atual do usuário
+        if (checkLocationPermissions()) {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 location?.let {
-                    // Personalize o mapa conforme suas necessidades, como definir a posição inicial e adicionar um marcador
-                    val latitude = -4.969732  // Latitude da agência da locadora
-                    val longitude = -39.016754  // Longitude da agência da locadora
-                    val agencyLocation = LatLng(latitude, longitude)
-                    googleMap.addMarker(
-                        MarkerOptions().position(agencyLocation).title("Agência da Locadora")
-                    )
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(agencyLocation, 16f))
-
-                    // Configurar a rota com dois pontos: localização atual do usuário e agência da locadora
-                    val userLocation = LatLng(location.latitude, location.longitude)
-                    val routePolylineOptions = PolylineOptions()
-                        .add(userLocation)
-                        .add(agencyLocation)
-                        .width(5f)
-                        .color(ContextCompat.getColor(this, R.color.route_color))
-                    googleMap.addPolyline(routePolylineOptions)
+                    setupMap(location)
                 }
             }
         }
 
         val updateLocationButton: ImageButton = findViewById(R.id.update_location_button)
         updateLocationButton.setOnClickListener {
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                fusedLocationClient.requestLocationUpdates(
-                    LocationRequest.create(),
-                    locationCallback,
-                    Looper.getMainLooper()
-                )
+            if (checkLocationPermissions()) {
+                if (ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    fusedLocationClient.requestLocationUpdates(
+                        LocationRequest.create(),
+                        locationCallback,
+                        Looper.getMainLooper()
+                    )
+                }
             }
         }
     }
@@ -178,10 +148,33 @@ class MapViewActivity : AppCompatActivity(), OnMapReadyCallback {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (checkLocationPermissions()) {
                 initializeMap()
             }
         }
+    }
+
+    private fun checkLocationPermissions(): Boolean {
+        val fineLocationPermission = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+        val coarseLocationPermission = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+        return fineLocationPermission && coarseLocationPermission
+    }
+
+    private fun requestLocationPermissions() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ),
+            LOCATION_PERMISSION_REQUEST_CODE
+        )
     }
 
     private fun initializeMap() {
@@ -193,30 +186,30 @@ class MapViewActivity : AppCompatActivity(), OnMapReadyCallback {
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
-    private fun updateMapWithLocation(location: Location) {
-        // Remova a polyline anterior, se houver
-        googleMap.clear()
-
-        // Personalize o mapa conforme suas necessidades, como definir a posição inicial e adicionar um marcador
-        val latitude = -4.969732  // Latitude da agência da locadora
-        val longitude = -39.016754  // Longitude da agência da locadora
-        val agencyLocation = LatLng(latitude, longitude)
+    private fun setupMap(location: Location) {
+        val agencyLocation = LatLng(AGENCY_LATITUDE, AGENCY_LONGITUDE)
         googleMap.addMarker(
             MarkerOptions().position(agencyLocation).title("Agência da Locadora")
         )
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(agencyLocation, 16f))
 
-        // Configurar a rota com dois pontos: localização atual do usuário e agência da locadora
         val userLocation = LatLng(location.latitude, location.longitude)
-        val routePolylineOptions = PolylineOptions()
+        routePolyline = PolylineOptions()
             .add(userLocation)
             .add(agencyLocation)
             .width(5f)
             .color(ContextCompat.getColor(this, R.color.route_color))
-        googleMap.addPolyline(routePolylineOptions)
+        googleMap.addPolyline(routePolyline)
+    }
+
+    private fun updateMapWithLocation(location: Location) {
+        googleMap.clear()
+        setupMap(location)
     }
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 123
+        private const val AGENCY_LATITUDE = -4.969732
+        private const val AGENCY_LONGITUDE = -39.016754
     }
 }
