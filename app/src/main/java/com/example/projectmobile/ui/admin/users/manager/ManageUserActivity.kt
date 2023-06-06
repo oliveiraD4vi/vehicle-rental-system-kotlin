@@ -24,6 +24,7 @@ class ManageUserActivity : AppCompatActivity() {
     private var userId: Int? = null
     private var _binding: ActivityCreateUserBinding? = null
     private val binding get() = _binding!!
+    private val userTypes = arrayOf("CLIENT", "ADMIN")
 
     private lateinit var spinnerUserType: Spinner
     private lateinit var preferencesManager: UserPreferencesManager
@@ -36,8 +37,6 @@ class ManageUserActivity : AppCompatActivity() {
 
         spinnerUserType = binding.spinnerUserType
         preferencesManager = UserPreferencesManager(this)
-
-        configureUserTypeSpinner()
 
         supportActionBar?.hide()
 
@@ -53,6 +52,7 @@ class ManageUserActivity : AppCompatActivity() {
 
                 binding.registerButton.visibility = View.GONE
                 binding.saveButton.visibility = View.VISIBLE
+                configureUserTypeSpinner()
             } else {
                 disableFields()
                 loaded(true)
@@ -94,6 +94,7 @@ class ManageUserActivity : AppCompatActivity() {
 
         if (item != null) {
             userId = item.id
+            binding.userType.text = item.role
             binding.titleTextView.text = "ID: $userId"
             binding.editName.setText(item.name)
             binding.editEmail.setText(item.email)
@@ -114,12 +115,13 @@ class ManageUserActivity : AppCompatActivity() {
             binding.registerButton.visibility = View.GONE
 
             disableFields()
+        } else {
+            configureUserTypeSpinner()
         }
     }
 
     private fun configureUserTypeSpinner() {
         // Definir as opções do Spinner
-        val userTypes = arrayOf("CLIENT", "ADMIN")
         val adapter = ArrayAdapter(this, R.layout.simple_spinner_item, userTypes)
 
         // Especificar o layout a ser usado quando as opções aparecerem
@@ -132,6 +134,7 @@ class ManageUserActivity : AppCompatActivity() {
         spinnerUserType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 userRole = userTypes[position]
+                binding.userType.text = userTypes[position]
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}

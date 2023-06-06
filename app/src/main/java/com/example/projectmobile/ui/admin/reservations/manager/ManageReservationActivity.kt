@@ -1,9 +1,13 @@
 package com.example.projectmobile.ui.admin.reservations.manager
 
+import android.R
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
@@ -18,8 +22,16 @@ import java.util.*
 class ManageReservationActivity : AppCompatActivity() {
     private var reservationId: Int? = null
     private var _binding: ActivityCreateReservationBinding? = null
+    private var currentStatus: String? = null
+    private var currentStep: String? = null
+
     private val binding get() = _binding!!
 
+    private val statusList = arrayOf("CREATED", "CONFIRMED", "PICKUP", "FINALIZED")
+    private val stepList = arrayOf("PERSONAL", "VEHICLE", "PAYMENT", "CONCLUDED")
+
+    private lateinit var spinnerStatus: Spinner
+    private lateinit var spinnerStep: Spinner
     private lateinit var preferencesManager: UserPreferencesManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +39,8 @@ class ManageReservationActivity : AppCompatActivity() {
         _binding = ActivityCreateReservationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        spinnerStatus = binding.spinnerStatus
+        spinnerStep = binding.spinnerStep
         preferencesManager = UserPreferencesManager(this)
 
         supportActionBar?.hide()
@@ -35,6 +49,8 @@ class ManageReservationActivity : AppCompatActivity() {
             finish()
         }
 
+        configureSpinner()
+
         verifySelectedItem()
 
         binding.editButton.setOnCheckedChangeListener { _, isChecked ->
@@ -42,9 +58,22 @@ class ManageReservationActivity : AppCompatActivity() {
                 enableFields()
 
                 binding.registerButton.visibility = View.GONE
+                binding.idLayout.visibility = View.GONE
+                binding.pickup.visibility = View.GONE
+                binding.devolution.visibility = View.GONE
+                binding.idStepStatusText.visibility = View.GONE
+
+                binding.idStepStatus.visibility = View.VISIBLE
                 binding.saveButton.visibility = View.VISIBLE
             } else {
                 disableFields()
+
+                binding.idLayout.visibility = View.VISIBLE
+                binding.pickup.visibility = View.VISIBLE
+                binding.devolution.visibility = View.VISIBLE
+                binding.idStepStatusText.visibility = View.VISIBLE
+
+                binding.idStepStatus.visibility = View.GONE
                 binding.saveButton.visibility = View.GONE
             }
         }
@@ -61,7 +90,9 @@ class ManageReservationActivity : AppCompatActivity() {
         }
 
         binding.saveButton.setOnClickListener {
-//            saveData()
+            if (currentStatus != null && currentStep != null) {
+                saveData()
+            }
         }
     }
 
@@ -81,10 +112,52 @@ class ManageReservationActivity : AppCompatActivity() {
             binding.pickup.setText(dateFormatter(item.pickup))
             binding.devolution.setText(dateFormatter(item.devolution))
 
+            currentStatus = item.status.toString()
+            binding.status.text = item.status.toString()
+            binding.layoutStatus.text = item.status.toString()
+
+            currentStep = item.step.toString()
+            binding.step.text = item.step.toString()
+            binding.layoutStep.text = item.step.toString()
+
+            binding.idStepStatusText.visibility = View.VISIBLE
             binding.editButton.visibility = View.VISIBLE
             binding.registerButton.visibility = View.GONE
 
             disableFields()
+        }
+    }
+
+    private fun configureSpinner() {
+        // Definir as opções do Spinner
+        val statusAdapter = ArrayAdapter(this, R.layout.simple_spinner_item, statusList)
+        val stepAdapter = ArrayAdapter(this, R.layout.simple_spinner_item, stepList)
+
+        // Especificar o layout a ser usado quando as opções aparecerem
+        statusAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+        stepAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+
+        // Anexar o adaptador ao Spinner
+        spinnerStatus.adapter = statusAdapter
+        spinnerStep.adapter = stepAdapter
+
+        // Definir um ouvinte de seleção para o Spinner
+        spinnerStatus.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                currentStatus = statusList[position]
+                binding.status.text = statusList[position]
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
+
+        spinnerStep.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                currentStep = stepList[position]
+                binding.step.text = stepList[position]
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
 
@@ -124,8 +197,6 @@ class ManageReservationActivity : AppCompatActivity() {
 
         val requestData = getRequestData()
 
-        println(requestData)
-
         apiService.postData(url, requestData, object : APICallback {
             override fun onSuccess(response: APIResponse) {
                 if (!response.error) {
@@ -144,7 +215,7 @@ class ManageReservationActivity : AppCompatActivity() {
                     val errorCode = response.message
 
                     runOnUiThread {
-                        loaded()
+                        loaded(false)
                         Toast.makeText(
                             this@ManageReservationActivity,
                             errorCode,
@@ -156,7 +227,55 @@ class ManageReservationActivity : AppCompatActivity() {
 
             override fun onError(error: IOException) {
                 runOnUiThread {
-                    loaded()
+                    loaded(false)
+                    Toast.makeText(
+                        this@ManageReservationActivity,
+                        error.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
+    }
+
+    private fun saveData() {
+        loading()
+        val apiService = APIService(preferencesManager.getToken())
+        val url = "/reservation"
+
+        val requestData = getRequestSaveData()
+
+        apiService.putData(url, requestData, object : APICallback {
+            override fun onSuccess(response: APIResponse) {
+                if (!response.error) {
+                    val message = response.message
+
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@ManageReservationActivity,
+                            message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    finish()
+                } else {
+                    val errorCode = response.message
+
+                    runOnUiThread {
+                        loaded(true)
+                        Toast.makeText(
+                            this@ManageReservationActivity,
+                            errorCode,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onError(error: IOException) {
+                runOnUiThread {
+                    loaded(true)
                     Toast.makeText(
                         this@ManageReservationActivity,
                         error.message,
@@ -179,9 +298,17 @@ class ManageReservationActivity : AppCompatActivity() {
                 "\"devolution\": \"$devolution\"}"
     }
 
+    private fun getRequestSaveData(): String {
+        return "{\"id\": $reservationId, " +
+                "\"status\": \"$currentStatus\", " +
+                "\"step\": \"$currentStep\"}"
+    }
+
     private fun loading() {
         binding.titleTextView.visibility = View.GONE
         binding.idLayout.visibility = View.GONE
+        binding.idStepStatus.visibility = View.GONE
+        binding.idStepStatusText.visibility = View.GONE
         binding.pickup.visibility = View.GONE
         binding.devolution.visibility = View.GONE
         binding.registerButton.visibility = View.GONE
@@ -189,12 +316,17 @@ class ManageReservationActivity : AppCompatActivity() {
         binding.progressBar.visibility = View.VISIBLE
     }
 
-    private fun loaded() {
+    private fun loaded(save: Boolean) {
         binding.titleTextView.visibility = View.VISIBLE
         binding.idLayout.visibility = View.VISIBLE
         binding.pickup.visibility = View.VISIBLE
         binding.devolution.visibility = View.VISIBLE
-        binding.registerButton.visibility = View.VISIBLE
+
+        if (!save) {
+            binding.registerButton.visibility = View.VISIBLE
+        } else {
+            binding.idStepStatusText.visibility = View.VISIBLE
+        }
 
         binding.progressBar.visibility = View.GONE
     }
