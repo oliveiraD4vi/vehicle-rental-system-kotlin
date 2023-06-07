@@ -1,4 +1,4 @@
-# Vehicle Rental System Koltin
+# Vehicle Rental System Kotlin
 A Kotlin App for the Vehicle Rental System project
 
 ## How to run
