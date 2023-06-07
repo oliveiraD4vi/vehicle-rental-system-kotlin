@@ -14,3 +14,9 @@ cd ProjectMobile
 # Cloning the project
 git clone git@github.com:oliveiraD4vi/vehicle-rental-system-kotlin.git .
 ```
+## Related
+We have other projects that are related to this one. You may want to see them:
+
+- [Web version with Vue](https://github.com/oliveiraD4vi/vehicle-rental-system-vue)
+- [Web version with React](https://github.com/oliveiraD4vi/vehicle-rental-system-react)
+- [API with Node](https://github.com/oliveiraD4vi/vehicle-rental-system-api)
