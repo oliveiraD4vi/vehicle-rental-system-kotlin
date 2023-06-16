@@ -54,7 +54,7 @@ class FormReservationDataActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun deleteReservation() {
-//        loading()
+        loading()
         val apiService = APIService(preferencesManager.getToken())
         val reservationId = preferencesManager.getReservationId()
         val url = "/reservation?id=$reservationId"
@@ -69,7 +69,7 @@ class FormReservationDataActivity : AppCompatActivity(), View.OnClickListener {
                     val errorCode = response.message
 
                     runOnUiThread {
-//                    loaded()
+                        loaded()
                         Toast.makeText(
                             this@FormReservationDataActivity,
                             errorCode,
@@ -81,7 +81,7 @@ class FormReservationDataActivity : AppCompatActivity(), View.OnClickListener {
 
             override fun onError(error: IOException) {
                 runOnUiThread {
-//                    loaded()
+                    loaded()
                     Toast.makeText(
                         this@FormReservationDataActivity,
                         error.message,
@@ -116,5 +116,35 @@ class FormReservationDataActivity : AppCompatActivity(), View.OnClickListener {
             return false
         }
         return true
+    }
+
+    private fun loading() {
+        binding.editPhone.visibility = View.GONE
+        binding.textAddress.visibility = View.GONE
+        binding.editRoad.visibility = View.GONE
+        binding.editNumber.visibility = View.GONE
+        binding.editNeighborhood.visibility = View.GONE
+        binding.editCity.visibility = View.GONE
+        binding.editState.visibility = View.GONE
+        binding.editCountry.visibility = View.GONE
+        binding.buttonNextDataForm.visibility = View.GONE
+        binding.buttonCancelDataForm.visibility = View.GONE
+
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    private fun loaded() {
+        binding.editPhone.visibility = View.VISIBLE
+        binding.textAddress.visibility = View.VISIBLE
+        binding.editRoad.visibility = View.VISIBLE
+        binding.editNumber.visibility = View.VISIBLE
+        binding.editNeighborhood.visibility = View.VISIBLE
+        binding.editCity.visibility = View.VISIBLE
+        binding.editState.visibility = View.VISIBLE
+        binding.editCountry.visibility = View.VISIBLE
+        binding.buttonNextDataForm.visibility = View.VISIBLE
+        binding.buttonCancelDataForm.visibility = View.VISIBLE
+
+        binding.progressBar.visibility = View.VISIBLE
     }
 }

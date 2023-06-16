@@ -140,7 +140,7 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
     }
 
     private fun deleteReservation() {
-//        loading()
+        loading()
         val apiService = APIService(preferencesManager.getToken())
         val reservationId = preferencesManager.getReservationId()
         val url = "/reservation?id=$reservationId"
@@ -155,7 +155,7 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
                     val errorCode = response.message
 
                     runOnUiThread {
-//                    loaded()
+                        loaded()
                         Toast.makeText(
                             this@FormReservationVehicleActivity,
                             errorCode,
@@ -167,7 +167,7 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
 
             override fun onError(error: IOException) {
                 runOnUiThread {
-//                    loaded()
+                    loaded()
                     Toast.makeText(
                         this@FormReservationVehicleActivity,
                         error.message,
@@ -176,5 +176,35 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
                 }
             }
         })
+    }
+
+    private fun loading() {
+        binding.view.visibility = View.GONE
+        binding.textPriceCar.visibility = View.GONE
+        binding.textNameCar.visibility = View.GONE
+        binding.imageCar1.visibility = View.GONE
+        binding.textDeliveryVehicleForm.visibility = View.GONE
+        binding.textWithdrawalVehicleForm.visibility = View.GONE
+        binding.buttonDeliveryVehicleForm.visibility = View.GONE
+        binding.buttonWithdrawalVehicleForm.visibility = View.GONE
+        binding.buttonNextVehicleForm.visibility = View.GONE
+        binding.buttonCancelVehicleForm.visibility = View.GONE
+
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    private fun loaded() {
+        binding.view.visibility = View.VISIBLE
+        binding.textPriceCar.visibility = View.VISIBLE
+        binding.textNameCar.visibility = View.VISIBLE
+        binding.imageCar1.visibility = View.VISIBLE
+        binding.textDeliveryVehicleForm.visibility = View.VISIBLE
+        binding.textWithdrawalVehicleForm.visibility = View.VISIBLE
+        binding.buttonDeliveryVehicleForm.visibility = View.VISIBLE
+        binding.buttonWithdrawalVehicleForm.visibility = View.VISIBLE
+        binding.buttonNextVehicleForm.visibility = View.VISIBLE
+        binding.buttonCancelVehicleForm.visibility = View.VISIBLE
+
+        binding.progressBar.visibility = View.GONE
     }
 }

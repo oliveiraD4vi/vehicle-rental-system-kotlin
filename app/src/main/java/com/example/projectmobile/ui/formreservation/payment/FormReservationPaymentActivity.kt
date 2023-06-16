@@ -38,8 +38,7 @@ class FormReservationPaymentActivity : AppCompatActivity(), View.OnClickListener
         if (view.id == R.id.returnButton) {
             finish()
         } else if (view.id == R.id.button_cancel_payment_form) {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
+            deleteReservation()
         } else if (view.id == R.id.button_confirm_payment_form) {
             startActivity(Intent(this, MapViewActivity::class.java))
             finish()
@@ -47,7 +46,7 @@ class FormReservationPaymentActivity : AppCompatActivity(), View.OnClickListener
     }
 
     private fun deleteReservation() {
-//        loading()
+        loading()
         val apiService = APIService(preferencesManager.getToken())
         val reservationId = preferencesManager.getReservationId()
         val url = "/reservation?id=$reservationId"
@@ -62,7 +61,7 @@ class FormReservationPaymentActivity : AppCompatActivity(), View.OnClickListener
                     val errorCode = response.message
 
                     runOnUiThread {
-//                    loaded()
+                        loaded()
                         Toast.makeText(
                             this@FormReservationPaymentActivity,
                             errorCode,
@@ -74,7 +73,7 @@ class FormReservationPaymentActivity : AppCompatActivity(), View.OnClickListener
 
             override fun onError(error: IOException) {
                 runOnUiThread {
-//                    loaded()
+                    loaded()
                     Toast.makeText(
                         this@FormReservationPaymentActivity,
                         error.message,
@@ -83,5 +82,21 @@ class FormReservationPaymentActivity : AppCompatActivity(), View.OnClickListener
                 }
             }
         })
+    }
+
+    private fun loading() {
+        binding.textView.visibility = View.GONE
+        binding.buttonCancelPaymentForm.visibility = View.GONE
+        binding.buttonConfirmPaymentForm.visibility = View.GONE
+
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
+    private fun loaded() {
+        binding.textView.visibility = View.VISIBLE
+        binding.buttonCancelPaymentForm.visibility = View.VISIBLE
+        binding.buttonConfirmPaymentForm.visibility = View.VISIBLE
+
+        binding.progressBar.visibility = View.GONE
     }
 }
