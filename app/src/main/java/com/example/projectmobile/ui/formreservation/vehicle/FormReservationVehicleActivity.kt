@@ -10,9 +10,13 @@ import android.widget.DatePicker
 import android.widget.Toast
 import com.example.projectmobile.MainActivity
 import com.example.projectmobile.R
+import com.example.projectmobile.api.callback.APICallback
+import com.example.projectmobile.api.service.APIService
+import com.example.projectmobile.api.types.APIResponse
 import com.example.projectmobile.databinding.ActivityFormReservationVehicleBinding
 import com.example.projectmobile.ui.formreservation.payment.FormReservationPaymentActivity
 import com.example.projectmobile.util.UserPreferencesManager
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -20,6 +24,7 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
     DatePickerDialog.OnDateSetListener {
     private var id: String = ""
 
+    private lateinit var preferencesManager: UserPreferencesManager
     private lateinit var binding: ActivityFormReservationVehicleBinding
 
     @SuppressLint("SimpleDateFormat")
@@ -32,7 +37,7 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
         setContentView(binding.root)
         supportActionBar?.hide()
 
-        val preferencesManager = UserPreferencesManager(this)
+        preferencesManager = UserPreferencesManager(this)
         // Verify selected vehicle
         verifySelectedCar(preferencesManager)
         // Verify if a date is already selected
@@ -56,8 +61,7 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
                 handleDate()
             }
             R.id.button_cancel_vehicle_form -> {
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
+                deleteReservation()
             }
             R.id.returnButton -> {
                 finish()
@@ -133,5 +137,44 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
         if (dDate != null) {
             binding.buttonDeliveryVehicleForm.text = dDate
         }
+    }
+
+    private fun deleteReservation() {
+//        loading()
+        val apiService = APIService(preferencesManager.getToken())
+        val reservationId = preferencesManager.getReservationId()
+        val url = "/reservation?id=$reservationId"
+
+        apiService.deleteData(url, object : APICallback {
+            override fun onSuccess(response: APIResponse) {
+                if (!response.error) {
+                    val intent = Intent(this@FormReservationVehicleActivity, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                } else {
+                    val errorCode = response.message
+
+                    runOnUiThread {
+//                    loaded()
+                        Toast.makeText(
+                            this@FormReservationVehicleActivity,
+                            errorCode,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onError(error: IOException) {
+                runOnUiThread {
+//                    loaded()
+                    Toast.makeText(
+                        this@FormReservationVehicleActivity,
+                        error.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
     }
 }
