@@ -12,6 +12,7 @@ import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
 import com.example.projectmobile.databinding.ActivityFormReservationPaymentBinding
 import com.example.projectmobile.ui.formreservation.map.MapViewActivity
+import com.example.projectmobile.ui.formreservation.vehicle.FormReservationVehicleActivity
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
 
@@ -36,12 +37,11 @@ class FormReservationPaymentActivity : AppCompatActivity(), View.OnClickListener
 
     override fun onClick(view: View) {
         if (view.id == R.id.returnButton) {
-            finish()
+            previous()
         } else if (view.id == R.id.button_cancel_payment_form) {
             deleteReservation()
         } else if (view.id == R.id.button_confirm_payment_form) {
-            startActivity(Intent(this, MapViewActivity::class.java))
-            finish()
+            next()
         }
     }
 
@@ -57,6 +57,96 @@ class FormReservationPaymentActivity : AppCompatActivity(), View.OnClickListener
                     val intent = Intent(this@FormReservationPaymentActivity, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
+                } else {
+                    val errorCode = response.message
+
+                    runOnUiThread {
+                        loaded()
+                        Toast.makeText(
+                            this@FormReservationPaymentActivity,
+                            errorCode,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onError(error: IOException) {
+                runOnUiThread {
+                    loaded()
+                    Toast.makeText(
+                        this@FormReservationPaymentActivity,
+                        error.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
+    }
+
+    private fun next() {
+        loading()
+        val apiService = APIService(preferencesManager.getToken())
+        val reservationId = preferencesManager.getReservationId()
+        val url = "/reservation/next?id=$reservationId"
+
+        apiService.putData(url, "", object : APICallback {
+            override fun onSuccess(response: APIResponse) {
+                if (!response.error) {
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@FormReservationPaymentActivity,
+                            response.message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    startActivity(Intent(this@FormReservationPaymentActivity, MapViewActivity::class.java))
+                } else {
+                    val errorCode = response.message
+
+                    runOnUiThread {
+                        loaded()
+                        Toast.makeText(
+                            this@FormReservationPaymentActivity,
+                            errorCode,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onError(error: IOException) {
+                runOnUiThread {
+                    loaded()
+                    Toast.makeText(
+                        this@FormReservationPaymentActivity,
+                        error.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
+    }
+
+    private fun previous() {
+        loading()
+        val apiService = APIService(preferencesManager.getToken())
+        val reservationId = preferencesManager.getReservationId()
+        val url = "/reservation/previous?id=$reservationId"
+
+        apiService.putData(url, "", object : APICallback {
+            override fun onSuccess(response: APIResponse) {
+                if (!response.error) {
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@FormReservationPaymentActivity,
+                            response.message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    finish()
                 } else {
                     val errorCode = response.message
 

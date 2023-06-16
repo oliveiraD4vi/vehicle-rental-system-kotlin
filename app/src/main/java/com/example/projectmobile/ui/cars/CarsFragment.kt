@@ -43,7 +43,15 @@ class CarsFragment : Fragment() {
 
         // Listener function to car click
         val adapter = CarsAdapter { car ->
-            getLast(preferencesManager, car)
+            if (preferencesManager.isLoggedIn()) {
+                getLast(preferencesManager, car)
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Você precisa estar logado para realizar esta ação",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
 
         //layout

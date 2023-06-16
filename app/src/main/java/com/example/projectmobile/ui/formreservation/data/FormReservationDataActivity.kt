@@ -11,6 +11,7 @@ import com.example.projectmobile.R
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
+import com.example.projectmobile.api.types.User
 import com.example.projectmobile.databinding.ActivityFormReservationDataBinding
 import com.example.projectmobile.ui.formreservation.vehicle.FormReservationVehicleActivity
 import com.example.projectmobile.util.UserPreferencesManager
@@ -30,6 +31,8 @@ class FormReservationDataActivity : AppCompatActivity(), View.OnClickListener {
 
         preferencesManager = UserPreferencesManager(this)
 
+        getUserData()
+
         binding.returnButton.setOnClickListener(this)
         binding.buttonCancelDataForm.setOnClickListener(this)
         binding.buttonNextDataForm.setOnClickListener(this)
@@ -42,7 +45,7 @@ class FormReservationDataActivity : AppCompatActivity(), View.OnClickListener {
             deleteReservation()
         } else if (view.id == R.id.button_next_data_form) {
             if (validateData()) {
-                startActivity(Intent(this, FormReservationVehicleActivity::class.java))
+                confirmData()
             } else {
                 Toast.makeText(
                     applicationContext,
@@ -118,6 +121,166 @@ class FormReservationDataActivity : AppCompatActivity(), View.OnClickListener {
         return true
     }
 
+    private fun getUserData() {
+        loading()
+        val apiService = APIService(preferencesManager.getToken())
+        val userId = preferencesManager.getUserId()
+        val url = "/user/personal?id=$userId"
+
+        apiService.getData(url, object : APICallback {
+            override fun onSuccess(response: APIResponse) {
+                if (!response.error) {
+                    val user: User? = response.user
+
+                    runOnUiThread {
+                        binding.editPhone.setText(user?.phone)
+                        binding.editRoad.setText(user?.street)
+                        binding.editNumber.setText(user?.number.toString())
+                        binding.editNeighborhood.setText(user?.neighborhood)
+                        binding.editCity.setText(user?.city)
+                        binding.editState.setText(user?.state)
+                        binding.editCountry.setText(user?.country)
+
+                        loaded()
+                    }
+                } else {
+                    val errorCode = response.message
+
+                    runOnUiThread {
+                        loaded()
+                        Toast.makeText(
+                            this@FormReservationDataActivity,
+                            errorCode,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onError(error: IOException) {
+                runOnUiThread {
+                    loaded()
+                    Toast.makeText(
+                        this@FormReservationDataActivity,
+                        error.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
+    }
+
+    private fun confirmData() {
+        loading()
+        val apiService = APIService(preferencesManager.getToken())
+        val url = "/user"
+
+        val requestData = getRequestData()
+
+        apiService.putData(url, requestData, object : APICallback {
+            override fun onSuccess(response: APIResponse) {
+                if (!response.error) {
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@FormReservationDataActivity,
+                            response.message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    next()
+                } else {
+                    val errorCode = response.message
+
+                    runOnUiThread {
+                        loaded()
+                        Toast.makeText(
+                            this@FormReservationDataActivity,
+                            errorCode,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onError(error: IOException) {
+                runOnUiThread {
+                    loaded()
+                    Toast.makeText(
+                        this@FormReservationDataActivity,
+                        error.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
+    }
+
+    private fun getRequestData(): String {
+        val userId = preferencesManager.getUserId()
+        val phone = binding.editPhone.text.toString()
+        val street = binding.editRoad.text.toString()
+        val number = binding.editNumber.text.toString()
+        val neighborhood = binding.editNeighborhood.text.toString()
+        val city = binding.editCity.text.toString()
+        val state = binding.editState.text.toString()
+        val country = binding.editCountry.text.toString()
+
+        return "{\"id\": $userId, " +
+                "\"phone\": \"$phone\", " +
+                "\"street\": \"$street\", " +
+                "\"number\": $number, " +
+                "\"neighborhood\": \"$neighborhood\", " +
+                "\"state\": \"$state\", " +
+                "\"city\": \"$city\", " +
+                "\"country\": \"$country\"}"
+    }
+
+    private fun next() {
+        loading()
+        val apiService = APIService(preferencesManager.getToken())
+        val reservationId = preferencesManager.getReservationId()
+        val url = "/reservation/next?id=$reservationId"
+
+        apiService.putData(url, "", object : APICallback {
+            override fun onSuccess(response: APIResponse) {
+                if (!response.error) {
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@FormReservationDataActivity,
+                            response.message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    startActivity(Intent(this@FormReservationDataActivity, FormReservationVehicleActivity::class.java))
+                } else {
+                    val errorCode = response.message
+
+                    runOnUiThread {
+                        loaded()
+                        Toast.makeText(
+                            this@FormReservationDataActivity,
+                            errorCode,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onError(error: IOException) {
+                runOnUiThread {
+                    loaded()
+                    Toast.makeText(
+                        this@FormReservationDataActivity,
+                        error.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
+    }
+
     private fun loading() {
         binding.editPhone.visibility = View.GONE
         binding.textAddress.visibility = View.GONE
@@ -145,6 +308,6 @@ class FormReservationDataActivity : AppCompatActivity(), View.OnClickListener {
         binding.buttonNextDataForm.visibility = View.VISIBLE
         binding.buttonCancelDataForm.visibility = View.VISIBLE
 
-        binding.progressBar.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.GONE
     }
 }
