@@ -146,7 +146,7 @@ class FormReservationPaymentActivity : AppCompatActivity(), View.OnClickListener
                         ).show()
                     }
 
-                    finish()
+                    startActivity(Intent(this@FormReservationPaymentActivity, FormReservationVehicleActivity::class.java))
                 } else {
                     val errorCode = response.message
 

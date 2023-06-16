@@ -241,7 +241,7 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
                         ).show()
                     }
 
-                    finish()
+                    startActivity(Intent(this@FormReservationVehicleActivity, FormReservationDataActivity::class.java))
                 } else {
                     val errorCode = response.message
 
