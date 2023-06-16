@@ -107,25 +107,54 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
                 Toast.LENGTH_SHORT
             ).show()
         } else {
-            next()
+            confirmVehicle()
         }
     }
 
     private fun verifySelectedCar(preferencesManager: UserPreferencesManager) {
-        val car = preferencesManager.getSelectedCar()
+        loading()
+        val apiService = APIService(preferencesManager.getToken())
+        val vehicleId = preferencesManager.getVehicleId()
+        val url = "/vehicle?id=$vehicleId"
 
-        if (car != null) {
-            binding.textNameCar.text = "${car.brand} ${car.model}"
-            binding.textPriceCar.text = "R$ ${car.value}"
-        } else {
-            binding.buttonNextVehicleForm.isEnabled = false
+        apiService.getData(url, object : APICallback {
+            override fun onSuccess(response: APIResponse) {
+                if (!response.error) {
+                    val car = response.vehicle
 
-            Toast.makeText(
-                applicationContext,
-                "O carro deve ser selecionado!",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+                    runOnUiThread {
+                        if (car != null) {
+                            binding.textNameCar.text = "${car.brand} ${car.model}"
+                            binding.textPriceCar.text = "R$ ${car.value}"
+                        }
+
+                        loaded()
+                    }
+                } else {
+                    val errorCode = response.message
+
+                    runOnUiThread {
+                        loaded()
+                        Toast.makeText(
+                            this@FormReservationVehicleActivity,
+                            errorCode,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onError(error: IOException) {
+                runOnUiThread {
+                    loaded()
+                    Toast.makeText(
+                        this@FormReservationVehicleActivity,
+                        error.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
     }
 
     private fun verifySelectedDate(preferencesManager: UserPreferencesManager) {
@@ -138,6 +167,64 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
         if (dDate != null) {
             binding.buttonDeliveryVehicleForm.text = dDate
         }
+    }
+
+    private fun confirmVehicle() {
+        loading()
+        val apiService = APIService(preferencesManager.getToken())
+        val url = "/reservation/confirm"
+
+        val requestData = getRequestData()
+
+        apiService.putData(url, requestData, object : APICallback {
+            override fun onSuccess(response: APIResponse) {
+                if (!response.error) {
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@FormReservationVehicleActivity,
+                            response.message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    next()
+                } else {
+                    val errorCode = response.message
+
+                    runOnUiThread {
+                        loaded()
+                        Toast.makeText(
+                            this@FormReservationVehicleActivity,
+                            errorCode,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onError(error: IOException) {
+                runOnUiThread {
+                    loaded()
+                    Toast.makeText(
+                        this@FormReservationVehicleActivity,
+                        error.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
+    }
+
+    private fun getRequestData(): String {
+        val reservationId = preferencesManager.getReservationId()
+        val vehicleId = preferencesManager.getVehicleId()
+        val pickup = binding.buttonWithdrawalVehicleForm.text.toString()
+        val devolution = binding.buttonDeliveryVehicleForm.text.toString()
+
+        return "{\"reservationId\": \"$reservationId\", " +
+                "\"vehicleId\": \"$vehicleId\", " +
+                "\"pickup\": \"$pickup\", " +
+                "\"devolution\": \"$devolution\"}"
     }
 
     private fun deleteReservation() {

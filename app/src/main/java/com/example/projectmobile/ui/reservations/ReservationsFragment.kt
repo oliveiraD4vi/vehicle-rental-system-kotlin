@@ -90,6 +90,7 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
             override fun onSuccess(response: APIResponse) {
                 if (!response.error) {
                     val reservation: Reservation = response.reservation
+                    preferencesManager.saveVehicleId(reservation.vehicle_id.toString())
                     preferencesManager.saveReservationId(reservation.id.toString())
 
                     when (reservation.step) {

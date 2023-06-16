@@ -124,7 +124,7 @@ class CarsFragment : Fragment() {
         apiService.postData(url, requestData, object : APICallback {
             override fun onSuccess(response: APIResponse) {
                 if (!response.error) {
-                    preferencesManager.saveSelectedCar(car)
+                    preferencesManager.saveVehicleId(response.reservation.vehicle_id.toString())
                     preferencesManager.saveReservationId(response.reservation.id.toString())
                     startActivity(Intent(requireContext(), FormReservationDataActivity::class.java))
 
