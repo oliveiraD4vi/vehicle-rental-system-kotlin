@@ -91,16 +91,64 @@ class CarsFragment : Fragment() {
                     }
                 } else {
                     activity?.runOnUiThread {
-                        preferencesManager.saveSelectedCar(car)
-                        startActivity(Intent(requireContext(), FormReservationDataActivity::class.java))
+                        createReservation(preferencesManager, car)
                     }
                 }
             }
 
             override fun onError(error: IOException) {
                 activity?.runOnUiThread {
+                    createReservation(preferencesManager, car)
+                }
+            }
+        })
+    }
+
+    private fun createReservation(preferencesManager: UserPreferencesManager, car: Car) {
+        loading()
+        val apiService = APIService(preferencesManager.getToken())
+        val userId = preferencesManager.getUserId()
+        val vehicleId = car.id
+        val url = "/reservation/form"
+
+        val requestData = "{\"user_id\": \"$userId\", \"vehicle_id\": \"$vehicleId\"}"
+
+        apiService.postData(url, requestData, object : APICallback {
+            override fun onSuccess(response: APIResponse) {
+                if (!response.error) {
                     preferencesManager.saveSelectedCar(car)
+                    preferencesManager.saveReservationId(response.reservation.id.toString())
                     startActivity(Intent(requireContext(), FormReservationDataActivity::class.java))
+
+                    activity?.runOnUiThread {
+                        Toast.makeText(
+                            requireContext(),
+                            response.message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } else {
+                    val errorCode = response.message
+
+                    activity?.runOnUiThread {
+                        loaded()
+                        Toast.makeText(
+                            requireContext(),
+                            errorCode,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onError(error: IOException) {
+                activity?.runOnUiThread {
+                    loaded()
+                    Toast.makeText(
+                        requireContext(),
+                        error.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         })
