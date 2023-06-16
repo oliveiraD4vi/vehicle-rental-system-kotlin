@@ -13,9 +13,13 @@ import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
 import com.example.projectmobile.api.types.Reservation
+import com.example.projectmobile.api.types.Step
 import com.example.projectmobile.databinding.FragmentReservationsBinding
 import com.example.projectmobile.ui.auth.LoginActivity
 import com.example.projectmobile.ui.cars.CarsFragment
+import com.example.projectmobile.ui.formreservation.data.FormReservationDataActivity
+import com.example.projectmobile.ui.formreservation.payment.FormReservationPaymentActivity
+import com.example.projectmobile.ui.formreservation.vehicle.FormReservationVehicleActivity
 import com.example.projectmobile.ui.reservations.adapter.ReservationsAdapter
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
@@ -48,7 +52,7 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
         binding.recyclerReservations.adapter = adapter
 
         if (verifyUserRole(preferencesManager)) {
-            getReservations(preferencesManager, adapter)
+            getLast(preferencesManager, adapter)
         } else {
             loadedWithZero()
         }
@@ -71,6 +75,60 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
         }
 
         return true
+    }
+
+    private fun getLast(
+        preferencesManager: UserPreferencesManager,
+        adapter: ReservationsAdapter
+    ) {
+        loading()
+        val apiService = APIService(preferencesManager.getToken())
+        val id = preferencesManager.getUserId()
+        val url = "/reservation/last?id=$id"
+
+        apiService.getData(url, object : APICallback {
+            override fun onSuccess(response: APIResponse) {
+                if (!response.error) {
+                    val reservation: Reservation = response.reservation
+                    preferencesManager.saveVehicleId(reservation.vehicle_id.toString())
+                    preferencesManager.saveReservationId(reservation.id.toString())
+
+                    when (reservation.step) {
+                        Step.PERSONAL ->
+                            startActivity(
+                                Intent(
+                                    requireContext(),
+                                    FormReservationDataActivity::class.java
+                                )
+                            )
+                        Step.VEHICLE ->
+                            startActivity(
+                                Intent(
+                                    requireContext(),
+                                    FormReservationVehicleActivity::class.java
+                                )
+                            )
+                        else ->
+                            startActivity(
+                                Intent(
+                                    requireContext(),
+                                    FormReservationPaymentActivity::class.java
+                                )
+                            )
+                    }
+                } else {
+                    activity?.runOnUiThread {
+                        getReservations(preferencesManager, adapter)
+                    }
+                }
+            }
+
+            override fun onError(error: IOException) {
+                activity?.runOnUiThread {
+                    getReservations(preferencesManager, adapter)
+                }
+            }
+        })
     }
 
     private fun getReservations(

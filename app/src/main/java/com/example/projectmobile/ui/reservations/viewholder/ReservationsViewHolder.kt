@@ -26,10 +26,10 @@ class ReservationsViewHolder(
         }
     }
 
-    private fun dateFormatter(dataString: String): String {
+    private fun dateFormatter(dataString: String): String? {
         val entryFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
         val exitFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
-        return exitFormat.format(entryFormat.parse(dataString))
+        return entryFormat.parse(dataString)?.let { exitFormat.format(it) }
     }
 }

@@ -16,8 +16,12 @@ import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
 import com.example.projectmobile.databinding.FragmentCarsBinding
 import com.example.projectmobile.api.types.Car
+import com.example.projectmobile.api.types.Reservation
+import com.example.projectmobile.api.types.Step
 import com.example.projectmobile.ui.cars.adapter.CarsAdapter
 import com.example.projectmobile.ui.formreservation.data.FormReservationDataActivity
+import com.example.projectmobile.ui.formreservation.payment.FormReservationPaymentActivity
+import com.example.projectmobile.ui.formreservation.vehicle.FormReservationVehicleActivity
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
 
@@ -39,8 +43,15 @@ class CarsFragment : Fragment() {
 
         // Listener function to car click
         val adapter = CarsAdapter { car ->
-            preferencesManager.saveSelectedCar(car)
-            startActivity(Intent(requireContext(), FormReservationDataActivity::class.java))
+            if (preferencesManager.isLoggedIn()) {
+                getLast(preferencesManager, car)
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Você precisa estar logado para realizar esta ação",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
 
         //layout
@@ -67,6 +78,88 @@ class CarsFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         binding.editResearch.setText("")
+    }
+
+    private fun getLast(preferencesManager: UserPreferencesManager, car: Car) {
+        loading()
+        val apiService = APIService(preferencesManager.getToken())
+        val id = preferencesManager.getUserId()
+        val url = "/reservation/last?id=$id"
+
+        apiService.getData(url, object : APICallback {
+            override fun onSuccess(response: APIResponse) {
+                if (!response.error) {
+                    activity?.runOnUiThread {
+                        loaded()
+                        Toast.makeText(
+                            requireContext(),
+                            "Você já possui uma reserva em andamento!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } else {
+                    activity?.runOnUiThread {
+                        createReservation(preferencesManager, car)
+                    }
+                }
+            }
+
+            override fun onError(error: IOException) {
+                activity?.runOnUiThread {
+                    createReservation(preferencesManager, car)
+                }
+            }
+        })
+    }
+
+    private fun createReservation(preferencesManager: UserPreferencesManager, car: Car) {
+        loading()
+        val apiService = APIService(preferencesManager.getToken())
+        val userId = preferencesManager.getUserId()
+        val vehicleId = car.id
+        val url = "/reservation/form"
+
+        val requestData = "{\"user_id\": \"$userId\", \"vehicle_id\": \"$vehicleId\"}"
+
+        apiService.postData(url, requestData, object : APICallback {
+            override fun onSuccess(response: APIResponse) {
+                if (!response.error) {
+                    preferencesManager.saveVehicleId(response.reservation.vehicle_id.toString())
+                    preferencesManager.saveReservationId(response.reservation.id.toString())
+                    startActivity(Intent(requireContext(), FormReservationDataActivity::class.java))
+
+                    activity?.runOnUiThread {
+                        Toast.makeText(
+                            requireContext(),
+                            response.message,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } else {
+                    val errorCode = response.message
+
+                    activity?.runOnUiThread {
+                        loaded()
+                        Toast.makeText(
+                            requireContext(),
+                            errorCode,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onError(error: IOException) {
+                activity?.runOnUiThread {
+                    loaded()
+                    Toast.makeText(
+                        requireContext(),
+                        error.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
     }
 
     private fun getAll(adapter: CarsAdapter, url: String){
