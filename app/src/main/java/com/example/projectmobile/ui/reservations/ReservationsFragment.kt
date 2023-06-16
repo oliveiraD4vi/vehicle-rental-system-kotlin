@@ -115,15 +115,8 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
                             )
                     }
                 } else {
-                    val errorCode = response.message
-
                     activity?.runOnUiThread {
                         getReservations(preferencesManager, adapter)
-                        Toast.makeText(
-                            requireContext(),
-                            errorCode,
-                            Toast.LENGTH_SHORT
-                        ).show()
                     }
                 }
             }
@@ -131,11 +124,6 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
             override fun onError(error: IOException) {
                 activity?.runOnUiThread {
                     getReservations(preferencesManager, adapter)
-                    Toast.makeText(
-                        requireContext(),
-                        error.message,
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
             }
         })
