@@ -58,8 +58,8 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
         android:layout_marginVertical="8dp"
-        android:visibility="gone"
         android:paddingVertical="0dp"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/editButton">
 
         <TextView
@@ -262,17 +262,16 @@
         app:layout_constraintStart_toStartOf="parent" />
 
 
-
     <TextView
         android:id="@+id/textUserId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Usuario"
-        android:visibility="gone"
-        android:textColor="@color/blue_primary"
         android:layout_marginTop="8dp"
+        android:text="Usuario"
+        android:textColor="@color/blue_primary"
         android:textSize="24sp"
         android:textStyle="bold"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/devolution" />
@@ -283,7 +282,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
         android:paddingVertical="0dp"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintTop_toBottomOf="@+id/textUserId">
 
         <EditText
@@ -295,9 +294,7 @@
             android:layout_weight="45"
             android:autofillHints="emailAddress"
             android:background="@drawable/edittext_drawable"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:hint="Maria Isadora da Silva"
+            android:hint="Maria Isadora"
             android:inputType="number"
             android:maxWidth="488dp"
             android:minHeight="48dp"
@@ -305,6 +302,8 @@
             android:paddingVertical="4dp"
             android:textColor="@color/blue_primary"
             android:textColorHint="@color/black_overlay"
+            android:textSize="15sp"
+            android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@+id/titleTextView"
             tools:layout_editor_absoluteX="16dp" />
 
@@ -317,8 +316,6 @@
             android:autofillHints="emailAddress"
             android:background="@drawable/edittext_drawable"
             android:hint="000.000.000-00"
-            android:textSize="15sp"
-            android:textStyle="bold"
             android:inputType="number"
             android:maxWidth="488dp"
             android:minHeight="48dp"
@@ -326,6 +323,8 @@
             android:paddingVertical="4dp"
             android:textColor="@color/blue_primary"
             android:textColorHint="@color/black_overlay"
+            android:textSize="15sp"
+            android:textStyle="bold"
             app:layout_constraintTop_toBottomOf="@+id/titleTextView"
             tools:layout_editor_absoluteX="16dp" />
 
@@ -337,10 +336,8 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
         android:layout_weight="70"
-        android:visibility="gone"
         android:background="@drawable/edittext_drawable"
         android:hint="nome@email.com"
-        android:textSize="20sp"
         android:inputType="date"
         android:maxWidth="488dp"
         android:minHeight="48dp"
@@ -348,10 +345,100 @@
         android:paddingVertical="4dp"
         android:textColor="@color/blue_primary"
         android:textColorHint="@color/black_overlay"
+        android:textSize="20sp"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="@+id/idLayoutTwo"
         app:layout_constraintStart_toStartOf="@+id/idLayoutTwo"
         app:layout_constraintTop_toBottomOf="@+id/idLayoutTwo" />
 
+    <TextView
+        android:id="@+id/textCarId"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Carro"
+        android:textColor="@color/blue_primary"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editInfoEmail" />
+
+    <EditText
+        android:id="@+id/editCarName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        android:layout_weight="70"
+        android:background="@drawable/edittext_drawable"
+        android:hint="VOLKSWAGEN GOL"
+        android:inputType="date"
+        android:maxWidth="488dp"
+        android:minHeight="48dp"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:textColor="@color/blue_primary"
+        android:textColorHint="@color/black_overlay"
+        android:textSize="20sp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="@+id/idLayoutTwo"
+        app:layout_constraintStart_toStartOf="@+id/idLayoutTwo"
+        app:layout_constraintTop_toBottomOf="@+id/textCarId" />
+
+    <LinearLayout
+        android:id="@+id/idLayoutCar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:paddingVertical="0dp"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@+id/editCarName">
+
+        <EditText
+            android:id="@+id/editCarPlate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="16dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="45"
+            android:autofillHints="emailAddress"
+            android:background="@drawable/edittext_drawable"
+            android:hint="AJU533"
+            android:inputType="number"
+            android:maxWidth="488dp"
+            android:minHeight="48dp"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:textColor="@color/blue_primary"
+            android:textColorHint="@color/black_overlay"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+            tools:layout_editor_absoluteX="16dp" />
+
+        <EditText
+            android:id="@+id/editCarDaily"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="16dp"
+            android:layout_weight="45"
+            android:autofillHints="emailAddress"
+            android:background="@drawable/edittext_drawable"
+            android:hint="000.000.000-00"
+            android:inputType="number"
+            android:maxWidth="488dp"
+            android:minHeight="48dp"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:textColor="@color/blue_primary"
+            android:textColorHint="@color/black_overlay"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+            tools:layout_editor_absoluteX="16dp" />
+
+    </LinearLayout>
 
 
     <!-- Barra de Progresso -->
