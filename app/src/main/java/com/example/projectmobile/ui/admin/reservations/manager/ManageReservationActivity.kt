@@ -66,8 +66,15 @@ class ManageReservationActivity : AppCompatActivity() {
                 binding.devolution.visibility = View.GONE
                 binding.idStepStatusText.visibility = View.GONE
 
+                binding.idLayoutTwo.visibility = View.GONE
+                binding.textUserId.visibility = View.GONE
+                binding.editUserName.visibility = View.GONE
+                binding.editUserCpf.visibility = View.GONE
+                binding.editInfoEmail.visibility = View.GONE
+
                 binding.idStepStatus.visibility = View.VISIBLE
                 binding.saveButton.visibility = View.VISIBLE
+
             } else {
                 disableFields()
 
@@ -76,10 +83,15 @@ class ManageReservationActivity : AppCompatActivity() {
                 binding.devolution.visibility = View.VISIBLE
                 binding.idStepStatusText.visibility = View.VISIBLE
 
+                binding.idLayoutTwo.visibility = View.VISIBLE
+                binding.textUserId.visibility = View.VISIBLE
+                binding.editUserName.visibility = View.VISIBLE
+                binding.editUserCpf.visibility = View.VISIBLE
+                binding.editInfoEmail.visibility = View.VISIBLE
+
                 binding.idStepStatus.visibility = View.GONE
                 binding.saveButton.visibility = View.GONE
 
-                getUser()
             }
         }
 
@@ -99,6 +111,8 @@ class ManageReservationActivity : AppCompatActivity() {
                 saveData()
             }
         }
+        verifyRuleLayout()
+
     }
 
     override fun onDestroy() {
@@ -106,7 +120,18 @@ class ManageReservationActivity : AppCompatActivity() {
         preferencesManager.removeSelectedReservation()
     }
 
+    private fun verifyRuleLayout(){
+        if(binding.editButton.visibility == View.VISIBLE){
+            binding.idLayoutTwo.visibility = View.VISIBLE
+            binding.textUserId.visibility = View.VISIBLE
+            binding.editUserName.visibility = View.VISIBLE
+            binding.editUserCpf.visibility = View.VISIBLE
+            binding.editInfoEmail.visibility = View.VISIBLE
+        }
+    }
+
     private fun getUser() {
+
         val item: Reservation? = preferencesManager.getSelectedReservation()
 
         val apiService = APIService(preferencesManager.getToken())
@@ -177,9 +202,9 @@ class ManageReservationActivity : AppCompatActivity() {
             binding.idStepStatusText.visibility = View.VISIBLE
             binding.editButton.visibility = View.VISIBLE
             binding.registerButton.visibility = View.GONE
-            getUser()
 
             disableFields()
+            getUser()
         }
     }
 
@@ -368,6 +393,12 @@ class ManageReservationActivity : AppCompatActivity() {
         binding.devolution.visibility = View.GONE
         binding.registerButton.visibility = View.GONE
 
+        binding.idLayoutTwo.visibility = View.GONE
+        binding.textUserId.visibility = View.GONE
+        binding.editUserName.visibility = View.GONE
+        binding.editUserCpf.visibility = View.GONE
+        binding.editInfoEmail.visibility = View.GONE
+
         binding.progressBar.visibility = View.VISIBLE
     }
 
@@ -387,6 +418,9 @@ class ManageReservationActivity : AppCompatActivity() {
     }
 
     private fun disableFields() {
+        binding.editInfoEmail.isEnabled = false
+        binding.editUserCpf.isEnabled = false
+        binding.editUserName.isEnabled = false
         binding.userId.isEnabled = false
         binding.vehicleId.isEnabled = false
         binding.pickup.isEnabled = false

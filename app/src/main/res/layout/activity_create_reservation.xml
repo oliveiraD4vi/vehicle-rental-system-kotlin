@@ -264,10 +264,11 @@
 
 
     <TextView
-        android:id="@+id/text_user_id"
+        android:id="@+id/textUserId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Usuario"
+        android:visibility="gone"
         android:textColor="@color/blue_primary"
         android:layout_marginTop="8dp"
         android:textSize="24sp"
@@ -277,15 +278,16 @@
         app:layout_constraintTop_toBottomOf="@+id/devolution" />
 
     <LinearLayout
-        android:id="@+id/id_layout_two"
+        android:id="@+id/idLayoutTwo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
         android:paddingVertical="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/text_user_id">
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/textUserId">
 
         <EditText
-            android:id="@+id/edit_user_name"
+            android:id="@+id/editUserName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginVertical="16dp"
@@ -307,7 +309,7 @@
             tools:layout_editor_absoluteX="16dp" />
 
         <EditText
-            android:id="@+id/edit_user_cpf"
+            android:id="@+id/editUserCpf"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginVertical="16dp"
@@ -330,11 +332,12 @@
     </LinearLayout>
 
     <EditText
-        android:id="@+id/edit_info_email"
+        android:id="@+id/editInfoEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
         android:layout_weight="70"
+        android:visibility="gone"
         android:background="@drawable/edittext_drawable"
         android:hint="nome@email.com"
         android:textSize="20sp"
@@ -345,9 +348,9 @@
         android:paddingVertical="4dp"
         android:textColor="@color/blue_primary"
         android:textColorHint="@color/black_overlay"
-        app:layout_constraintEnd_toEndOf="@+id/id_layout_two"
-        app:layout_constraintStart_toStartOf="@+id/id_layout_two"
-        app:layout_constraintTop_toBottomOf="@+id/id_layout_two" />
+        app:layout_constraintEnd_toEndOf="@+id/idLayoutTwo"
+        app:layout_constraintStart_toStartOf="@+id/idLayoutTwo"
+        app:layout_constraintTop_toBottomOf="@+id/idLayoutTwo" />
 
 
 
