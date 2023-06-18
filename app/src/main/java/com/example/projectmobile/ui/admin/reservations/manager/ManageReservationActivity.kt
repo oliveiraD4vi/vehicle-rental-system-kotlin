@@ -13,9 +13,7 @@ import android.widget.Toast
 import com.example.projectmobile.MainActivity
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
-import com.example.projectmobile.api.types.APIResponse
-import com.example.projectmobile.api.types.Reservation
-import com.example.projectmobile.api.types.User
+import com.example.projectmobile.api.types.*
 import com.example.projectmobile.databinding.ActivityCreateReservationBinding
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
@@ -72,6 +70,12 @@ class ManageReservationActivity : AppCompatActivity() {
                 binding.editUserCpf.visibility = View.GONE
                 binding.editInfoEmail.visibility = View.GONE
 
+                binding.idLayoutCar.visibility = View.GONE
+                binding.textCarId.visibility = View.GONE
+                binding.editCarName.visibility = View.GONE
+                binding.editCarPlate.visibility = View.GONE
+                binding.editCarDaily.visibility = View.GONE
+
                 binding.idStepStatus.visibility = View.VISIBLE
                 binding.saveButton.visibility = View.VISIBLE
 
@@ -88,6 +92,12 @@ class ManageReservationActivity : AppCompatActivity() {
                 binding.editUserName.visibility = View.VISIBLE
                 binding.editUserCpf.visibility = View.VISIBLE
                 binding.editInfoEmail.visibility = View.VISIBLE
+
+                binding.idLayoutCar.visibility = View.VISIBLE
+                binding.textCarId.visibility = View.VISIBLE
+                binding.editCarName.visibility = View.VISIBLE
+                binding.editCarPlate.visibility = View.VISIBLE
+                binding.editCarDaily.visibility = View.VISIBLE
 
                 binding.idStepStatus.visibility = View.GONE
                 binding.saveButton.visibility = View.GONE
@@ -180,6 +190,58 @@ class ManageReservationActivity : AppCompatActivity() {
         }
     }
 
+    private fun getCar(){
+        val item: Reservation? = preferencesManager.getSelectedReservation()
+        val apiService = APIService(preferencesManager.getToken())
+        val url = "/vehicle?id=${item?.vehicle_id}"
+
+        apiService.getData(url, object : APICallback {
+            override fun onSuccess(response: APIResponse) {
+                if (!response.error) {
+                    val data = response.vehicle
+                    if (data != null) {
+                        runOnUiThread {
+                            showCar(data)
+                        }
+
+                    }
+
+                } else {
+                    val errorCode = response.message
+
+                    runOnUiThread {
+                        finish()
+                        Toast.makeText(
+                            this@ManageReservationActivity,
+                            errorCode,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onError(error: IOException) {
+                runOnUiThread {
+                    finish()
+                    Toast.makeText(
+                        this@ManageReservationActivity,
+                        error.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
+    }
+
+    private fun showCar(data: Car) {
+        runOnUiThread {
+            binding.textCarId.text = "ID: " + data.id.toString()
+            binding.editCarName.setText(data.brand.toString() + " " + data.model.toString())
+            binding.editCarPlate.setText(data.plate.toString())
+            binding.editCarDaily.setText("R$ " + data.value.toString())
+        }
+    }
+
     private fun verifySelectedItem() {
         val item: Reservation? = preferencesManager.getSelectedReservation()
 
@@ -205,6 +267,7 @@ class ManageReservationActivity : AppCompatActivity() {
 
             disableFields()
             getUser()
+            getCar()
         }
     }
 
@@ -421,6 +484,10 @@ class ManageReservationActivity : AppCompatActivity() {
         binding.editInfoEmail.isEnabled = false
         binding.editUserCpf.isEnabled = false
         binding.editUserName.isEnabled = false
+        binding.textCarId.isEnabled = false
+        binding.editCarName.isEnabled = false
+        binding.editCarPlate.isEnabled = false
+        binding.editCarDaily.isEnabled = false
         binding.userId.isEnabled = false
         binding.vehicleId.isEnabled = false
         binding.pickup.isEnabled = false
