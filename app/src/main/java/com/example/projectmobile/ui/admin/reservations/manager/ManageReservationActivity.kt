@@ -1,6 +1,7 @@
 package com.example.projectmobile.ui.admin.reservations.manager
 
 import android.R
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -9,10 +10,12 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
+import com.example.projectmobile.MainActivity
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
 import com.example.projectmobile.api.types.Reservation
+import com.example.projectmobile.api.types.User
 import com.example.projectmobile.databinding.ActivityCreateReservationBinding
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
@@ -75,6 +78,8 @@ class ManageReservationActivity : AppCompatActivity() {
 
                 binding.idStepStatus.visibility = View.GONE
                 binding.saveButton.visibility = View.GONE
+
+                getUser()
             }
         }
 
@@ -101,6 +106,55 @@ class ManageReservationActivity : AppCompatActivity() {
         preferencesManager.removeSelectedReservation()
     }
 
+    private fun getUser() {
+        val item: Reservation? = preferencesManager.getSelectedReservation()
+
+        val apiService = APIService(preferencesManager.getToken())
+        val userId = item?.user_id
+        val url = "/user/personal?id=$userId"
+
+        apiService.getData(url, object : APICallback {
+            override fun onSuccess(response: APIResponse) {
+                if (!response.error) {
+                    val data: User? = response.user
+                    if (data != null) {
+                        showUser(data)
+                    }
+                } else {
+                    val errorCode = response.message.toString()
+
+                    runOnUiThread {
+                        Toast.makeText(
+                            this@ManageReservationActivity,
+                            errorCode,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+            override fun onError(error: IOException) {
+
+                runOnUiThread {
+                    Toast.makeText(
+                        this@ManageReservationActivity,
+                        error.message,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        })
+    }
+
+    private fun showUser(data: User) {
+        runOnUiThread {
+            binding.textUserId.text = "ID: ${data.id.toString()}"
+            binding.editUserName.setText(data.name.toString())
+            binding.editUserCpf.setText(data.cpf.toString())
+            binding.editInfoEmail.setText(data.email.toString())
+        }
+    }
+
     private fun verifySelectedItem() {
         val item: Reservation? = preferencesManager.getSelectedReservation()
 
@@ -123,6 +177,7 @@ class ManageReservationActivity : AppCompatActivity() {
             binding.idStepStatusText.visibility = View.VISIBLE
             binding.editButton.visibility = View.VISIBLE
             binding.registerButton.visibility = View.GONE
+            getUser()
 
             disableFields()
         }
