@@ -137,6 +137,12 @@ class ManageReservationActivity : AppCompatActivity() {
             binding.editUserName.visibility = View.VISIBLE
             binding.editUserCpf.visibility = View.VISIBLE
             binding.editInfoEmail.visibility = View.VISIBLE
+
+            binding.idLayoutCar.visibility = View.VISIBLE
+            binding.textCarId.visibility = View.VISIBLE
+            binding.editCarName.visibility = View.VISIBLE
+            binding.editCarPlate.visibility = View.VISIBLE
+            binding.editCarDaily.visibility = View.VISIBLE
         }
     }
 
@@ -455,12 +461,6 @@ class ManageReservationActivity : AppCompatActivity() {
         binding.pickup.visibility = View.GONE
         binding.devolution.visibility = View.GONE
         binding.registerButton.visibility = View.GONE
-
-        binding.idLayoutTwo.visibility = View.GONE
-        binding.textUserId.visibility = View.GONE
-        binding.editUserName.visibility = View.GONE
-        binding.editUserCpf.visibility = View.GONE
-        binding.editInfoEmail.visibility = View.GONE
 
         binding.progressBar.visibility = View.VISIBLE
     }
