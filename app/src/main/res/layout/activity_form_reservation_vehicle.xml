@@ -139,9 +139,20 @@
         android:id="@+id/button_cancel_vehicle_form"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:backgroundTint="@color/white"
         android:text="Cancelar"
+        android:textColor="@color/yellow_primary"
+        android:layout_marginEnd="10dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_next_vehicle_form" />
+
+    <Button
+        android:id="@+id/button_leave_form"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:text="Sair"
         android:textColor="@color/yellow_primary"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
