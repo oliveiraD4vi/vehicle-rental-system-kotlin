@@ -210,13 +210,7 @@ class ProfileFragment : Fragment() {
         val buttonRegister: Button = binding.signUpButton
 
         if (preferencesManager.isLoggedIn()) {
-            val data = preferencesManager.getUserData()
-
-            if (data != null) {
-                showUserInfo(data)
-            } else {
-                getUserData(preferencesManager)
-            }
+            getUserData(preferencesManager)
         } else {
             showNotLoggedIn()
         }
