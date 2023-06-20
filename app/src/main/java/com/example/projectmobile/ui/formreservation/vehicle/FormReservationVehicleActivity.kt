@@ -49,6 +49,7 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
         binding.buttonCancelVehicleForm.setOnClickListener(this)
         binding.returnButton.setOnClickListener(this)
         binding.buttonNextVehicleForm.setOnClickListener(this)
+        binding.buttonLeaveForm.setOnClickListener(this)
     }
 
     override fun onClick(view: View) {
@@ -71,6 +72,9 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
                 val dataWithdrawal: String = binding.buttonWithdrawalVehicleForm.text.toString()
                 val dataDelivery: String = binding.buttonDeliveryVehicleForm.text.toString()
                 handleContinue(dataWithdrawal, dataDelivery)
+            }
+            R.id.button_leave_form -> {
+                startActivity(Intent(this, MainActivity::class.java))
             }
         }
     }
@@ -236,7 +240,8 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
         apiService.deleteData(url, object : APICallback {
             override fun onSuccess(response: APIResponse) {
                 if (!response.error) {
-                    val intent = Intent(this@FormReservationVehicleActivity, MainActivity::class.java)
+                    val intent =
+                        Intent(this@FormReservationVehicleActivity, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
                 } else {
@@ -283,7 +288,12 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
                         ).show()
                     }
 
-                    startActivity(Intent(this@FormReservationVehicleActivity, FormReservationPaymentActivity::class.java))
+                    startActivity(
+                        Intent(
+                            this@FormReservationVehicleActivity,
+                            FormReservationPaymentActivity::class.java
+                        )
+                    )
                 } else {
                     val errorCode = response.message
 
@@ -328,7 +338,12 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
                         ).show()
                     }
 
-                    startActivity(Intent(this@FormReservationVehicleActivity, FormReservationDataActivity::class.java))
+                    startActivity(
+                        Intent(
+                            this@FormReservationVehicleActivity,
+                            FormReservationDataActivity::class.java
+                        )
+                    )
                 } else {
                     val errorCode = response.message
 
@@ -367,6 +382,7 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
         binding.buttonWithdrawalVehicleForm.visibility = View.GONE
         binding.buttonNextVehicleForm.visibility = View.GONE
         binding.buttonCancelVehicleForm.visibility = View.GONE
+        binding.buttonLeaveForm.visibility = View.GONE
 
         binding.progressBar.visibility = View.VISIBLE
     }
@@ -382,6 +398,7 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
         binding.buttonWithdrawalVehicleForm.visibility = View.VISIBLE
         binding.buttonNextVehicleForm.visibility = View.VISIBLE
         binding.buttonCancelVehicleForm.visibility = View.VISIBLE
+        binding.buttonLeaveForm.visibility = View.VISIBLE
 
         binding.progressBar.visibility = View.GONE
     }
