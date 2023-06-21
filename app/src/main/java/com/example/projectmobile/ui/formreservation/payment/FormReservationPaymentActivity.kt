@@ -33,15 +33,23 @@ class FormReservationPaymentActivity : AppCompatActivity(), View.OnClickListener
         binding.returnButton.setOnClickListener(this)
         binding.buttonCancelPaymentForm.setOnClickListener(this)
         binding.buttonConfirmPaymentForm.setOnClickListener(this)
+        binding.buttonLeaveForm.setOnClickListener(this)
     }
 
     override fun onClick(view: View) {
-        if (view.id == R.id.returnButton) {
-            previous()
-        } else if (view.id == R.id.button_cancel_payment_form) {
-            deleteReservation()
-        } else if (view.id == R.id.button_confirm_payment_form) {
-            next()
+        when (view.id) {
+            R.id.returnButton -> {
+                previous()
+            }
+            R.id.button_cancel_payment_form -> {
+                deleteReservation()
+            }
+            R.id.button_confirm_payment_form -> {
+                next()
+            }
+            R.id.button_leave_form -> {
+                startActivity(Intent(this, MainActivity::class.java))
+            }
         }
     }
 
@@ -54,7 +62,8 @@ class FormReservationPaymentActivity : AppCompatActivity(), View.OnClickListener
         apiService.deleteData(url, object : APICallback {
             override fun onSuccess(response: APIResponse) {
                 if (!response.error) {
-                    val intent = Intent(this@FormReservationPaymentActivity, MainActivity::class.java)
+                    val intent =
+                        Intent(this@FormReservationPaymentActivity, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
                 } else {
@@ -101,7 +110,12 @@ class FormReservationPaymentActivity : AppCompatActivity(), View.OnClickListener
                         ).show()
                     }
 
-                    startActivity(Intent(this@FormReservationPaymentActivity, MapViewActivity::class.java))
+                    startActivity(
+                        Intent(
+                            this@FormReservationPaymentActivity,
+                            MapViewActivity::class.java
+                        )
+                    )
                 } else {
                     val errorCode = response.message
 
@@ -146,7 +160,12 @@ class FormReservationPaymentActivity : AppCompatActivity(), View.OnClickListener
                         ).show()
                     }
 
-                    startActivity(Intent(this@FormReservationPaymentActivity, FormReservationVehicleActivity::class.java))
+                    startActivity(
+                        Intent(
+                            this@FormReservationPaymentActivity,
+                            FormReservationVehicleActivity::class.java
+                        )
+                    )
                 } else {
                     val errorCode = response.message
 
@@ -178,6 +197,7 @@ class FormReservationPaymentActivity : AppCompatActivity(), View.OnClickListener
         binding.textView.visibility = View.GONE
         binding.buttonCancelPaymentForm.visibility = View.GONE
         binding.buttonConfirmPaymentForm.visibility = View.GONE
+        binding.buttonLeaveForm.visibility = View.GONE
 
         binding.progressBar.visibility = View.VISIBLE
     }
@@ -186,6 +206,7 @@ class FormReservationPaymentActivity : AppCompatActivity(), View.OnClickListener
         binding.textView.visibility = View.VISIBLE
         binding.buttonCancelPaymentForm.visibility = View.VISIBLE
         binding.buttonConfirmPaymentForm.visibility = View.VISIBLE
+        binding.buttonLeaveForm.visibility = View.VISIBLE
 
         binding.progressBar.visibility = View.GONE
     }

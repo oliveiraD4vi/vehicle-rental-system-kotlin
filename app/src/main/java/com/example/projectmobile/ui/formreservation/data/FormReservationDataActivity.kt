@@ -35,22 +35,30 @@ class FormReservationDataActivity : AppCompatActivity(), View.OnClickListener {
         binding.returnButton.setOnClickListener(this)
         binding.buttonCancelDataForm.setOnClickListener(this)
         binding.buttonNextDataForm.setOnClickListener(this)
+        binding.buttonLeaveForm.setOnClickListener(this)
     }
 
     override fun onClick(view: View) {
-        if (view.id == R.id.returnButton) {
-            finish()
-        } else if (view.id == R.id.button_cancel_data_form) {
-            deleteReservation()
-        } else if (view.id == R.id.button_next_data_form) {
-            if (validateData()) {
-                confirmData()
-            } else {
-                Toast.makeText(
-                    applicationContext,
-                    "Os campos devem ser preenchidos corretamente",
-                    Toast.LENGTH_SHORT
-                ).show()
+        when (view.id) {
+            R.id.returnButton -> {
+                finish()
+            }
+            R.id.button_cancel_data_form -> {
+                deleteReservation()
+            }
+            R.id.button_next_data_form -> {
+                if (validateData()) {
+                    confirmData()
+                } else {
+                    Toast.makeText(
+                        applicationContext,
+                        "Os campos devem ser preenchidos corretamente",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+            R.id.button_leave_form -> {
+                startActivity(Intent(this, MainActivity::class.java))
             }
         }
     }
@@ -291,6 +299,7 @@ class FormReservationDataActivity : AppCompatActivity(), View.OnClickListener {
         binding.editCountry.visibility = View.GONE
         binding.buttonNextDataForm.visibility = View.GONE
         binding.buttonCancelDataForm.visibility = View.GONE
+        binding.buttonLeaveForm.visibility = View.GONE
 
         binding.progressBar.visibility = View.VISIBLE
     }
@@ -306,6 +315,7 @@ class FormReservationDataActivity : AppCompatActivity(), View.OnClickListener {
         binding.editCountry.visibility = View.VISIBLE
         binding.buttonNextDataForm.visibility = View.VISIBLE
         binding.buttonCancelDataForm.visibility = View.VISIBLE
+        binding.buttonLeaveForm.visibility = View.VISIBLE
 
         binding.progressBar.visibility = View.GONE
     }
