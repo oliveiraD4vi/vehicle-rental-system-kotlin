@@ -130,8 +130,8 @@ class ManageReservationActivity : AppCompatActivity() {
         preferencesManager.removeSelectedReservation()
     }
 
-    private fun verifyRuleLayout(){
-        if(binding.editButton.visibility == View.VISIBLE){
+    private fun verifyRuleLayout() {
+        if (binding.editButton.visibility == View.VISIBLE) {
             binding.idLayoutTwo.visibility = View.VISIBLE
             binding.textUserId.visibility = View.VISIBLE
             binding.editUserName.visibility = View.VISIBLE
@@ -196,7 +196,7 @@ class ManageReservationActivity : AppCompatActivity() {
         }
     }
 
-    private fun getCar(){
+    private fun getCar() {
         val item: Reservation? = preferencesManager.getSelectedReservation()
         val apiService = APIService(preferencesManager.getToken())
         val url = "/vehicle?id=${item?.vehicle_id}"
@@ -292,7 +292,12 @@ class ManageReservationActivity : AppCompatActivity() {
 
         // Definir um ouvinte de seleção para o Spinner
         spinnerStatus.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 currentStatus = statusList[position]
                 binding.status.text = statusList[position]
             }
@@ -301,7 +306,12 @@ class ManageReservationActivity : AppCompatActivity() {
         }
 
         spinnerStep.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 currentStep = stepList[position]
                 binding.step.text = stepList[position]
             }
@@ -505,6 +515,6 @@ class ManageReservationActivity : AppCompatActivity() {
         val entryFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
         val exitFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
-        return entryFormat.parse(dataString)?.let { exitFormat.format(it) }
+        return entryFormat.parse(dataString)?.let { exitFormat.format(it) } ?: "?"
     }
 }

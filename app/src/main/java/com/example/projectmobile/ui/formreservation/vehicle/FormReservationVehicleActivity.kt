@@ -227,8 +227,8 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
 
         return "{\"reservationId\": \"$reservationId\", " +
                 "\"vehicleId\": \"$vehicleId\", " +
-                "\"pickup\": \"$pickup\", " +
-                "\"devolution\": \"$devolution\"}"
+                "\"pickup\": \"${dateFormatter(pickup)}\", " +
+                "\"devolution\": \"${dateFormatter(devolution)}\"}"
     }
 
     private fun deleteReservation() {
@@ -401,5 +401,12 @@ class FormReservationVehicleActivity : AppCompatActivity(), View.OnClickListener
         binding.buttonLeaveForm.visibility = View.VISIBLE
 
         binding.progressBar.visibility = View.GONE
+    }
+
+    private fun dateFormatter(dataString: String): String? {
+        val entryFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val exitFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+
+        return entryFormat.parse(dataString)?.let { exitFormat.format(it) } ?: "?"
     }
 }
