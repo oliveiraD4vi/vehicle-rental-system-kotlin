@@ -19,9 +19,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.PolylineOptions
+import com.google.android.gms.maps.model.*
 
 class MapViewActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mapView: MapView
@@ -48,7 +46,8 @@ class MapViewActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val viewOnMapButton: Button = findViewById(R.id.view_on_map)
         viewOnMapButton.setOnClickListener {
-            val uri = "geo:$AGENCY_LATITUDE,$AGENCY_LONGITUDE?q=$AGENCY_LATITUDE,$AGENCY_LONGITUDE(Agência da Locadora)"
+            val uri =
+                "geo:$AGENCY_LATITUDE,$AGENCY_LONGITUDE?q=$AGENCY_LATITUDE,$AGENCY_LONGITUDE(Agência da Locadora)"
             val mapIntent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
             mapIntent.setPackage("com.google.android.apps.maps")  // Define o pacote do aplicativo de mapas do Google
             startActivity(mapIntent)
@@ -123,15 +122,24 @@ class MapViewActivity : AppCompatActivity(), OnMapReadyCallback {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 location?.let {
                     val agencyLocation = LatLng(AGENCY_LATITUDE, AGENCY_LONGITUDE)
+                    val userLocation = LatLng(location.latitude, location.longitude)
+
+                    // Define a cor do marcador (azul neste exemplo)
+                    val userMarker =
+                        BitmapDescriptorFactory.fromResource(R.drawable.ic_elipse)
 
                     googleMap.addMarker(
-                        MarkerOptions().position(agencyLocation).title("Agência da Locadora")
+                        MarkerOptions()
+                            .position(agencyLocation)
+                            .title("Agência da Locadora")
                     )
 
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(agencyLocation, 16f))
-
-                    // Configurar a rota com dois pontos: localização atual do usuário e agência da locadora
-                    val userLocation = LatLng(location.latitude, location.longitude)
+                    googleMap.addMarker(
+                        MarkerOptions()
+                            .position(userLocation)
+                            .title("Usuário")
+                            .icon(userMarker)
+                    )
 
                     val routePolylineOptions = PolylineOptions()
                         .add(userLocation)
@@ -140,6 +148,16 @@ class MapViewActivity : AppCompatActivity(), OnMapReadyCallback {
                         .color(ContextCompat.getColor(this, R.color.route_color))
 
                     googleMap.addPolyline(routePolylineOptions)
+
+                    // Calcular os limites do mapa com base nas coordenadas dos dois pontos
+                    val boundsBuilder = LatLngBounds.builder()
+                    boundsBuilder.include(userLocation) // Adicionar a localização do usuário aos limites
+                    boundsBuilder.include(agencyLocation) // Adicionar a localização da agência aos limites
+
+                    val bounds = boundsBuilder.build()
+                    val padding = 100 // Espaçamento em pixels ao redor dos limites
+                    val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding)
+                    googleMap.moveCamera(cameraUpdate)
                 }
             }
         }
