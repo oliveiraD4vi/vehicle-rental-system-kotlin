@@ -3,9 +3,10 @@ package com.example.projectmobile.ui.landing
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.content.Intent
-import android.os.Handler
-import android.os.Looper
 import android.widget.Toast
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricPrompt
+import androidx.core.content.ContextCompat
 import com.example.projectmobile.MainActivity
 import com.example.projectmobile.R
 import com.example.projectmobile.api.callback.APICallback
@@ -16,42 +17,52 @@ import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
 
 class SplashScreen : AppCompatActivity() {
+    private lateinit var preferencesManager: UserPreferencesManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_splash_screen)
 
-        // Verify if the user token is still valid
-        val preferencesManager = UserPreferencesManager(this)
+        preferencesManager = UserPreferencesManager(this)
 
-        Looper.myLooper()?.let {
-            Handler(it).postDelayed({
-                verifyUserRole(preferencesManager)
-            }, 1500)
+        verifyUserRole()
+    }
+
+    private fun verifyUserRole() {
+        if (preferencesManager.isLoggedIn()) {
+            check()
+        } else {
+            goToHome()
         }
     }
 
-    private fun check(preferencesManager: UserPreferencesManager) {
+    private fun check() {
         val apiService = APIService(preferencesManager.getToken())
         val url = "/user/check"
 
         apiService.getData(url, object : APICallback {
             override fun onSuccess(response: APIResponse) {
                 if (!response.error) {
-                    if (preferencesManager.getRole() == "ADMIN") {
-                        goToAdminHome()
-                    } else {
-                        goToHome()
+                    runOnUiThread {
+                        if (preferencesManager.getRole() == "ADMIN") {
+                            if (isBiometricSupported()) {
+                                showBiometricPrompt()
+                            } else {
+                                preferencesManager.logout()
+                                goToHome()
+                            }
+                        } else {
+                            goToHome()
+                        }
                     }
                 } else {
-                    val errorCode = response.message
                     preferencesManager.logout()
                     goToHome()
 
                     runOnUiThread {
                         Toast.makeText(
                             this@SplashScreen,
-                            errorCode,
+                            "Sessão expirada",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -65,7 +76,7 @@ class SplashScreen : AppCompatActivity() {
                 runOnUiThread {
                     Toast.makeText(
                         this@SplashScreen,
-                        error.message,
+                        "Sessão expirada",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -73,12 +84,57 @@ class SplashScreen : AppCompatActivity() {
         })
     }
 
-    private fun verifyUserRole(preferencesManager: UserPreferencesManager) {
-        if (preferencesManager.isLoggedIn()) {
-            check(preferencesManager)
-        } else {
-            goToHome()
+    private fun isBiometricSupported(): Boolean {
+        val biometricManager = BiometricManager.from(this)
+        return when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)) {
+            BiometricManager.BIOMETRIC_SUCCESS -> {
+                true
+            }
+
+            BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE, BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE, BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED -> {
+                false
+            }
+
+            else -> {
+                false
+            }
         }
+    }
+
+    private fun showBiometricPrompt() {
+        val promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle("Autenticação Biométrica")
+            .setSubtitle("Para continuar, aproxime sua digital do sensor")
+            .setNegativeButtonText("Cancelar")
+            .build()
+
+        val biometricPrompt = BiometricPrompt(this, ContextCompat.getMainExecutor(this),
+            object : BiometricPrompt.AuthenticationCallback() {
+                override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
+                    super.onAuthenticationError(errorCode, errString)
+                    preferencesManager.logout()
+                    goToHome()
+                    showMessage("Você foi deslogado!")
+                }
+
+                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                    super.onAuthenticationSucceeded(result)
+                    goToAdminHome()
+                    showMessage("Autenticado com sucesso!")
+                }
+
+                override fun onAuthenticationFailed() {
+                    super.onAuthenticationFailed()
+                    println("Failed")
+                    showMessage("A autenticação falhou")
+                }
+            })
+
+        biometricPrompt.authenticate(promptInfo)
+    }
+
+    private fun showMessage(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun goToHome() {
