@@ -18,6 +18,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".UserReservationsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.admin.cars.manager.ManageCarActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
