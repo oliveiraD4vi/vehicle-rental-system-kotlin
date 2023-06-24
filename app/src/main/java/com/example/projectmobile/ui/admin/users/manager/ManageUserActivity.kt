@@ -52,11 +52,15 @@ class ManageUserActivity : AppCompatActivity() {
 
                 binding.registerButton.visibility = View.GONE
                 binding.saveButton.visibility = View.VISIBLE
+                binding.reservationUserButton.visibility = View.GONE
                 configureUserTypeSpinner()
             } else {
                 disableFields()
                 loaded(true)
                 binding.saveButton.visibility = View.GONE
+                if(binding.userType.text == userRole){
+                    binding.reservationUserButton.visibility = View.VISIBLE
+                }
             }
         }
 
@@ -112,6 +116,9 @@ class ManageUserActivity : AppCompatActivity() {
             binding.editCountry.setText(item.country)
 
             binding.editButton.visibility = View.VISIBLE
+            if(binding.userType.text == userRole){
+                binding.reservationUserButton.visibility = View.VISIBLE
+            }
             binding.registerButton.visibility = View.GONE
 
             disableFields()
