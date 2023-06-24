@@ -23,7 +23,7 @@ import com.example.projectmobile.ui.reservations.adapter.ReservationsAdapter
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
 
-class UserReservationsActivity : AppCompatActivity(), View.OnClickListener {
+class UserReservationsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityUserReservationsBinding
     private lateinit var preferencesManager: UserPreferencesManager
     private lateinit var adapter: ReservationsAdapter
@@ -52,8 +52,6 @@ class UserReservationsActivity : AppCompatActivity(), View.OnClickListener {
         } else {
             loadedWithZero()
         }
-
-        binding.buttonReservationsNew.setOnClickListener(this)
 
     }
 
@@ -173,7 +171,6 @@ class UserReservationsActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun loading() {
         binding.recyclerReservations.visibility = View.GONE
-        binding.buttonReservationsNew.visibility = View.GONE
 
         binding.progressBar.visibility = View.VISIBLE
     }
@@ -187,23 +184,6 @@ class UserReservationsActivity : AppCompatActivity(), View.OnClickListener {
         binding.recyclerReservations.visibility = View.GONE
         binding.progressBar.visibility = View.GONE
 
-        if (preferencesManager.isLoggedIn()) {
-            binding.buttonReservationsNew.visibility = View.VISIBLE
-        } else {
-            binding.buttonReservationsNew.visibility = View.GONE
-        }
-
         binding.notFound.visibility = View.VISIBLE
-    }
-
-    override fun onClick(view: View) {
-        if (view.id == R.id.button_reservations_new) {
-            val fragment = CarsFragment()
-            val fragmentManager = this@UserReservationsActivity.supportFragmentManager
-            val transaction = fragmentManager.beginTransaction()
-            transaction.replace(R.id.container, fragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
-        }
     }
 }
