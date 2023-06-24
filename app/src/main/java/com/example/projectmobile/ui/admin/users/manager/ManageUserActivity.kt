@@ -1,6 +1,7 @@
 package com.example.projectmobile.ui.admin.users.manager
 
 import android.R
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -15,6 +16,8 @@ import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
 import com.example.projectmobile.api.types.User
 import com.example.projectmobile.databinding.ActivityCreateUserBinding
+import com.example.projectmobile.ui.admin.users.AdminUsersActivity
+import com.example.projectmobile.ui.admin.users.reservations.UserReservationsActivity
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -85,6 +88,10 @@ class ManageUserActivity : AppCompatActivity() {
             if (validateFields(name, email, null, cpf, bornAt)) {
                 saveData()
             }
+        }
+
+        binding.reservationUserButton.setOnClickListener {
+            startActivity(Intent(this@ManageUserActivity, UserReservationsActivity::class.java))
         }
     }
 
