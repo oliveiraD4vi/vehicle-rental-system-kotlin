@@ -91,7 +91,10 @@ class ManageUserActivity : AppCompatActivity() {
         }
 
         binding.reservationUserButton.setOnClickListener {
-            startActivity(Intent(this@ManageUserActivity, UserReservationsActivity::class.java))
+            if(userId != null){
+                preferencesManager.saveTempId(userId.toString())
+                startActivity(Intent(this@ManageUserActivity, UserReservationsActivity::class.java))
+            }
         }
     }
 
@@ -161,8 +164,6 @@ class ManageUserActivity : AppCompatActivity() {
         val url = "/user/register"
 
         val requestData = getRequestData()
-
-        println(requestData)
 
         apiService.postData(url, requestData, object : APICallback {
             override fun onSuccess(response: APIResponse) {

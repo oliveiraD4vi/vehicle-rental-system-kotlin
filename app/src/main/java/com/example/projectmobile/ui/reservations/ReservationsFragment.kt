@@ -191,7 +191,6 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
     private fun loaded() {
         binding.recyclerReservations.visibility = View.VISIBLE
         binding.buttonReservationsNew.visibility = View.VISIBLE
-
         binding.progressBar.visibility = View.GONE
     }
 
