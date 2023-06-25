@@ -25,6 +25,7 @@ class UserPreferencesManager(private val context: Context) {
         const val SELECTED_DATE_D = "selectedDelivery"
         const val CURRENT_RESERVATION = "currentReservation"
         const val CURRENT_CAR = "currentCar"
+        const val TEMP_ID = "tempID"
     }
 
     fun saveUserId(userId: String) {
@@ -33,6 +34,14 @@ class UserPreferencesManager(private val context: Context) {
 
     fun getUserId(): String? {
         return sharedPreferences.getString(USER_ID, null)
+    }
+
+    fun saveTempId(userId: String) {
+        sharedPreferences.edit().putString(TEMP_ID, userId).apply()
+    }
+
+    fun getTempId(): String? {
+        return sharedPreferences.getString(TEMP_ID, null)
     }
 
     fun saveReservationId(reservationId: String) {

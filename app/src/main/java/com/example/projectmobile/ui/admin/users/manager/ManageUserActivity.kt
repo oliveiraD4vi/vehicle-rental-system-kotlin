@@ -1,6 +1,7 @@
 package com.example.projectmobile.ui.admin.users.manager
 
 import android.R
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
@@ -15,6 +16,8 @@ import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
 import com.example.projectmobile.api.types.User
 import com.example.projectmobile.databinding.ActivityCreateUserBinding
+import com.example.projectmobile.ui.admin.users.AdminUsersActivity
+import com.example.projectmobile.ui.admin.users.reservations.UserReservationsActivity
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -52,11 +55,15 @@ class ManageUserActivity : AppCompatActivity() {
 
                 binding.registerButton.visibility = View.GONE
                 binding.saveButton.visibility = View.VISIBLE
+                binding.reservationUserButton.visibility = View.GONE
                 configureUserTypeSpinner()
             } else {
                 disableFields()
                 loaded(true)
                 binding.saveButton.visibility = View.GONE
+                if(binding.userType.text == userRole){
+                    binding.reservationUserButton.visibility = View.VISIBLE
+                }
             }
         }
 
@@ -80,6 +87,13 @@ class ManageUserActivity : AppCompatActivity() {
 
             if (validateFields(name, email, null, cpf, bornAt)) {
                 saveData()
+            }
+        }
+
+        binding.reservationUserButton.setOnClickListener {
+            if(userId != null){
+                preferencesManager.saveTempId(userId.toString())
+                startActivity(Intent(this@ManageUserActivity, UserReservationsActivity::class.java))
             }
         }
     }
@@ -112,6 +126,9 @@ class ManageUserActivity : AppCompatActivity() {
             binding.editCountry.setText(item.country)
 
             binding.editButton.visibility = View.VISIBLE
+            if(binding.userType.text == userRole){
+                binding.reservationUserButton.visibility = View.VISIBLE
+            }
             binding.registerButton.visibility = View.GONE
 
             disableFields()
@@ -147,8 +164,6 @@ class ManageUserActivity : AppCompatActivity() {
         val url = "/user/register"
 
         val requestData = getRequestData()
-
-        println(requestData)
 
         apiService.postData(url, requestData, object : APICallback {
             override fun onSuccess(response: APIResponse) {

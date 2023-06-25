@@ -1,12 +1,10 @@
-package com.example.projectmobile.ui.reservations
+package com.example.projectmobile.ui.admin.users.reservations
 
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.projectmobile.R
 import com.example.projectmobile.api.callback.APICallback
@@ -14,39 +12,37 @@ import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
 import com.example.projectmobile.api.types.Reservation
 import com.example.projectmobile.api.types.Step
-import com.example.projectmobile.databinding.FragmentReservationsBinding
+import com.example.projectmobile.databinding.ActivityUserReservationsBinding
 import com.example.projectmobile.ui.auth.LoginActivity
 import com.example.projectmobile.ui.cars.CarsFragment
 import com.example.projectmobile.ui.formreservation.data.FormReservationDataActivity
 import com.example.projectmobile.ui.formreservation.payment.FormReservationPaymentActivity
 import com.example.projectmobile.ui.formreservation.vehicle.FormReservationVehicleActivity
+import com.example.projectmobile.ui.reservations.ReservationsDetailsActivity
 import com.example.projectmobile.ui.reservations.adapter.ReservationsAdapter
 import com.example.projectmobile.util.UserPreferencesManager
 import java.io.IOException
 
-class ReservationsFragment : Fragment(), View.OnClickListener {
-    private var _binding: FragmentReservationsBinding? = null
-    private val binding get() = _binding!!
-
+class UserReservationsActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityUserReservationsBinding
     private lateinit var preferencesManager: UserPreferencesManager
     private lateinit var adapter: ReservationsAdapter
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityUserReservationsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentReservationsBinding.inflate(inflater, container, false)
+        supportActionBar?.hide()
 
-        preferencesManager = UserPreferencesManager(requireContext())
+        preferencesManager = UserPreferencesManager(this)
 
         adapter = ReservationsAdapter { reservation ->
             preferencesManager.saveSelectedReservation(reservation)
-            startActivity(Intent(requireContext(), ReservationsDetailsActivity::class.java))
+            startActivity(Intent(this, ReservationsDetailsActivity::class.java))
         }
 
         // layout
-        binding.recyclerReservations.layoutManager = LinearLayoutManager(context)
+        binding.recyclerReservations.layoutManager = LinearLayoutManager(this)
 
         //adapter
         binding.recyclerReservations.adapter = adapter
@@ -57,19 +53,11 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
             loadedWithZero()
         }
 
-        binding.buttonReservationsNew.setOnClickListener(this)
-
-        return binding.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun verifyUserRole(preferencesManager: UserPreferencesManager): Boolean {
         if (!preferencesManager.isLoggedIn()) {
-            val intent = Intent(requireContext(), LoginActivity::class.java)
+            val intent = Intent(this@UserReservationsActivity, LoginActivity::class.java)
             startActivity(intent)
             return false
         }
@@ -83,7 +71,7 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
     ) {
         loading()
         val apiService = APIService(preferencesManager.getToken())
-        val id = preferencesManager.getUserId()
+        val id = preferencesManager.getTempId()
         val url = "/reservation/last?id=$id"
 
         apiService.getData(url, object : APICallback {
@@ -97,34 +85,34 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
                         Step.PERSONAL ->
                             startActivity(
                                 Intent(
-                                    requireContext(),
+                                    this@UserReservationsActivity,
                                     FormReservationDataActivity::class.java
                                 )
                             )
                         Step.VEHICLE ->
                             startActivity(
                                 Intent(
-                                    requireContext(),
+                                    this@UserReservationsActivity,
                                     FormReservationVehicleActivity::class.java
                                 )
                             )
                         else ->
                             startActivity(
                                 Intent(
-                                    requireContext(),
+                                    this@UserReservationsActivity,
                                     FormReservationPaymentActivity::class.java
                                 )
                             )
                     }
                 } else {
-                    activity?.runOnUiThread {
+                    runOnUiThread {
                         getReservations(preferencesManager, adapter)
                     }
                 }
             }
 
             override fun onError(error: IOException) {
-                activity?.runOnUiThread {
+                runOnUiThread {
                     getReservations(preferencesManager, adapter)
                 }
             }
@@ -137,7 +125,7 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
     ) {
         loading()
         val apiService = APIService(preferencesManager.getToken())
-        val id = preferencesManager.getUserId()
+        val id = preferencesManager.getTempId()
         val url = "/reservation/user?id=$id"
 
         apiService.getData(url, object : APICallback {
@@ -145,22 +133,22 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
                 if (!response.error) {
                     val reservationsListApi: List<Reservation>? = response.reservations
                     if (reservationsListApi != null) {
-                        activity?.runOnUiThread {
+                        runOnUiThread {
                             adapter.updatedReservations(reservationsListApi)
                         }
                     }
 
-                    activity?.runOnUiThread {
+                    runOnUiThread {
                         loaded()
                     }
 
                 } else {
                     val errorCode = response.message
 
-                    activity?.runOnUiThread {
+                    runOnUiThread {
                         loadedWithZero()
                         Toast.makeText(
-                            requireContext(),
+                            this@UserReservationsActivity,
                             errorCode,
                             Toast.LENGTH_SHORT
                         ).show()
@@ -169,10 +157,10 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
             }
 
             override fun onError(error: IOException) {
-                activity?.runOnUiThread {
+                runOnUiThread {
                     loadedWithZero()
                     Toast.makeText(
-                        requireContext(),
+                        this@UserReservationsActivity,
                         error.message,
                         Toast.LENGTH_SHORT
                     ).show()
@@ -183,14 +171,12 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
 
     private fun loading() {
         binding.recyclerReservations.visibility = View.GONE
-        binding.buttonReservationsNew.visibility = View.GONE
 
         binding.progressBar.visibility = View.VISIBLE
     }
 
     private fun loaded() {
         binding.recyclerReservations.visibility = View.VISIBLE
-        binding.buttonReservationsNew.visibility = View.VISIBLE
         binding.progressBar.visibility = View.GONE
     }
 
@@ -198,23 +184,6 @@ class ReservationsFragment : Fragment(), View.OnClickListener {
         binding.recyclerReservations.visibility = View.GONE
         binding.progressBar.visibility = View.GONE
 
-        if (preferencesManager.isLoggedIn()) {
-            binding.buttonReservationsNew.visibility = View.VISIBLE
-        } else {
-            binding.buttonReservationsNew.visibility = View.GONE
-        }
-
         binding.notFound.visibility = View.VISIBLE
-    }
-
-    override fun onClick(view: View) {
-        if (view.id == R.id.button_reservations_new) {
-            val fragment = CarsFragment()
-            val fragmentManager = requireActivity().supportFragmentManager
-            val transaction = fragmentManager.beginTransaction()
-            transaction.replace(R.id.container, fragment)
-            transaction.addToBackStack(null)
-            transaction.commit()
-        }
     }
 }

@@ -386,6 +386,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <Button
+        android:id="@+id/reservationUserButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginVertical="32dp"
+        android:backgroundTint="@color/yellow_primary"
+        android:maxWidth="488dp"
+        android:paddingHorizontal="32dp"
+        android:paddingVertical="4dp"
+        android:text="Reservas"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <!-- Barra de Progresso -->
     <ProgressBar
         android:id="@+id/progressBar"
