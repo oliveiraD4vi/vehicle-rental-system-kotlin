@@ -1,16 +1,15 @@
 package com.example.projectmobile.ui.admin.users.manager
 
 import android.R
+import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Patterns
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.Toast
+import android.widget.*
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
@@ -23,7 +22,7 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ManageUserActivity : AppCompatActivity() {
+class ManageUserActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
     private var userId: Int? = null
     private var _binding: ActivityCreateUserBinding? = null
     private val binding get() = _binding!!
@@ -32,6 +31,9 @@ class ManageUserActivity : AppCompatActivity() {
     private lateinit var spinnerUserType: Spinner
     private lateinit var preferencesManager: UserPreferencesManager
     private var userRole = "CLIENT"
+
+    @SuppressLint("SimpleDateFormat")
+    private val dateFormat: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,6 +97,10 @@ class ManageUserActivity : AppCompatActivity() {
                 preferencesManager.saveTempId(userId.toString())
                 startActivity(Intent(this@ManageUserActivity, UserReservationsActivity::class.java))
             }
+        }
+
+        binding.editBirthday.setOnClickListener {
+            handleDate()
         }
     }
 
@@ -428,5 +434,23 @@ class ManageUserActivity : AppCompatActivity() {
         val exitFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
         return entryFormat.parse(dataString)?.let { exitFormat.format(it) }
+    }
+
+    override fun onDateSet(v: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
+        val preferencesManager = UserPreferencesManager(this)
+
+        val calendar = Calendar.getInstance()
+        calendar.set(year, month, dayOfMonth)
+        val dueDate = dateFormat.format(calendar.time)
+        binding.editBirthday.text = dueDate
+    }
+
+    private fun handleDate() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        DatePickerDialog(this, this, year, month, day).show()
     }
 }

@@ -166,16 +166,15 @@
         android:layout_marginHorizontal="32dp"
         app:layout_constraintTop_toBottomOf="@+id/editCPF">
 
-        <EditText
+        <Button
             android:id="@+id/editBirthday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
             android:layout_marginEnd="10dp"
-            android:layout_weight="50"
-            android:background="@drawable/edittext_drawable"
+            android:layout_weight="60"
+            android:backgroundTint="@color/white"
             android:hint="Data de Nascimento"
-            android:inputType="date"
             android:maxWidth="488dp"
             android:minHeight="48dp"
             android:paddingHorizontal="8dp"
