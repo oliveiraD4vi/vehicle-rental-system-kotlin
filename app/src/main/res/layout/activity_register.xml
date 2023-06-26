@@ -103,14 +103,14 @@
         android:textColor="@color/blue_primary"
         android:textColorHint="@color/black_overlay" />
 
-    <EditText
+    <Button
         android:id="@+id/editBirthday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editCPF"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
-        android:background="@drawable/edittext_drawable"
+        android:backgroundTint="@color/white"
         android:hint="Data de Nascimento"
         android:inputType="date"
         android:maxWidth="488dp"
