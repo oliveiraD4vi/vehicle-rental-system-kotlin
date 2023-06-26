@@ -192,15 +192,14 @@
 
     </LinearLayout>
 
-    <EditText
+    <Button
         android:id="@+id/pickup"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
         android:layout_weight="70"
-        android:background="@drawable/edittext_drawable"
+        android:backgroundTint="@color/white"
         android:hint="Data de Retirada"
-        android:inputType="date"
         android:maxWidth="488dp"
         android:minHeight="48dp"
         android:paddingHorizontal="8dp"
@@ -211,15 +210,14 @@
         app:layout_constraintStart_toStartOf="@+id/id_layout"
         app:layout_constraintTop_toBottomOf="@+id/id_layout" />
 
-    <EditText
+    <Button
         android:id="@+id/devolution"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginVertical="8dp"
         android:layout_weight="70"
-        android:background="@drawable/edittext_drawable"
+        android:backgroundTint="@color/white"
         android:hint="Data de Devolução"
-        android:inputType="date"
         android:maxWidth="488dp"
         android:minHeight="48dp"
         android:paddingHorizontal="8dp"

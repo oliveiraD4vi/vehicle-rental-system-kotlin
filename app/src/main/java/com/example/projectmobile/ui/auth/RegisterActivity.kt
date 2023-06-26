@@ -1,5 +1,7 @@
 package com.example.projectmobile.ui.auth
 
+import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,25 +13,33 @@ import com.example.projectmobile.R
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
 import com.example.projectmobile.api.types.APIResponse
+import com.example.projectmobile.databinding.ActivityFormReservationVehicleBinding
+import com.example.projectmobile.databinding.ActivityRegisterBinding
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-class RegisterActivity : AppCompatActivity() {
+class RegisterActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
     private lateinit var editNome: EditText
     private lateinit var editEmail: EditText
     private lateinit var editSenha: EditText
     private lateinit var editCPF: EditText
-    private lateinit var editDataNascimento: EditText
+    private lateinit var editDataNascimento: Button
     private lateinit var btnRegister: Button
     private lateinit var progressBar: ProgressBar
     private lateinit var accountButton: Button
 
+    @SuppressLint("SimpleDateFormat")
+    private val dateFormat: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
+
+    private lateinit var binding: ActivityRegisterBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
 
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         supportActionBar?.hide()
 
         editNome = findViewById(R.id.editName)
@@ -53,6 +63,10 @@ class RegisterActivity : AppCompatActivity() {
         accountButton.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
+        }
+
+        binding.editBirthday.setOnClickListener {
+            handleDate()
         }
     }
 
@@ -183,7 +197,7 @@ class RegisterActivity : AppCompatActivity() {
         val name = editNome.text.toString()
         val email = editEmail.text.toString()
         val password = editSenha.text.toString()
-        val birthday = editDataNascimento.text.toString()
+        val birthday = dateFormatter(editDataNascimento.text.toString())
         val cpf = editCPF.text.toString()
 
         return "{\"name\": \"$name\", \"email\": \"$email\", \"password\": \"$password\", \"bornAt\": \"$birthday\", \"cpf\": \"$cpf\"}"
@@ -213,5 +227,30 @@ class RegisterActivity : AppCompatActivity() {
         editSenha.setText("")
         editCPF.setText("")
         editDataNascimento.setText("")
+    }
+
+    private fun dateFormatter(dataString: String): String? {
+        val entryFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val exitFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+
+        return entryFormat.parse(dataString)?.let { exitFormat.format(it) } ?: "?"
+    }
+
+    override fun onDateSet(v: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
+
+        val calendar = Calendar.getInstance()
+        calendar.set(year, month, dayOfMonth)
+        val dueDate = dateFormat.format(calendar.time)
+        binding.editBirthday.text = dueDate
+
+    }
+
+    private fun handleDate() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        DatePickerDialog(this, this, year, month, day).show()
     }
 }
