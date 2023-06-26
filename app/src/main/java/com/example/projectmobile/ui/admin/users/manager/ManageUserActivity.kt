@@ -285,7 +285,7 @@ class ManageUserActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
                 "\"email\": \"$email\", " +
                 "\"password\": \"$password\", " +
                 "\"cpf\": \"$cpf\", " +
-                "\"bornAt\": \"$bornAt\", " +
+                "\"bornAt\": \"${dateFormatterTwo(bornAt)}\", " +
                 "\"phone\": \"$phone\", " +
                 "\"street\": \"$street\", " +
                 "\"number\": $number, " +
@@ -452,5 +452,12 @@ class ManageUserActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListen
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
         DatePickerDialog(this, this, year, month, day).show()
+    }
+
+    private fun dateFormatterTwo(dataString: String): String? {
+        val entryFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val exitFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+
+        return entryFormat.parse(dataString)?.let { exitFormat.format(it) } ?: "?"
     }
 }
