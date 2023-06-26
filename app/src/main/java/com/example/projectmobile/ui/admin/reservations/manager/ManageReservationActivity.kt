@@ -1,15 +1,14 @@
 package com.example.projectmobile.ui.admin.reservations.manager
 
 import android.R
+import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
-import android.widget.Toast
+import android.widget.*
 import com.example.projectmobile.MainActivity
 import com.example.projectmobile.api.callback.APICallback
 import com.example.projectmobile.api.service.APIService
@@ -20,7 +19,8 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ManageReservationActivity : AppCompatActivity() {
+class ManageReservationActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
+    private var id: String = ""
     private var reservationId: Int? = null
     private var _binding: ActivityCreateReservationBinding? = null
     private var currentStatus: String? = null
@@ -35,6 +35,9 @@ class ManageReservationActivity : AppCompatActivity() {
     private lateinit var spinnerStep: Spinner
     private lateinit var preferencesManager: UserPreferencesManager
 
+    @SuppressLint("SimpleDateFormat")
+    private val dateFormat: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityCreateReservationBinding.inflate(layoutInflater)
@@ -48,6 +51,16 @@ class ManageReservationActivity : AppCompatActivity() {
 
         binding.returnButton.setOnClickListener {
             finish()
+        }
+
+        binding.pickup.setOnClickListener {
+            id = binding.pickup.id.toString()
+            handleDate()
+        }
+
+        binding.devolution.setOnClickListener {
+            id = binding.devolution.id.toString()
+            handleDate()
         }
 
         configureSpinner()
@@ -453,8 +466,8 @@ class ManageReservationActivity : AppCompatActivity() {
 
         return "{\"user_id\": \"$userId\", " +
                 "\"vehicle_id\": \"$vehicleId\", " +
-                "\"pickup\": \"$pickup\", " +
-                "\"devolution\": \"$devolution\"}"
+                "\"pickup\": \"${dateFormatterTwo(pickup)}\", " +
+                "\"devolution\": \"${dateFormatterTwo(devolution)}\"}"
     }
 
     private fun getRequestSaveData(): String {
@@ -516,5 +529,33 @@ class ManageReservationActivity : AppCompatActivity() {
         val exitFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
         return entryFormat.parse(dataString)?.let { exitFormat.format(it) } ?: "?"
+    }
+
+    private fun dateFormatterTwo(dataString: String): String? {
+        val entryFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val exitFormat = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
+
+        return entryFormat.parse(dataString)?.let { exitFormat.format(it) } ?: "?"
+    }
+
+    override fun onDateSet(v: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
+
+        val calendar = Calendar.getInstance()
+        calendar.set(year, month, dayOfMonth)
+        val dueDate = dateFormat.format(calendar.time)
+        if (id == com.example.projectmobile.R.id.pickup.toString()) {
+            binding.pickup.text = dueDate
+        } else if (id == com.example.projectmobile.R.id.devolution.toString()) {
+            binding.devolution.text = dueDate
+        }
+    }
+
+    private fun handleDate() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        DatePickerDialog(this, this, year, month, day).show()
     }
 }
