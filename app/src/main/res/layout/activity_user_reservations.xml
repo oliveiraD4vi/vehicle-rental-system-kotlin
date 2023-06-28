@@ -8,6 +8,23 @@
     android:padding="32dp"
     tools:context=".ui.admin.users.reservations.UserReservationsActivity">
 
+    <ImageButton
+        android:id="@+id/returnButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="16dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/go_back_button_description"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:src="?attr/homeAsUpIndicator"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/blue_primary" />
+
     <!-- Barra de Progresso -->
     <ProgressBar
         android:id="@+id/progressBar"
@@ -20,8 +37,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight="0dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/notFound"
@@ -39,9 +55,9 @@
         android:id="@+id/recycler_reservations"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

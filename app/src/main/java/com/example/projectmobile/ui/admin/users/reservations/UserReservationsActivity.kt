@@ -47,6 +47,11 @@ class UserReservationsActivity : AppCompatActivity() {
         //adapter
         binding.recyclerReservations.adapter = adapter
 
+        binding.returnButton.visibility = View.VISIBLE
+        binding.returnButton.setOnClickListener {
+            finish()
+        }
+
         if (verifyUserRole(preferencesManager)) {
             getLast(preferencesManager, adapter)
         } else {
