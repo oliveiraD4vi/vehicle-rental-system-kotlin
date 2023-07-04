@@ -13,7 +13,7 @@ import java.io.IOException
 class APIService(private val token: String? = null) {
     private val client = OkHttpClient()
     private val json = "application/json; charset=utf-8".toMediaTypeOrNull()
-    private val baseurl = "http://18.231.159.161:8080/api"
+    private val baseurl = "http://15.228.52.63:8080/api"
 
     private fun buildRequest(
         url: String,
